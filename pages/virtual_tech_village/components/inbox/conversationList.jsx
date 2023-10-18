@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Toolbar from "./Toolbar";
 import MessageInput from "./MessageInput";
 import Image from "next/image";
@@ -94,9 +94,15 @@ const ConversationList = ({
     }
   );
 
+  const bottomRef = useRef(null)
+
+  useEffect(() => {
+    bottomRef?.current?.scrollIntoView({behavior: 'smooth'})
+    }, [messageHistory, bottomRef])
+
 
   return (
-    <div className="grow shadow relative p-4 py-1 overflow-hidden h-[calc(100vh - 100px)]">
+    <div className="grow shadow relative p-4 py-1 overflow-hidden h-[calc(100vh - 50px)]">
       {/* <Toolbar convoLabel={convoLabel} names={names} avatar={avatar} /> */}
       <div className="scrollbar">
         <div
@@ -118,10 +124,13 @@ const ConversationList = ({
                         {message.content}
                       </div>
                     )}
+                   
                   </div>
+                  
                 ))}
               </div>
             )}
+             <div ref={bottomRef}></div>
           </div>
         </div>
       </div>

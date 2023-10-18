@@ -5,7 +5,7 @@ import React, {
   useContext,
   useCallback,
 } from "react";
-import { AiOutlineSend } from "react-icons/ai";
+import { AiOutlineSend, AiOutlinePaperClip } from "react-icons/ai";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { Context } from "../conext/context";
 
@@ -17,7 +17,7 @@ const MessageInput = ({ roomName, userId }) => {
   const [socketUrl, setSocketUrl] = useState(
     `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${userId}/${userId}${roomName}/`
   );
-  const { sendMessage, lastMessage, readyState, sendJsonMessage } =
+  const { readyState, sendJsonMessage } =
     useWebSocket(socketUrl);
 
   const handleSendInput = () => {
@@ -28,6 +28,28 @@ const MessageInput = ({ roomName, userId }) => {
     console.log("Message sent:", messageText);
     setMessageText("");
   };
+
+  const handleOpenMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  }
+
+  const handleClickOutsideProfile = (event) => {
+    if (
+      inputRef.current &&
+      !inputRef.current.contains(event.target)
+    ) {
+      setIsMenuOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideProfile);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideProfile);
+
+    };
+  }, []);
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
@@ -53,9 +75,10 @@ const MessageInput = ({ roomName, userId }) => {
             <button
               className="absolute top-8 right-2 bg-gray-400 text-white p-1 rounded-full"
               style={{ cursor: "pointer" }}
+              onClick={() => handleOpenMenu()}
             >
-              {connectionStatus}
-              {/* + */}
+              {/* {connectionStatus} */}
+              < AiOutlinePaperClip />
             </button>
           </div>
 

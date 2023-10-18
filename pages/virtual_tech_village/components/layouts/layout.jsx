@@ -1,9 +1,10 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import ContextProvider from "../conext/context";
+import useWebSocket, { ReadyState } from "react-use-websocket";
 
 import axios from "axios";
 import { signOut } from "next-auth/react";
@@ -23,14 +24,23 @@ import { useSession } from "next-auth/react";
 
 const Layout = ({ children, sideHighlight }) => {
   const [userData, setUserData] = useState(null);
+  const [unreadMessageCount, setUnreadMessageCount] = useState(null);
+  const [notificationContent, setNotificationContent] = useState(null);
+  const [showNotification, setShowNotification] = useState(false);
+  const [id, setId] = useState("");
   const router = useRouter();
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    router.push("/");
-  };
+  const notificationRef = useRef();
 
   const { data: session } = useSession();
+
+  const handleClickOutsideNotification = (event) => {
+    if (
+      notificationRef.current &&
+      !notificationRef.current.contains(event.target)
+    ) {
+      setShowNotification(false);
+    }
+  };
 
   useEffect(() => {
     if (session) {
@@ -41,12 +51,13 @@ const Layout = ({ children, sideHighlight }) => {
     const token = localStorage.getItem("token");
 
     const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
+    setId(decodedToken.user_id);
+    const user_id = decodedToken.user_id;
 
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${id}/`
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${user_id}/`
         );
         setUserData(response.data);
         // console.log(response.data);
@@ -58,6 +69,63 @@ const Layout = ({ children, sideHighlight }) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideNotification);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideNotification);
+    };
+  }, []);
+
+  const { readyState, sendJsonMessage } = useWebSocket(
+    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat_notifications/${id}/`,
+    {
+      onOpen: () => {
+        console.log("Connected to Notifications!");
+      },
+      onClose: () => {
+        console.log("Disconnected from Notifications!");
+      },
+      onMessage: (e) => {
+        const data = JSON.parse(e.data);
+        switch (data.type) {
+          case "unread_count":
+            break;
+          case "new_message_notification":
+            setUnreadMessageCount((count) => (count += 1));
+            setUnreadMessageCount(data.count);
+            console.log(data.content);
+            setNotificationContent(data.content);
+            break;
+          default:
+            console.error("Unknown message type!");
+            break;
+        }
+      },
+      retryOnError: true,
+    }
+  );
+
+  const handleSendNotification = () => {
+    sendJsonMessage({
+      type: "read_notifications",
+    });
+  };
+
+  const handleShowNotification = () => {
+    setShowNotification(!showNotification);
+    sendJsonMessage({
+      type: "read_messages",
+    });
+  };
+
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: "Connecting",
+    [ReadyState.OPEN]: "Open",
+    [ReadyState.CLOSING]: "Closing",
+    [ReadyState.CLOSED]: "Closed",
+    [ReadyState.UNINSTANTIATED]: "Uninstantiated",
+  }[readyState];
   return (
     <>
       <main className="h-screen w-screen flex relative">
@@ -139,7 +207,7 @@ const Layout = ({ children, sideHighlight }) => {
                       }
 										`}
                     >
-                      <GoInbox  className="text-xl" />
+                      <GoInbox className="text-xl" />
                       <h1 className="hidden sm:block">Inbox</h1>
                     </div>
                   </Link>
@@ -168,7 +236,7 @@ const Layout = ({ children, sideHighlight }) => {
                   <div href="/" className="" onClick={signOut}>
                     <div
                       className="flex transition-all duration-500 gap-3 flex items-center rounded px-2 py-1 text-gray-100 hover:font-bold hover:bg-gray-100 hover:text-gray-800 cursor-pointer "
-                      onClick={handleLogout}
+                      onClick={signOut}
                     >
                       <BiLogOut className="text-xl logout" />
                       <h1 className="hidden sm:block">Logout</h1>
@@ -180,7 +248,60 @@ const Layout = ({ children, sideHighlight }) => {
           </div>
         </nav>
         <nav className="fixed bg-white top-0 left-0 w-full h-20 px-14 gap-4 flex justify-end items-center z-40">
-          <AiOutlineBell className="text-lg" />
+        <div className="relative">
+            <AiOutlineBell
+              className={`text-lg cursor-pointer ${
+                unreadMessageCount > 0 ? "animate-pulse" : ""
+              }`}
+              onClick={handleShowNotification}
+            />
+            <div className="absolute -top-2 -right-4">
+              {unreadMessageCount > 0 ? unreadMessageCount : ""}
+            </div>
+            <div ref={notificationRef}>
+              <div className="relative">
+                <div className="inline-flex items-center overflow-hidden rounded-md border bg-white"></div>
+                {showNotification && (
+                  <div
+                    className="absolute end-0 z-10 w-56 rounded-md border border-gray-100 max-h-40 overflow-x-auto bg-white shadow-lg"
+                    role="menu"
+                  >
+                    {notificationContent && notificationContent.length > 0 ? (
+                      notificationContent.map((notification, index) => (
+                        <div className="p-2" key={index}>
+                          <Link href={`/${notification.route}`}>
+                            <div className="flex items-center gap-2 hover:bg-gray-50 hover:text-gray-700">
+                              <div className="h-8 w-8 relative">
+                                <Image
+                                  src={notification.image}
+                                  fill
+                                  objectFit="cover"
+                                  className="rounded-full"
+                                />
+                              </div>
+                              <div
+                                className="block rounded-lg px-4 py-2 text-sm text-gray-500"
+                                role="menuitem"
+                              >
+                                <div className="flex flex-col">
+                                  <div className="font-semibold">
+                                    {notification.sender}
+                                  </div>
+                                  <div>{notification.message}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </Link>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="p-2">No notifications.</div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
 
           <Link href="/virtual_tech_village/profile/">
             <div className="w-max truncate px-4 py-2 transition-all duration-500 hover:bg-gray-100 rounded cursor-pointer flex items-center gap-1 sm:gap-2 rounded">
@@ -211,27 +332,22 @@ const Layout = ({ children, sideHighlight }) => {
                   </div>
                 )}
               </div>
-
+{/*  */}
               <span className="text-sm truncate flex sm:max-w-[200px] font-bold">
-                {userData ? (
-                  <div>
-                    {userData[0]?.first_name} {userData[0]?.last_name}
-                  </div>
-                ) : (
-                  <div className=" p-4 max-w-sm w-full mx-auto">
-                    <div className="animate-pulse flex space-x-4">
-                      <div className="flex-1 space-y-6 py-1">
-                        <div className="h-2 bg-slate-700 rounded"></div>
-                     
-                      </div>
+                {userData &&
+                  (userData[0]?.account_type === "village talent profile" ||
+                  userData[0]?.account_type === "village admin profile" ? (
+                    <div>
+                      {userData[0]?.first_name} {userData[0]?.last_name}
                     </div>
-                  </div>
-                )}
+                  ) : (
+                    <div>{userData[0]?.company_name}</div>
+                  ))}
               </span>
             </div>
           </Link>
         </nav>
-        <div className="w-full h-screen overflow-y-scroll px-4 py-24">
+        <div className="w-full h-screen overflow-y-scroll px-4 pt-24">
           <div className="w-full h-max flex flex-col gap-5">{children}</div>
         </div>
       </main>

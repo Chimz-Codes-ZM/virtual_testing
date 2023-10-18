@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
@@ -12,6 +12,8 @@ import ExpandedProfileModal from "./components/profiles/ExpandedProfileModal";
 import { motion, AnimatePresence } from "framer-motion";
 import { JellyTriangle } from "@uiball/loaders";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { FaExternalLinkSquareAlt } from "react-icons/fa";
+import { BsFillInfoCircleFill } from "react-icons/bs";
 
 const CompanyProfile = ({
   company_name,
@@ -20,6 +22,7 @@ const CompanyProfile = ({
   company_description,
   website,
   showCompany,
+  user_id,
 }) => {
   const showCompanyProfile = () => {
     showCompany({
@@ -28,11 +31,12 @@ const CompanyProfile = ({
       company_name,
       company_description,
       website,
+      user_id,
     });
   };
 
   return (
-    <div href="#" className="block" onClick={showCompanyProfile}>
+    <div className="block" onClick={showCompanyProfile}>
       <img
         alt={company_name}
         src={image}
@@ -57,6 +61,7 @@ const ExpandedCompanyModal = ({
   company_name,
   company_description,
   website,
+  user_id,
 }) => {
   return (
     <>
@@ -88,29 +93,19 @@ const ExpandedCompanyModal = ({
         </div>
 
         <div className="mt-6 flex gap-4 sm:gap-6">
-          <div className="flex flex-col-reverse">
+          <div className="flex gap-4 font-medium text-gray-900">
             <a
               href={`${website}`}
               target="_blank"
-              className="text-sm font-medium text-gray-600"
+              className=""
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                />
-              </svg>
-
+              <FaExternalLinkSquareAlt />
               {/* THIS NEEDS TO BE FIXED ASAP */}
             </a>
+
+            <Link href={`/virtual_tech_village/company_info/${user_id}`}>
+              <BsFillInfoCircleFill />
+            </Link>
           </div>
         </div>
       </div>
@@ -119,7 +114,7 @@ const ExpandedCompanyModal = ({
 };
 
 const Virtual_Tech_Village = () => {
-  const [memberShow, setMemeberShow] = useState(true);
+  const [memberShow, setMemberShow] = useState(true);
   const [companyShow, setCompanyShow] = useState(false);
   const [parent, enableAnimations] = useAutoAnimate();
   const [profile, setProfile] = useState(false);
@@ -136,7 +131,7 @@ const Virtual_Tech_Village = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [memberList, setMemberList] = useState(null);
-  const [activePage, setActivePage] = useState(1)
+  const [activePage, setActivePage] = useState(1);
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -146,7 +141,7 @@ const Virtual_Tech_Village = () => {
       localStorage.setItem("token", session.access);
       // console.log(session);
     }
- 
+
     const token = localStorage.getItem("token");
 
     const decodedToken = jwt_decode(token);
@@ -172,6 +167,11 @@ const Virtual_Tech_Village = () => {
 
       const data = await response.json();
       setMemberList(data);
+
+      const accountType = data.user[0]?.account_type || "";
+
+      setCompanyShow(accountType === "village company profile");
+      setMemberShow(accountType !== "village company profile");
     };
 
     fetchData();
@@ -181,6 +181,7 @@ const Virtual_Tech_Village = () => {
 
   useEffect(() => {
     console.log(memberList);
+    checkProfileComplete()
   }, [memberList]);
 
   const { companies, individuals } = memberList || {
@@ -211,8 +212,10 @@ const Virtual_Tech_Village = () => {
   };
 
   const handleChatClick = (modalId) => {
-    router.push(`/virtual_tech_village/inbox/${memberList.user[0].user_id}/${modalId}`)
-  }
+    router.push(
+      `/virtual_tech_village/inbox/${memberList.user[0].user_id}/${modalId}`
+    );
+  };
 
   const checkProfileComplete = () => {
     if (
@@ -291,11 +294,10 @@ const Virtual_Tech_Village = () => {
       );
 
       const data = await response.json();
-      
+
       setMemberList(data);
-      
-      setActivePage(pageNumber)
-      
+
+      setActivePage(pageNumber);
     };
 
     fetchData();
@@ -307,10 +309,11 @@ const Virtual_Tech_Village = () => {
     document.addEventListener("mousedown", handleClickOutsideProfile);
     document.addEventListener("mousedown", handleClickOutsideCompany);
 
-    checkProfileComplete();
+    ;
 
     login();
     handlePageFetch();
+    
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideProfile);
@@ -322,14 +325,14 @@ const Virtual_Tech_Village = () => {
     if (!memberShow) {
       enableAnimations(true);
       setCompanyShow(false);
-      setMemeberShow(true);
+      setMemberShow(true);
     }
   };
 
   const handleCompanyShow = () => {
     if (!companyShow) {
       enableAnimations(true);
-      setMemeberShow(false);
+      setMemberShow(false);
       setCompanyShow(true);
     }
   };
@@ -374,7 +377,7 @@ const Virtual_Tech_Village = () => {
         );
 
         setMemberList(data);
-        console.log(data)
+        console.log(data);
       } else {
         console.error("Something went wrong, please try again!");
       }
@@ -472,10 +475,10 @@ const Virtual_Tech_Village = () => {
   };
 
   return (
-
-      <div className="flex flex-col gap-5 relative" ref={parent}>
-        <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2">
-          <div className="flex flex-wrap gap-4">
+    <div className="flex flex-col gap-5 relative" ref={parent}>
+      <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2">
+        <div className="flex flex-wrap gap-4">
+          {(memberList.user[0].account_type === "village talent profile" || memberList.user[0].account_type === "village admin profile") && (
             <div
               className={` pb-1 w-max cursor-pointer  ${
                 memberShow
@@ -489,81 +492,83 @@ const Virtual_Tech_Village = () => {
                 {memberList.total_talent_profiles}
               </span>
             </div>
-            {memberList.user[0]?.account_type === "village company profile" && (
-              <div
-                className={`"pb-1 w-max cursor-pointer ${
-                  companyShow
-                    ? "border-b-2 border-black"
-                    : "hover:border-b-2 hover:border-gray-300 delay-200 ease-in-out transition-colors"
-                }`}
-                onClick={handleCompanyShow}
+          )}
+
+          {(memberList.user[0]?.account_type === "village company profile" || memberList.user[0].account_type === "village admin profile") && (
+            <div
+              className={`"pb-1 w-max cursor-pointer ${
+                companyShow
+                  ? "border-b-2 border-black"
+                  : "hover:border-b-2 hover:border-gray-300 delay-200 ease-in-out transition-colors"
+              }`}
+              onClick={handleCompanyShow}
+            >
+              Companies{" "}
+              <span className="bg-black text-white rounded p-1">
+                {memberList.total_company_profiles}
+              </span>
+            </div>
+          )}
+        </div>
+
+        <div className="flex-grow flex-wrap">
+          <form className="flex flex-col md:flex-row md:justify-around">
+            <div className="mb-4 md:mb-0">
+              <select
+                name="country"
+                id="country"
+                className="border-gray-300 border-2 rounded px-1 w-full"
+                onChange={(e) => handleInputChange(e)}
+                value={filters.country}
               >
-                Companies{" "}
-                <span className="bg-black text-white rounded p-1">
-                  {memberList.total_company_profiles}
-                </span>
-              </div>
-            )}
-          </div>
+                <option value="" disabled>
+                  Country
+                </option>
+                <option value="">All</option>
 
-          <div className="flex-grow flex-wrap">
-            <form className="flex flex-col md:flex-row md:justify-around">
-              <div className="mb-4 md:mb-0">
-                <select
-                  name="country"
-                  id="country"
-                  className="border-gray-300 border-2 rounded px-1 w-full"
-                  onChange={(e) => handleInputChange(e)}
-                  value={filters.country}
-                >
-                  <option value="" disabled>
-                    Country
+                {uniqueCountries.map((country, index) => (
+                  <option value={country} key={index}>
+                    {country}
                   </option>
-                  <option value="">All</option>
+                ))}
+              </select>
+            </div>
 
-                  {uniqueCountries.map((country, index) => (
-                    <option value={country} key={index}>
-                      {country}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div className="mb-4 md:mb-0">
+              <input
+                type="text"
+                placeholder="Search by name"
+                className="border-gray-300 border-2 rounded px-1 w-full"
+                onChange={(e) => handleInputChange(e)}
+                name="search"
+                id="search"
+                value={filters.search}
+              />
+            </div>
 
-              <div className="mb-4 md:mb-0">
-                <input
-                  type="text"
-                  placeholder="Search by name"
-                  className="border-gray-300 border-2 rounded px-1 w-full"
-                  onChange={(e) => handleInputChange(e)}
-                  name="search"
-                  id="search"
-                  value={filters.search}
-                />
-              </div>
-
-              <div>
-                <select
-                  name="skill"
-                  id="skills"
-                  className="border-gray-300 border-2 rounded px-1 w-full"
-                  onChange={(e) => handleInputChange(e)}
-                  value={filters.skill}
-                >
-                  <option value="" disabled>
-                    Skills
+            <div>
+              <select
+                name="skill"
+                id="skills"
+                className="border-gray-300 border-2 rounded px-1 w-full"
+                onChange={(e) => handleInputChange(e)}
+                value={filters.skill}
+              >
+                <option value="" disabled>
+                  Skills
+                </option>
+                <option value="">All</option>
+                {uniqueRoles.map((role, index) => (
+                  <option key={index} value={role}>
+                    {role}
                   </option>
-                  <option value="">All</option>
-                  {uniqueRoles.map((role, index) => (
-                    <option key={index} value={role}>
-                      {role}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </form>
-          </div>
-
-          {/* {incompleteProfile && (
+                ))}
+              </select>
+            </div>
+          </form>
+        </div>
+{/* 
+        {incompleteProfile && (
             <div className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm">
               <Complete_Profile
                 message="Your profile is incomplete! Please complete setting up your profile."
@@ -572,15 +577,16 @@ const Virtual_Tech_Village = () => {
             </div>
           )} */}
 
-          {incompleteCompanyProfile && (
-            <div className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm">
-              <Complete_Profile
-                message="Your profile is incomplete! Please complete setting up your profile."
-                alertDismiss={companyProfileReroute}
-              />
-            </div>
-          )}
-        </div>
+        {incompleteCompanyProfile && (
+          <div className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm">
+            <Complete_Profile
+              message="Your profile is incomplete! Please complete setting up your profile."
+              alertDismiss={companyProfileReroute}
+            />
+          </div>
+        )}
+      </div>
+      {(memberList.user[0]?.account_type === "village talent profile" || memberList.user[0].account_type === "village admin profile") && (
         <AnimatePresence>
           {memberShow && (
             <motion.div
@@ -595,19 +601,17 @@ const Virtual_Tech_Village = () => {
                 </p>
               ) : (
                 visibleData.map((profile, index) => (
-                  
-                    <MemberProfile
-                      key={index}
-                      image={profile.image}
-                      name={`${profile.first_name} ${profile.last_name}`}
-                      skills={profile.skills}
-                      showProfile={showProfile}
-                      country={profile.country}
-                      experience={profile.experience}
-                      certificate={profile.certificate}
-                      user_id={profile.user_id}
-                    />
-                  
+                  <MemberProfile
+                    key={index}
+                    image={profile.image}
+                    name={`${profile.first_name} ${profile.last_name}`}
+                    skills={profile.skills}
+                    showProfile={showProfile}
+                    country={profile.country}
+                    experience={profile.experience}
+                    certificate={profile.certificate}
+                    user_id={profile.user_id}
+                  />
                 ))
               )}
               <AnimatePresence>
@@ -630,9 +634,8 @@ const Virtual_Tech_Village = () => {
                         onClick={() => {
                           handleMoreInfoClick(profile.user_id);
                         }}
-
                         handleChat={() => {
-                          handleChatClick(profile.user_id)
+                          handleChatClick(profile.user_id);
                         }}
                       />
                     </div>
@@ -641,79 +644,80 @@ const Virtual_Tech_Village = () => {
               </AnimatePresence>
             </motion.div>
           )}
-        </AnimatePresence>
-        {memberShow && (
-      
-
-          <div className="flex w-full justify-center items-center gap-2">
-            {talentPages.map((pageNumber) => (
-              <div className="flex gap-2">
-                <button
-                  key={pageNumber}
-                  onClick={() => handlePageClick(pageNumber)}
-                  className={`inline-block rounded-full border bg-gray-900 border-gray-900 p-3 transition-colors delay-75 ${pageNumber === activePage ? "bg-transparent text-gray-900 cursor-not-allowed" : "text-white"}  hover:bg-transparent hover:text-gray-900 focus:outline-none focus:ring active:text-indigo-500`}
-                  disabled={activePage===pageNumber}
-                >
-                  {pageNumber}
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-        <AnimatePresence>
-          {companyShow && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 relative"
-            >
-              {filteredCompanyData.length === 0 ? (
-                <p className="font-bold text-slate-600 text-lg col-span-3 text-center">
-                  No company profiles match your filter criteria.
-                </p>
-              ) : (
-                visibleCompanyData.map((company, index) => (
-                
-                    <CompanyProfile
-                      key={index}
-                      company_name={company.company_name}
-                      image={company.image}
-                      industry={company.industry}
-                      showCompany={showCompany}
-                      company_description={company.company_description}
-                      website={company.company_website}
-                    />
-                  
-                ))
-              )}
-
-              <AnimatePresence>
-                {company && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
+          {memberShow && (
+            <div className="flex w-full justify-center items-center gap-2">
+              {talentPages.map((pageNumber) => (
+                <div className="flex gap-2" key={pageNumber}>
+                  <button
+                    onClick={() => handlePageClick(pageNumber)}
+                    className={`inline-block rounded-full border bg-gray-900 border-gray-900 p-3 transition-colors delay-75 ${
+                      pageNumber === activePage
+                        ? "bg-transparent text-gray-900 cursor-not-allowed"
+                        : "text-white"
+                    }  hover:bg-transparent hover:text-gray-900 focus:outline-none focus:ring active:text-indigo-500`}
+                    disabled={activePage === pageNumber}
                   >
-                    <div ref={expandedCompanyRef}>
-                      <ExpandedCompanyModal
-                        company_name={company.company_name}
-                        image={company.image}
-                        company_description={company.company_description}
-                        industry={company.industry}
-                        website={company.website}
-                      />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
+                    {pageNumber}
+                  </button>
+                </div>
+              ))}
+            </div>
           )}
         </AnimatePresence>
-      </div>
+      )}
 
-    
+      <AnimatePresence>
+        {companyShow && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 relative"
+          >
+            {filteredCompanyData.length === 0 ? (
+              <p className="font-bold text-slate-600 text-lg col-span-3 text-center">
+                No company profiles match your filter criteria.
+              </p>
+            ) : (
+              visibleCompanyData.map((company, index) => (
+                <CompanyProfile
+                  key={index}
+                  company_name={company.company_name}
+                  image={company.image}
+                  industry={company.industry}
+                  showCompany={showCompany}
+                  company_description={company.company_description}
+                  website={company.company_website}
+                  user_id={company.user_id}
+                />
+              ))
+            )}
+
+            <AnimatePresence>
+              {company && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
+                >
+                  <div ref={expandedCompanyRef}>
+                    <ExpandedCompanyModal
+                      company_name={company.company_name}
+                      image={company.image}
+                      company_description={company.company_description}
+                      industry={company.industry}
+                      website={company.website}
+                      user_id={company.user_id}
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 
