@@ -142,15 +142,15 @@ const Index = () => {
 
   const fetchInfo = async (e) => {
     const userInfoUrl = `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${id}/`;
-
+  
     try {
-      const response = await fetch(userInfoUrl);
+      const response = await fetch(userInfoUrl, { cache: false });
       const responseData = await response.json();
-
+  
       setInfo(responseData);
       setChatName(`${responseData[0].first_name} ${responseData[0].last_name}`);
       setAvatarUrl(responseData[0].image);
-
+  
       setTimeout(function () {
         setLoading(false);
       }, 2000);
@@ -204,7 +204,7 @@ const Index = () => {
           {/* CONVERSATION LIST */}
 
           <div className="relative grow shadow overflow-hidden h-full flex justify-center">
-            <div className="grow relative p-4 py-1 overflow-hidden max-h-[450px] border-4 pt-10 max-w-3xl">
+            <div className="grow relative p-4 py-1 overflow-hidden max-h-[450px] pt-10 max-w-3xl">
               <Toolbar names={usersName} avatar={userPicture} roomName={roomName} userId={userId} />
               <div className="scrollbar h-full">
                 <div className="mx-auto max-w-6xl px-14 py-4 pb-4 max-h-full overflow-y-auto">
