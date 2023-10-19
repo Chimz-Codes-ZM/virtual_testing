@@ -204,7 +204,7 @@ const Index = () => {
           {/* CONVERSATION LIST */}
 
           <div className="relative grow shadow overflow-hidden h-full flex justify-center">
-            <div className="grow relative p-4 py-1 overflow-hidden max-h-[450px] pt-10 max-w-3xl">
+            <div className="grow relative p-4 py-1 overflow-hidden max-h-[450px] border-4 pt-10 max-w-3xl">
               <Toolbar names={usersName} avatar={userPicture} roomName={roomName} userId={userId} />
               <div className="scrollbar h-full">
                 <div className="mx-auto max-w-6xl px-14 py-4 pb-4 max-h-full overflow-y-auto">

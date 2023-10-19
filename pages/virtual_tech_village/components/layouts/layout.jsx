@@ -248,7 +248,7 @@ const Layout = ({ children, sideHighlight }) => {
           </div>
         </nav>
         <nav className="fixed bg-white top-0 left-0 w-full h-20 px-14 gap-4 flex justify-end items-center z-40">
-        <div className="relative">
+          <div className="relative">
             <AiOutlineBell
               className={`text-lg cursor-pointer ${
                 unreadMessageCount > 0 ? "animate-pulse" : ""
@@ -332,7 +332,7 @@ const Layout = ({ children, sideHighlight }) => {
                   </div>
                 )}
               </div>
-{/*  */}
+              {/*  */}
               <span className="text-sm truncate flex sm:max-w-[200px] font-bold">
                 {userData &&
                   (userData[0]?.account_type === "village talent profile" ||
