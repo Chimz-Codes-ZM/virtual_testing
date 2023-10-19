@@ -129,6 +129,8 @@ const Index = () => {
           case "typing":
             updateTyping(data);
             break;
+          case "conversation_data":
+            setRoomName(data.id)
           default:
             console.error("Unknown message type!");
             break;

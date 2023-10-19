@@ -35,7 +35,7 @@ const Toolbar = ({ names, avatar, roomName, userId }) => {
   const handlePin = () => {
     setRequestBody((prevBody) => ({
       ...prevBody,
-      pin: !prevBody.pin,
+      pin: true,
     }));
 
     const sendData = async () => {
@@ -65,7 +65,7 @@ const Toolbar = ({ names, avatar, roomName, userId }) => {
   const handleDelete = () => {
     setRequestBody((prevBody) => ({
       ...prevBody,
-      delete: !prevBody.delete,
+      delete: true,
     }));
 
     const sendData = async () => {
@@ -94,7 +94,7 @@ const Toolbar = ({ names, avatar, roomName, userId }) => {
   const handleArchive = () => {
     setRequestBody((prevBody) => ({
       ...prevBody,
-      archive: !prevBody.archive,
+      archive: true,
     }));
 
     const sendData = async () => {
@@ -109,11 +109,11 @@ const Toolbar = ({ names, avatar, roomName, userId }) => {
         }
       );
       if (response.ok) {
-        alert("Pinned successfully");
+        alert("Archived successfully");
       }
 
-      if (response.error) {
-        console.log("Error:", response.error);
+      if (response.status === 400) {
+        console.log("Error:", response.status);
       }
     };
 

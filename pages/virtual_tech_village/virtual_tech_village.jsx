@@ -223,7 +223,7 @@ const Virtual_Tech_Village = () => {
   };
 
   const handleChatClick = (modalId) => {
-    router.push(`/inbox/${memberList.user[0].user_id}/${modalId}`);
+    router.push(`/virtual_tech_village/inbox/${memberList.user[0].user_id}/${modalId}`);
   };
 
   const checkProfileComplete = () => {
