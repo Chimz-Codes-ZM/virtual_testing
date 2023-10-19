@@ -18,13 +18,6 @@ const ExpandedProfileModal = ({
   handleChat
 }) => {
 
-  const router = useRouter();
-
-  const handleMoreInfoClick = (modalId) => {
-    router.push(`/virtual_tech_village/member_profile/${modalId}`);
-  };
-
-
   return (
     <div className="">
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg relative">

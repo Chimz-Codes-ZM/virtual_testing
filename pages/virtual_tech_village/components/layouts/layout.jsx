@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import ContextProvider from "../conext/context";
+import ContextProvider from "../context/context";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
 import axios from "axios";

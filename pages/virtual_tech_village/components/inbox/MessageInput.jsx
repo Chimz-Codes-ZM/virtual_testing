@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { AiOutlineSend, AiOutlinePaperClip } from "react-icons/ai";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { Context } from "../conext/context";
+import { Context } from "../context/context";
 
 const MessageInput = ({ roomName, userId }) => {
   const [messageText, setMessageText] = useState("");

@@ -8,12 +8,14 @@ import jwt_decode from "jwt-decode";
 import Complete_Profile from "../virtual_tech_village/components/alerts/completeProfile";
 import MemberProfile from "./components/profiles/MemberProfile";
 import ExpandedProfileModal from "./components/profiles/ExpandedProfileModal";
+import New_job from "./components/modals/new_job";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { JellyTriangle } from "@uiball/loaders";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { FaExternalLinkSquareAlt } from "react-icons/fa";
 import { BsFillInfoCircleFill } from "react-icons/bs";
+import { FcAddDatabase } from "react-icons/fc";
 
 const CompanyProfile = ({
   company_name,
@@ -94,11 +96,7 @@ const ExpandedCompanyModal = ({
 
         <div className="mt-6 flex gap-4 sm:gap-6">
           <div className="flex gap-4 font-medium text-gray-900">
-            <a
-              href={`${website}`}
-              target="_blank"
-              className=""
-            >
+            <a href={`${website}`} target="_blank" className="">
               <FaExternalLinkSquareAlt />
               {/* THIS NEEDS TO BE FIXED ASAP */}
             </a>
@@ -116,6 +114,7 @@ const ExpandedCompanyModal = ({
 const Virtual_Tech_Village = () => {
   const [memberShow, setMemberShow] = useState(true);
   const [companyShow, setCompanyShow] = useState(false);
+  const [addNewJobShow, setAddNewJobShow] = useState(false);
   const [parent, enableAnimations] = useAutoAnimate();
   const [profile, setProfile] = useState(false);
   const [company, setCompany] = useState(false);
@@ -126,6 +125,8 @@ const Virtual_Tech_Village = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const expandedProfileRef = useRef(null);
   const expandedCompanyRef = useRef(null);
+  const memberStartRef = useRef(null);
+  const newJobRef = useRef(null);
 
   const [talentPages, setTalentPages] = useState([]);
   const [user, setUser] = useState(null);
@@ -178,10 +179,14 @@ const Virtual_Tech_Village = () => {
 
     setIsLoading(false);
   };
+  const scrollToTop = () => {
+    memberStartRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     console.log(memberList);
-    checkProfileComplete()
+    checkProfileComplete();
+    scrollToTop();
   }, [memberList]);
 
   const { companies, individuals } = memberList || {
@@ -207,14 +212,18 @@ const Virtual_Tech_Village = () => {
     }
   };
 
+  const handleClickOutsideNewJob = (event) => {
+    if (newJobRef.current && !newJobRef.current.contains(event.target)) {
+      setAddNewJobShow(false);
+    }
+  };
+
   const handleMoreInfoClick = (modalId) => {
-    router.push(`/virtual_tech_village/member_info/${modalId}`);
+    router.push(`/member_info/${modalId}`);
   };
 
   const handleChatClick = (modalId) => {
-    router.push(
-      `/virtual_tech_village/inbox/${memberList.user[0].user_id}/${modalId}`
-    );
+    router.push(`/inbox/${memberList.user[0].user_id}/${modalId}`);
   };
 
   const checkProfileComplete = () => {
@@ -237,11 +246,11 @@ const Virtual_Tech_Village = () => {
   };
 
   const profileReroute = () => {
-    router.push("/virtual_tech_village/complete_profile");
+    router.push("/complete_profile");
   };
 
   const companyProfileReroute = () => {
-    router.push("/virtual_tech_village/complete_company_profile");
+    router.push("/complete_company_profile");
   };
 
   const handlePageFetch = () => {
@@ -308,16 +317,15 @@ const Virtual_Tech_Village = () => {
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideProfile);
     document.addEventListener("mousedown", handleClickOutsideCompany);
-
-    ;
+    document.addEventListener("mousedown", handleClickOutsideNewJob);
 
     login();
     handlePageFetch();
-    
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideProfile);
       document.removeEventListener("mousedown", handleClickOutsideCompany);
+      document.removeEventListener("mousedown", handleClickOutsideNewJob);
     };
   }, []);
 
@@ -335,6 +343,10 @@ const Virtual_Tech_Village = () => {
       setMemberShow(false);
       setCompanyShow(true);
     }
+  };
+
+  const handleNewJobShow = () => {
+    setAddNewJobShow(true);
   };
 
   const [filters, setFilters] = useState({
@@ -475,15 +487,39 @@ const Virtual_Tech_Village = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5 relative" ref={parent}>
+    <div className="flex flex-col gap-5 relative pb-8" ref={parent}>
+      <div>
+        {addNewJobShow && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
+          >
+            <div ref={newJobRef}>
+              {" "}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <New_job />
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </div>
+
+      <div ref={memberStartRef}></div>
       <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2">
         <div className="flex flex-wrap gap-4">
-          {(memberList.user[0].account_type === "village talent profile" || memberList.user[0].account_type === "village admin profile") && (
+          {(memberList.user[0].account_type === "village talent profile" ||
+            memberList.user[0].account_type === "village admin profile") && (
             <div
               className={` pb-1 w-max cursor-pointer  ${
                 memberShow
                   ? "border-b-2 border-black"
-                  : "hover:border-b-2 hover:border-gray-300 delay-200 ease-in-out transition-colors"
+                  : "border-b-2 hover:border-gray-300 border-white ease-in-out transition-colors"
               }`}
               onClick={handleMemberShow}
             >
@@ -494,7 +530,8 @@ const Virtual_Tech_Village = () => {
             </div>
           )}
 
-          {(memberList.user[0]?.account_type === "village company profile" || memberList.user[0].account_type === "village admin profile") && (
+          {(memberList.user[0]?.account_type === "village company profile" ||
+            memberList.user[0].account_type === "village admin profile") && (
             <div
               className={`"pb-1 w-max cursor-pointer ${
                 companyShow
@@ -567,8 +604,8 @@ const Virtual_Tech_Village = () => {
             </div>
           </form>
         </div>
-{/* 
-        {incompleteProfile && (
+
+        {/* {incompleteProfile && (
             <div className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm">
               <Complete_Profile
                 message="Your profile is incomplete! Please complete setting up your profile."
@@ -586,7 +623,9 @@ const Virtual_Tech_Village = () => {
           </div>
         )}
       </div>
-      {(memberList.user[0]?.account_type === "village talent profile" || memberList.user[0].account_type === "village admin profile") && (
+
+      {(memberList.user[0]?.account_type === "village talent profile" ||
+        memberList.user[0].account_type === "village admin profile") && (
         <AnimatePresence>
           {memberShow && (
             <motion.div
@@ -650,11 +689,11 @@ const Virtual_Tech_Village = () => {
                 <div className="flex gap-2" key={pageNumber}>
                   <button
                     onClick={() => handlePageClick(pageNumber)}
-                    className={`inline-block rounded-full border bg-gray-900 border-gray-900 p-3 transition-colors delay-75 ${
+                    className={`inline-block rounded-full border border-black p-3 transition-colors delay-75 ${
                       pageNumber === activePage
-                        ? "bg-transparent text-gray-900 cursor-not-allowed"
-                        : "text-white"
-                    }  hover:bg-transparent hover:text-gray-900 focus:outline-none focus:ring active:text-indigo-500`}
+                        ? "bg-transparent text-black cursor-not-allowed"
+                        : "text-white bg-black"
+                    }  hover:bg-transparent hover:text-black focus:outline-none focus:ring active:text-indigo-500`}
                     disabled={activePage === pageNumber}
                   >
                     {pageNumber}
@@ -717,6 +756,16 @@ const Virtual_Tech_Village = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {(memberList.user[0].account_type === "village company profile" ||
+        memberList.user[0].account_type === "village admin profile") && (
+        <div
+          className="fixed bottom-5 right-10 rounded p-2 bg-white text-2xl border cursor-pointer transition transform hover:scale-105"
+          onClick={handleNewJobShow}
+        >
+          <FcAddDatabase />
+        </div>
+      )}
     </div>
   );
 };

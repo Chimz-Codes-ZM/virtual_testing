@@ -3,7 +3,7 @@ import Layout from "../../components/layouts/layout";
 import Head from "next/head";
 import Inbox from "../../components/inbox/inbox";
 import MessageInput from "../../components/inbox/MessageInput";
-import { Context, ContextProvider } from "../../components/conext/context";
+import { Context, ContextProvider } from "../../components/context/context";
 import { useRouter } from "next/router";
 import { JellyTriangle } from "@uiball/loaders";
 import { useSession } from "next-auth/react";
@@ -22,8 +22,8 @@ const Index = () => {
   const { id } = router.query;
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState([]);
-  const [avatarUrl, setAvatarUrl] = useState("");
-  const [chatName, setChatName] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [chatName, setChatName] = useState(null);
 
   const [message, setMessage] = useState([]);
   const [messageHistory, setMessageHistory] = useState([]);
@@ -33,16 +33,21 @@ const Index = () => {
   const [page, setPage] = useState(2);
   const [meTyping, setMeTyping] = useState(false);
   const [typing, setTyping] = useState(false);
+  const [roomName, setRoomName] = useState("")
 
   // MESSAGE INPUT STATE
   const [messageText, setMessageText] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const inputRef = useRef(null);
+  const messagesEndRef = useRef(null);
+
+  const usersName = chatName ? chatName : "";
+  const userPicture = avatarUrl ? avatarUrl : "";
 
   // WEBSOCKET CONNECTION
 
   const uniqueRoom = `_${id}`;
-  const userId = userData && userData.length > 0 ? `${userData[0].user_id}` : "";
+  const userId =
+    userData && userData.length > 0 ? `${userData[0].user_id}` : "";
 
   const { data: session } = useSession();
 
@@ -50,7 +55,6 @@ const Index = () => {
     if (session) {
       localStorage.setItem("token", session.access);
       // console.log(session);
-      
     }
     const token = localStorage.getItem("token");
 
@@ -72,18 +76,19 @@ const Index = () => {
     fetchData();
   }, []);
 
-  const { sendMessage, sendJsonMessage } = useWebSocket(
-    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${userId}/${userId}${uniqueRoom}/`
-  );
+  const currentSignedInName = `${userData[0]?.first_name} ${userData[0]?.last_name}`;
 
-  const { readyState } = useWebSocket(
+  const { readyState, sendMessage, sendJsonMessage } = useWebSocket(
     `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${userId}/${userId}${uniqueRoom}/`,
     {
       onOpen: () => {
-        console.log("Connected");
+        // console.log("Connected");
+        sendJsonMessage({
+          type: "read_messages",
+        });
       },
       onClose: () => {
-        console.log("Disconnected!");
+        // console.log("Disconnected!");
       },
 
       retryOnError: true,
@@ -93,12 +98,7 @@ const Index = () => {
         switch (data.type) {
           case "chat_message_echo":
             setMessageHistory((prev) => [...prev, data.message]);
-            sendJsonMessage(
-             {
-                type: "read_messages",
-              }
-            );
-            console.log("message received");
+
             break;
 
           case "last_50_messages":
@@ -108,12 +108,14 @@ const Index = () => {
             setHasMoreMessages(data.has_more);
             break;
           case "user_join":
+            console.log("User joined the conversation:", data.user);
             setParticipants((pcpts) => {
               if (!pcpts.includes(data.user)) {
                 return [...pcpts, data.user];
               }
               return pcpts;
             });
+
             break;
           case "user_leave":
             setParticipants((pcpts) => {
@@ -156,15 +158,22 @@ const Index = () => {
     }
   };
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
     fetchInfo();
   }, []);
 
   useEffect(() => {
-    router.events.on("routeChangeComplete", () => {
+    router.events.on("routeChangeComplete", () => {});
+  }, [router]);
 
-    });
-  }, [router])
+  useEffect(() => {
+    scrollToBottom();
+    console.log(info);
+  }, [messageHistory]);
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
@@ -184,51 +193,49 @@ const Index = () => {
 
   return (
     <>
-
       <Layout sideHighlight="inbox">
         <div className="flex custom-height">
-          <MessageList />
+          <div className="hidden lg:block">
+            <MessageList />
+          </div>
 
           {/* CONVERSATION LIST */}
 
-          <div className="grow shadow relative p-4 py-1 overflow-hidden h-[calc(100vh - 150px)]">
-            <Toolbar names={chatName} avatar={avatarUrl} />
-            <div className="scrollbar">
-              <div
-                className="mx-auto max-w-6xl px-14 py-14 pb-32"
-                style={{
-                  maxHeight: "calc(100vh - 150px)",
-                  overflowY: "auto",
-                }}
-              >
-                <div>
-                  {messageHistory.length > 0 && (
-                    <div className="message-list flex flex-col gap-1">
-                      {messageHistory.map((message, index) => (
-                        <div
-                          key={index}
-                          className="flex flex-col gap-2 w-full"
-                        >
-                          {message.from_user?.email === userData[0].email && (
-                            <div className="self-end  p-1 px-3 rounded-lg bg-slate-800 text-white">
-                              {message.content}
-                            </div>
-                          )}
-                          {message.from_user?.email !== userData[0].email && (
-                            <div className="p-1 px-3 rounded-lg bg-white text-gray-800 shadow justify-start self-start">
-                              {message.content}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+          <div className="relative grow shadow overflow-hidden h-full flex justify-center">
+            <div className="grow relative p-4 py-1 overflow-hidden max-h-[450px] pt-10 max-w-3xl">
+              <Toolbar names={usersName} avatar={userPicture} roomName={roomName} userId={userId} />
+              <div className="scrollbar h-full">
+                <div className="mx-auto max-w-6xl px-14 py-4 pb-4 max-h-full overflow-y-auto">
+                  <div className="">
+                    {messageHistory.length > 0 && (
+                      <div className="message-list flex flex-col gap-1">
+                        {messageHistory.map((message, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-col gap-2 w-full"
+                          >
+                            {message.from_user?.email === userData[0].email && (
+                              <div className="self-end  p-1 px-3 rounded-lg bg-slate-800 text-white">
+                                {message.content}
+                              </div>
+                            )}
+                            {message.from_user?.email !== userData[0].email && (
+                              <div className="p-1 px-3 rounded-lg bg-white text-gray-800 shadow justify-start self-start">
+                                {message.content}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div ref={messagesEndRef}></div>
                 </div>
               </div>
             </div>
-
             <MessageInput roomName={uniqueRoom} userId={userId} />
           </div>
+
           {/* {connectionStatus} */}
           {/* END OF CONVERSATION LIST */}
         </div>

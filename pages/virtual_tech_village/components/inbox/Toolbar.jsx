@@ -2,8 +2,17 @@ import React, { useState, useEffect, useRef } from "react";
 import { RiMenuAddFill } from "react-icons/ri";
 import Image from "next/image";
 
-const Toolbar = ({ names, avatar }) => {
+const Toolbar = ({ names, avatar, roomName, userId }) => {
   const [toolbarToggle, setToolbarToggle] = useState(false);
+  const [conversations, setConversations] = useState(null);
+  const [requestBody, setRequestBody] = useState({
+    pin: false,
+    read: false,
+    archive: false,
+    delete: false,
+    conversation_id: roomName,
+    users_id: userId,
+  });
   const divRef = useRef(null);
 
   const handleClickOutside = (event) => {
@@ -21,6 +30,94 @@ const Toolbar = ({ names, avatar }) => {
 
   const toggleToolbar = () => {
     setToolbarToggle((prevToggle) => !prevToggle);
+  };
+
+  const handlePin = () => {
+    setRequestBody((prevBody) => ({
+      ...prevBody,
+      pin: !prevBody.pin,
+    }));
+
+    const sendData = async () => {
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+
+      if (response.ok) {
+        alert("Pinned successfully");
+      }
+
+      if (response.status === 400) {
+        console.log("Error:", response.status);
+      } 
+    };
+
+    sendData();
+  };
+
+  const handleDelete = () => {
+    setRequestBody((prevBody) => ({
+      ...prevBody,
+      delete: !prevBody.delete,
+    }));
+
+    const sendData = async () => {
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${userId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+
+      if (response.ok) {
+        alert("Conversation deleted");
+      }
+
+      if (response.status === 400) {
+        console.log("Error:", response.status);
+      }
+    };
+    sendData();
+  };
+
+  const handleArchive = () => {
+    setRequestBody((prevBody) => ({
+      ...prevBody,
+      archive: !prevBody.archive,
+    }));
+
+    const sendData = async () => {
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+      if (response.ok) {
+        alert("Pinned successfully");
+      }
+
+      if (response.error) {
+        console.log("Error:", response.error);
+      }
+    };
+
+    sendData();
   };
 
   return (
@@ -65,27 +162,28 @@ const Toolbar = ({ names, avatar }) => {
                   Mark Unread
                 </a>
 
-                <a
-                  href="#"
-                  class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                <div
+                  onClick={handlePin}
+                  class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 cursor-pointer"
                   role="menuitem"
                 >
                   Pin Conversation
-                </a>
+                </div>
 
-                <a
-                  href="#"
+                <div
+                  onClick={handleArchive}
                   class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
                   role="menuitem"
                 >
                   Archive Conversation
-                </a>
+                </div>
 
-                <form method="POST" action="#">
+                <div>
                   <button
-                    type="submit"
+                    type="button"
                     class="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50"
                     role="menuitem"
+                    onClick={handleDelete}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +201,7 @@ const Toolbar = ({ names, avatar }) => {
                     </svg>
                     Delete Conversation
                   </button>
-                </form>
+                </div>
               </div>
             </div>
           </div>
