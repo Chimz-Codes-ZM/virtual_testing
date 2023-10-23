@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
 import { RiMenuAddFill } from "react-icons/ri";
 import Image from "next/image";
 
@@ -14,6 +15,7 @@ const Toolbar = ({ names, avatar, roomName, userId }) => {
     users_id: userId,
   });
   const divRef = useRef(null);
+  const router = useRouter();
 
   const handleClickOutside = (event) => {
     if (divRef.current && !divRef.current.contains(event.target)) {
@@ -37,67 +39,83 @@ const Toolbar = ({ names, avatar, roomName, userId }) => {
       ...prevBody,
       pin: true,
     }));
-
-    const sendData = async () => {
-      const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
-
-      if (response.ok) {
-        alert("Pinned successfully");
-      }
-
-      if (response.status === 400) {
-        console.log("Error:", response.status);
-      } 
-    };
-
-    sendData();
   };
+  
+  useEffect(() => {
+    if (requestBody.pin !== false) {
+      const sendData = async () => {
+        try {
+          console.log(requestBody);
+  
+          const response = await fetch(
+            `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(requestBody),
+            }
+          );
+  
+          if (response.ok) {
+            alert("Pinned successfully");
+          }
+  
+          if (response.status === 400) {
+            console.log("Error:", response.status);
+          }
+        } catch (error) {
+          console.error("Error sending data:", error);
+        }
+      };
+  
+      sendData();
+    }
+  }, [requestBody, userId]);
+  
 
   const handleDelete = () => {
     setRequestBody((prevBody) => ({
       ...prevBody,
       delete: true,
     }));
-
-    const sendData = async () => {
-      const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${userId}/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
-
-      if (response.ok) {
-        alert("Conversation deleted");
-      }
-
-      if (response.status === 400) {
-        console.log("Error:", response.status);
-      }
-    };
-    sendData();
   };
 
-  const handleArchive = () => {
-    setRequestBody((prevBody) => ({
-      ...prevBody,
-      archive: true,
-    }));
+  useEffect(() => {
+    if (requestBody.delete !== false) {
+      const sendData = async () => {
+      
+        const response = await fetch(
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          }
+        );
+  
+        if (response.ok) {
+          alert("Conversation deleted");
+          router.push("/virtual_tech_village/inbox");
+        }
+  
+        if (response.status === 400) {
+          console.log("Error:", response.status);
+        }
+      };
+      sendData();
+    }
+  }, [requestBody, userId])
 
+  const handleArchive = () => {
     const sendData = async () => {
+      setRequestBody((prevBody) => ({
+        ...prevBody,
+        archive: true,
+      }));
       const response = await fetch(
         `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
         {

@@ -45,7 +45,7 @@ const [conversations, setConversations] = useState(null)
     <div className="px-2 md:w-72 max-w-72">
       {conversations?.length > 0 ? (
         conversations.map((convo) => (
-          <a href={convo.route}>
+          <a href={`/virtual_tech_village/${convo.route}`}>
           <div
             key={convo.id}
             className={`flex gap-4 px-6 p-2 hover:bg-gray-100 transition-colors delay-150 ease-in cursor-pointer ${

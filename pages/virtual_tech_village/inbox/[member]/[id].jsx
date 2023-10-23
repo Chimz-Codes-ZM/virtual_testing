@@ -52,17 +52,19 @@ const Index = () => {
   const { data: session } = useSession();
 
   useEffect(() => {
-
+    if (session) {
+      localStorage.setItem("token", session.access);
+      // console.log(session);
+    }
     const token = localStorage.getItem("token");
 
     const decodedToken = jwt_decode(token);
-  
-    const user_id = decodedToken.user_id;
+    const id = decodedToken.user_id;
 
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${user_id}/`
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${id}/`
         );
         setUserData(response.data);
         // console.log(response.data);
@@ -74,7 +76,7 @@ const Index = () => {
     fetchData();
   }, []);
 
-  // const currentSignedInName = `${userData[0]?.first_name} ${userData[0]?.last_name}`;
+  const currentSignedInName = `${userData[0]?.first_name} ${userData[0]?.last_name}`;
 
   const { readyState, sendMessage, sendJsonMessage } = useWebSocket(
     `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${userId}/${userId}${uniqueRoom}/`,
@@ -127,29 +129,30 @@ const Index = () => {
           case "typing":
             updateTyping(data);
             break;
-          case "conversation_data":
+          case "conversation_id":
             setRoomName(data.id)
+            console.log("This is the conversation data: ", data)
           default:
             console.error("Unknown message type!");
             break;
         }
-        console.log(data);
+        // console.log(data);
       },
     }
   );
 
-  const fetchInfo = async () => {
+  const fetchInfo = async (e) => {
     const userInfoUrl = `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${id}/`;
-  
+
     try {
-      const response = await axios.get(userInfoUrl, { headers: { 'Cache-Control': 'no-cache' } });
-      const responseData = response.data;
-      console.log("THIS IS MY RESPONSE: ",response.data)
+      const response = await fetch(userInfoUrl);
+      const responseData = await response.json();
+
       setInfo(responseData);
       setChatName(`${responseData[0].first_name} ${responseData[0].last_name}`);
       setAvatarUrl(responseData[0].image);
-  
-      setTimeout(() => {
+
+      setTimeout(function () {
         setLoading(false);
       }, 2000);
     } catch (error) {
@@ -202,8 +205,8 @@ const Index = () => {
           {/* CONVERSATION LIST */}
 
           <div className="relative grow shadow overflow-hidden h-full flex justify-center">
-            <div className="grow relative p-4 py-1 overflow-hidden max-h-[450px] pt-10 max-w-3xl">
-              <Toolbar names={usersName} avatar={userPicture} roomName={roomName} userId={userId} />
+            <div className="grow relative p-4 py-1 overflow-hidden max-h-[500px] pt-10 max-w-3xl">
+              <Toolbar names={usersName} avatar={userPicture} roomName={roomName} userId={id}/>
               <div className="scrollbar h-full">
                 <div className="mx-auto max-w-6xl px-14 py-4 pb-4 max-h-full overflow-y-auto">
                   <div className="">
