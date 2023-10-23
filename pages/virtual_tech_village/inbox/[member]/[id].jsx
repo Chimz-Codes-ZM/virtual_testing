@@ -52,19 +52,17 @@ const Index = () => {
   const { data: session } = useSession();
 
   useEffect(() => {
-    if (session) {
-      localStorage.setItem("token", session.access);
-      // console.log(session);
-    }
+
     const token = localStorage.getItem("token");
 
     const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
+  
+    const user_id = decodedToken.user_id;
 
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${id}/`
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${user_id}/`
         );
         setUserData(response.data);
         // console.log(response.data);
@@ -76,7 +74,7 @@ const Index = () => {
     fetchData();
   }, []);
 
-  const currentSignedInName = `${userData[0]?.first_name} ${userData[0]?.last_name}`;
+  // const currentSignedInName = `${userData[0]?.first_name} ${userData[0]?.last_name}`;
 
   const { readyState, sendMessage, sendJsonMessage } = useWebSocket(
     `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${userId}/${userId}${uniqueRoom}/`,
@@ -140,18 +138,18 @@ const Index = () => {
     }
   );
 
-  const fetchInfo = async (e) => {
+  const fetchInfo = async () => {
     const userInfoUrl = `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${id}/`;
   
     try {
-      const response = await fetch(userInfoUrl, { cache: false });
-      const responseData = await response.json();
-  
+      const response = await axios.get(userInfoUrl, { headers: { 'Cache-Control': 'no-cache' } });
+      const responseData = response.data;
+      console.log("THIS IS MY RESPONSE: ",response.data)
       setInfo(responseData);
       setChatName(`${responseData[0].first_name} ${responseData[0].last_name}`);
       setAvatarUrl(responseData[0].image);
   
-      setTimeout(function () {
+      setTimeout(() => {
         setLoading(false);
       }, 2000);
     } catch (error) {

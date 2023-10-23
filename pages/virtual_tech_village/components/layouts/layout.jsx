@@ -5,14 +5,12 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import ContextProvider from "../context/context";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-
 import axios from "axios";
 import { signOut } from "next-auth/react";
 
 import jwt_decode from "jwt-decode";
 
 import Logo from "/public/logo.png";
-import Stock_image from "../../../../public/virtual_tech_village/stock image.webp";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { MdOutlineConnectWithoutContact } from "react-icons/md";
 import { FaSlideshare } from "react-icons/fa";
@@ -81,10 +79,10 @@ const Layout = ({ children, sideHighlight }) => {
     `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat_notifications/${id}/`,
     {
       onOpen: () => {
-        console.log("Connected to Notifications!");
+        // console.log("Connected to Notifications!");
       },
       onClose: () => {
-        console.log("Disconnected from Notifications!");
+        // console.log("Disconnected from Notifications!");
       },
       onMessage: (e) => {
         const data = JSON.parse(e.data);

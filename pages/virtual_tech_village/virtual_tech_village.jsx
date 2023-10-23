@@ -219,7 +219,7 @@ const Virtual_Tech_Village = () => {
   };
 
   const handleMoreInfoClick = (modalId) => {
-    router.push(`/member_info/${modalId}`);
+    router.push(`/virtual_tech_village/member_info/${modalId}`);
   };
 
   const handleChatClick = (modalId) => {
