@@ -351,9 +351,14 @@ const Virtual_Tech_Village = () => {
 
   const [filters, setFilters] = useState({
     country: "",
-    search: "",
+    name: "",
     skill: "",
   });
+
+useEffect(() => {
+  console.log(memberList)
+
+}, [memberList])
 
   const handleInputChange = async (e) => {
     e.preventDefault();
@@ -383,6 +388,7 @@ const Virtual_Tech_Village = () => {
 
       if (response.ok) {
         const data = await response.json();
+        console.log("====> This is my filtered data: ", data)
         const pages = Array.from(
           { length: data.talent_total_pages },
           (_, index) => index + 1
@@ -414,17 +420,17 @@ const Virtual_Tech_Village = () => {
     );
   }
 
-  const filteredData = individuals.filter((profile) => {
+  const filteredData = individuals?.filter((profile) => {
     const countryFilter = filters.country
       ? profile.country === filters.country
       : true;
-    const searchFilter = filters.search
+    const searchFilter = filters.name
       ? profile?.first_name
           .toLowerCase()
-          .includes(filters.search.toLocaleLowerCase()) ||
+          .includes(filters.name.toLocaleLowerCase()) ||
         profile.last_name
           .toLocaleLowerCase()
-          .includes(filters.search.toLocaleLowerCase())
+          .includes(filters.name.toLocaleLowerCase())
       : true;
     const skillFilter = filters.skill
       ? profile.skills.toLowerCase() === filters.skill.toLowerCase()
@@ -437,21 +443,21 @@ const Virtual_Tech_Village = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const visibleData = filteredData.slice(startIndex, endIndex);
+  const visibleData = filteredData?.slice(startIndex, endIndex);
 
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredData?.length / itemsPerPage);
 
-  const filteredCompanyData = companies.filter((profile) => {
+  const filteredCompanyData = companies?.filter((profile) => {
     const countryFilter = filters.country
       ? profile.country === filters.country
       : true;
-    const searchFilter = filters.search
+    const searchFilter = filters.name
       ? profile.first_name
           .toLowerCase()
-          .includes(filters.search.toLocaleLowerCase()) ||
+          .includes(filters.name.toLocaleLowerCase()) ||
         profile.last_name
           .toLocaleLowerCase()
-          .includes(filters.search.toLocaleLowerCase())
+          .includes(filters.name.toLocaleLowerCase())
       : true;
     const skillFilter = filters.skill
       ? profile.skills.toLowerCase() === filters.skill.toLowerCase()
@@ -464,7 +470,7 @@ const Virtual_Tech_Village = () => {
   const startCompanyIndex = (currentPage - 1) * itemsPerCompanyPage;
   const endCompanyIndex = startCompanyIndex + itemsPerCompanyPage;
 
-  const visibleCompanyData = filteredCompanyData.slice(
+  const visibleCompanyData = filteredCompanyData?.slice(
     startCompanyIndex,
     endCompanyIndex
   );
@@ -513,8 +519,8 @@ const Virtual_Tech_Village = () => {
       <div ref={memberStartRef}></div>
       <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2">
         <div className="flex flex-wrap gap-4">
-          {(memberList.user[0].account_type === "village talent profile" ||
-            memberList.user[0].account_type === "village admin profile") && (
+          {(memberList && memberList?.user[0]?.account_type === "village talent profile" ||
+           memberList && memberList?.user[0]?.account_type === "village admin profile") && (
             <div
               className={` pb-1 w-max cursor-pointer  ${
                 memberShow
@@ -525,13 +531,13 @@ const Virtual_Tech_Village = () => {
             >
               Members{" "}
               <span className="bg-black text-white rounded p-1">
-                {memberList.total_talent_profiles}
+                {memberList?.total_talent_profiles}
               </span>
             </div>
           )}
 
-          {(memberList.user[0]?.account_type === "village company profile" ||
-            memberList.user[0].account_type === "village admin profile") && (
+          {(memberList?.user[0]?.account_type === "village company profile" ||
+            memberList?.user[0]?.account_type === "village admin profile") && (
             <div
               className={`"pb-1 w-max cursor-pointer ${
                 companyShow
@@ -542,7 +548,7 @@ const Virtual_Tech_Village = () => {
             >
               Companies{" "}
               <span className="bg-black text-white rounded p-1">
-                {memberList.total_company_profiles}
+                {memberList?.total_company_profiles}
               </span>
             </div>
           )}
@@ -579,7 +585,7 @@ const Virtual_Tech_Village = () => {
                 onChange={(e) => handleInputChange(e)}
                 name="search"
                 id="search"
-                value={filters.search}
+                value={filters.name}
               />
             </div>
 

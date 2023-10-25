@@ -24,7 +24,6 @@ const Index = () => {
   const [userData, setUserData] = useState([]);
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [chatName, setChatName] = useState(null);
-
   const [message, setMessage] = useState([]);
   const [messageHistory, setMessageHistory] = useState([]);
   const [hasMoreMessages, setHasMoreMessages] = useState(false);

@@ -246,7 +246,7 @@ const Layout = ({ children, sideHighlight }) => {
           </div>
         </nav>
         <nav className="fixed bg-white top-0 left-0 w-full h-20 px-14 gap-4 flex justify-end items-center z-40">
-          <div className="relative">
+          <div className="relative flex flex-col justify-center items-center">
             <AiOutlineBell
               className={`text-lg cursor-pointer ${
                 unreadMessageCount > 0 ? "animate-pulse" : ""

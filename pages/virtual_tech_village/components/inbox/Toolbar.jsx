@@ -5,15 +5,18 @@ import Image from "next/image";
 
 const Toolbar = ({ names, avatar, roomName, userId }) => {
   const [toolbarToggle, setToolbarToggle] = useState(false);
-  const [conversations, setConversations] = useState(null);
   const [requestBody, setRequestBody] = useState({
     pin: false,
-    read: false,
+    unread: false,
     archive: false,
     delete: false,
     conversation_id: roomName,
     users_id: userId,
   });
+  const [deleteChange, setDeleteChange] = useState(false);
+  const [pinChange, setPinChange] = useState(false);
+  const [archiveChange, setArchiveChange] = useState(false);
+  const [unreadChange, setUnreadChange] = useState(false);
   const divRef = useRef(null);
   const router = useRouter();
 
@@ -39,14 +42,16 @@ const Toolbar = ({ names, avatar, roomName, userId }) => {
       ...prevBody,
       pin: true,
     }));
+    setPinChange(!pinChange);
+    setToolbarToggle(false)
   };
-  
+
   useEffect(() => {
     if (requestBody.pin !== false) {
       const sendData = async () => {
         try {
           console.log(requestBody);
-  
+
           const response = await fetch(
             `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
             {
@@ -57,11 +62,11 @@ const Toolbar = ({ names, avatar, roomName, userId }) => {
               body: JSON.stringify(requestBody),
             }
           );
-  
+
           if (response.ok) {
             alert("Pinned successfully");
           }
-  
+
           if (response.status === 400) {
             console.log("Error:", response.status);
           }
@@ -69,23 +74,24 @@ const Toolbar = ({ names, avatar, roomName, userId }) => {
           console.error("Error sending data:", error);
         }
       };
-  
+
       sendData();
     }
-  }, [requestBody, userId]);
-  
+  }, [pinChange]);
 
   const handleDelete = () => {
     setRequestBody((prevBody) => ({
       ...prevBody,
       delete: true,
     }));
+    setDeleteChange(!deleteChange);
+    setToolbarToggle(false)
+
   };
 
   useEffect(() => {
     if (requestBody.delete !== false) {
       const sendData = async () => {
-      
         const response = await fetch(
           `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
           {
@@ -96,47 +102,92 @@ const Toolbar = ({ names, avatar, roomName, userId }) => {
             body: JSON.stringify(requestBody),
           }
         );
-  
+
         if (response.ok) {
           alert("Conversation deleted");
           router.push("/virtual_tech_village/inbox");
         }
-  
+
         if (response.status === 400) {
           console.log("Error:", response.status);
         }
       };
       sendData();
     }
-  }, [requestBody, userId])
+  }, [deleteChange]);
 
   const handleArchive = () => {
-    const sendData = async () => {
-      setRequestBody((prevBody) => ({
-        ...prevBody,
-        archive: true,
-      }));
-      const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
-      if (response.ok) {
-        alert("Archived successfully");
-      }
+    setRequestBody((prevBody) => ({
+      ...prevBody,
+      archive: true,
+    }));
+    setArchiveChange(!archiveChange);
+    setToolbarToggle(false)
 
-      if (response.status === 400) {
-        console.log("Error:", response.status);
-      }
-    };
-
-    sendData();
   };
+
+  useEffect(() => {
+    if (requestBody.archive !== false) {
+      const sendData = async () => {
+        const response = await fetch(
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          }
+        );
+        if (response.ok) {
+          alert("Archived successfully");
+        }
+
+        if (response.status === 400) {
+          console.log("Error:", response.status);
+        }
+      };
+
+      sendData();
+    }
+  }, [archiveChange]);
+
+  const handleMarkUnread = () => {
+    setRequestBody((prevBody) => ({
+      ...prevBody,
+      unreadread: true,
+    }));
+
+    setUnreadChange(!unreadChange);
+    setToolbarToggle(false)
+
+  };
+
+  useEffect(() => {
+    if (requestBody.unread !== false) {
+      const sendData = async () => {
+        const response = await fetch(
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          }
+        );
+        if (response.ok) {
+          alert("Marked unread successfully");
+        }
+
+        if (response.status === 400) {
+          console.log("Error:", response.status);
+        }
+      };
+
+      sendData();
+    }
+  }, [unreadChange]);
 
   return (
     <div className="absolute  z-[2] px-10 p-1 left-10 right-10 top-3 shadow border rounded bg-white">
