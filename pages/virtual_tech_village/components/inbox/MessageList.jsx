@@ -36,39 +36,9 @@ const MessageList = ({ selectedConversation, onConversationClick }) => {
     fetchData();
   }, []);
 
-  // const { readyState, sendMessage, sendJsonMessage } = useWebSocket(
-  //   `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${userId}/${userId}${uniqueRoom}/`,
-  //   {
-  //     onOpen: () => {
-  //       // console.log("Connected");
-  //       sendJsonMessage({
-  //         type: "read_messages",
-  //       });
-  //     },
-  //     onClose: () => {
-  //       // console.log("Disconnected!");
-  //     },
-
-  //     retryOnError: true,
-
-  //     onMessage: (e) => {
-  //       const data = JSON.parse(e.data);
-  //       switch (data.type) {
-  //         case "conversation_data":
-  //           setConversations(data)
-  //           console.log("This is the conversation data: ", data)
-  //         default:
-  //           console.error("Unknown message type!");
-  //           break;
-  //       }
-  //       // console.log(data);
-  //     },
-  //   }
-  // );
-
   const handleConversationClick = (route) => {
-    // Use router.push to navigate to the specified route
-    router.push(route);
+
+    router.push(`/virtual_tech_village/${route}`);
   };
 
   return (
@@ -76,12 +46,13 @@ const MessageList = ({ selectedConversation, onConversationClick }) => {
       <div>
         {conversations?.length > 0 ? (
           conversations.map((convo) => (
-            <Link href={`/virtual_tech_village/${convo.route}`}>
+            <div>
               <div
                 key={convo.id}
                 className={`flex gap-4 px-6 p-2 hover:bg-gray-100 transition-colors delay-150 ease-in cursor-pointer relative ${
                   selectedConversation === convo.id ? "bg-gray-50" : "bg-white"
                 }`}
+                onClick={() => handleConversationClick(convo.route)}
               >
                 <div className="h-8 w-8 rounded-full relative bg-slate-600">
                   <Image
@@ -98,7 +69,7 @@ const MessageList = ({ selectedConversation, onConversationClick }) => {
                 </div>
                 <div>{convo.pinned === "True" ? <div className="h-5 w-5 absolute right-2"><BsPinAngle /></div> : <div></div>}</div>
               </div>
-            </Link>
+            </div>
           ))
         ) : (
           <p>No conversations available.</p>

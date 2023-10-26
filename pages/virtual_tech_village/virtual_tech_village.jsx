@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-
+import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 import Complete_Profile from "../virtual_tech_village/components/alerts/completeProfile";
@@ -133,6 +133,7 @@ const Virtual_Tech_Village = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [memberList, setMemberList] = useState(null);
   const [activePage, setActivePage] = useState(1);
+  const [selectedAttributes, setSelectedAttributes] = useState({})
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -184,10 +185,31 @@ const Virtual_Tech_Village = () => {
   };
 
   useEffect(() => {
-    console.log(memberList);
     checkProfileComplete();
     scrollToTop();
   }, [memberList]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    const decodedToken = jwt_decode(token);
+    const id = decodedToken.user_id;
+    // setLoggedInId(id);
+
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/country_skills/${id}/`
+        );
+        setSelectedAttributes(response.data)
+        console.log(response.data)
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   const { companies, individuals } = memberList || {
     companies: [],
@@ -355,10 +377,6 @@ const Virtual_Tech_Village = () => {
     skill: "",
   });
 
-useEffect(() => {
-  console.log(memberList)
-
-}, [memberList])
 
   const handleInputChange = async (e) => {
     e.preventDefault();
@@ -425,12 +443,8 @@ useEffect(() => {
       ? profile.country === filters.country
       : true;
     const searchFilter = filters.name
-      ? profile?.first_name
-          .toLowerCase()
-          .includes(filters.name.toLocaleLowerCase()) ||
-        profile.last_name
-          .toLocaleLowerCase()
-          .includes(filters.name.toLocaleLowerCase())
+      ? profile?.first_name?.toLowerCase().includes(filters.name.toLocaleLowerCase()) ||
+        profile.last_name?.toLocaleLowerCase().includes(filters.name.toLocaleLowerCase())
       : true;
     const skillFilter = filters.skill
       ? profile.skills.toLowerCase() === filters.skill.toLowerCase()
@@ -569,9 +583,9 @@ useEffect(() => {
                 </option>
                 <option value="">All</option>
 
-                {uniqueCountries.map((country, index) => (
-                  <option value={country} key={index}>
-                    {country}
+                {selectedAttributes?.countries?.map((country, index) => (
+                  <option value={country.country} key={index}>
+                    {country.country}
                   </option>
                 ))}
               </select>
@@ -583,8 +597,8 @@ useEffect(() => {
                 placeholder="Search by name"
                 className="border-gray-300 border-2 rounded px-1 w-full"
                 onChange={(e) => handleInputChange(e)}
-                name="search"
-                id="search"
+                name="name"
+                id="name"
                 value={filters.name}
               />
             </div>
@@ -601,9 +615,9 @@ useEffect(() => {
                   Skills
                 </option>
                 <option value="">All</option>
-                {uniqueRoles.map((role, index) => (
-                  <option key={index} value={role}>
-                    {role}
+                {selectedAttributes?.skills?.map((skill, index) => (
+                  <option value={skill.skill} key={index}>
+                    {skill.skill}
                   </option>
                 ))}
               </select>

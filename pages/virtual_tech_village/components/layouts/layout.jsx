@@ -267,7 +267,7 @@ const Layout = ({ children, sideHighlight }) => {
                     {notificationContent && notificationContent.length > 0 ? (
                       notificationContent.map((notification, index) => (
                         <div className="p-2" key={index}>
-                          <Link href={`/${notification.route}`}>
+                          <Link href={`/virtual_tech_village/${notification.route}`}>
                             <div className="flex items-center gap-2 hover:bg-gray-50 hover:text-gray-700">
                               <div className="h-8 w-8 relative">
                                 <Image

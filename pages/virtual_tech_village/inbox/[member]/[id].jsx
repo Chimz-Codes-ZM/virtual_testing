@@ -73,7 +73,7 @@ const Index = () => {
     }
 
     fetchData();
-  }, []);
+  }, [id]);
 
   const currentSignedInName = `${userData[0]?.first_name} ${userData[0]?.last_name}`;
 
@@ -165,8 +165,9 @@ const Index = () => {
   };
 
   useEffect(() => {
+    setMessageHistory([])
     fetchInfo();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     router.events.on("routeChangeComplete", () => {});
@@ -210,7 +211,7 @@ const Index = () => {
                 <div className="mx-auto max-w-6xl px-14 py-4 pb-4 max-h-full overflow-y-auto">
                   <div className="">
                     {messageHistory.length > 0 && (
-                      <div className="message-list flex flex-col gap-1">
+                      <div className="message-list flex flex-col gap-1 pt-2">
                         {messageHistory.map((message, index) => (
                           <div
                             key={index}

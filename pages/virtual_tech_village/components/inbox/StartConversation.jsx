@@ -1,6 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 const StartConversation = () => {
+  const [userData, setUserData] = useState([]);
+  const [loggedInId, setLoggedInId] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    const decodedToken = jwt_decode(token);
+    const id = decodedToken.user_id;
+    setLoggedInId(id);
+
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/chat_list/${id}/`
+        );
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  const handleInputChange = (event) => {
+    const selectedUserId = event.target.value;
+    const selectedUser = userData?.individuals.find(
+      (individual) => individual.user_id === selectedUserId
+    );
+
+    if (selectedUser) {
+      router.push(`/virtual_tech_village/inbox/${loggedInId}/${selectedUserId}`);
+    }
+  };
+
   return (
     <div className="fixed bottom-4 z-50">
       <div>
@@ -18,6 +57,7 @@ const StartConversation = () => {
             id="HeadlineAct"
             className="w-full rounded-lg border-gray-300 border px-1 pe-10 text-gray-700 sm:text-sm [&::-webkit-calendar-picker-indicator]:opacity-0"
             placeholder="Please select"
+            onChange={handleInputChange}
           />
 
           <span className="absolute inset-y-0 end-0 flex w-8 items-center">
@@ -39,13 +79,14 @@ const StartConversation = () => {
         </div>
 
         <datalist name="HeadlineAct" id="HeadlineActArtist">
-          <option value="JM">John Mayer</option>
-          <option value="SRV">Stevie Ray Vaughn</option>
-          <option value="JH">Jimi Hendrix</option>
-          <option value="BBK">B.B King</option>
-          <option value="AK">Albert King</option>
-          <option value="BG">Buddy Guy</option>
-          <option value="EC">Eric Clapton</option>
+          {userData?.individuals?.map((individual) => (
+            <option
+              key={individual.user_id}
+              value={`${individual.first_name} ${individual.last_name}`}
+            >
+              {`${individual.first_name} ${individual.last_name}`}
+            </option>
+          ))}
         </datalist>
       </div>
     </div>
