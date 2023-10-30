@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 
-const New_job = () => {
+const New_job = ({userId}) => {
   const [newJob, setNewJob] = useState({
     position: "",
     job_type: "",
@@ -17,10 +18,11 @@ const New_job = () => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/job_listings/${userId}/`,
         {
           method: "POST",
           headers: {
@@ -40,6 +42,7 @@ const New_job = () => {
     };
 
     sendData()
+    console.log(newJob)
   };
   return (
     <div className="p-6 bg-white border z-50 rounded flex flex-col gap-2">

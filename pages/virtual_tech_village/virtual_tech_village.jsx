@@ -119,8 +119,7 @@ const Virtual_Tech_Village = () => {
   const [profile, setProfile] = useState(false);
   const [company, setCompany] = useState(false);
   const [incompleteProfile, setIncompleteProfile] = useState(false);
-  const [incompleteCompanyProfile, setIncompleteCompanyProfile] =
-    useState(false);
+  const [incompleteCompanyProfile, setIncompleteCompanyProfile] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const expandedProfileRef = useRef(null);
@@ -133,7 +132,18 @@ const Virtual_Tech_Village = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [memberList, setMemberList] = useState(null);
   const [activePage, setActivePage] = useState(1);
-  const [selectedAttributes, setSelectedAttributes] = useState({})
+  const [selectedAttributes, setSelectedAttributes] = useState({});
+  const [selectedCompanyAttributes, setSelectedCompanyAttributes] = useState({})
+  const [filters, setFilters] = useState({
+    page: "1",
+    country: "",
+    name: "",
+    skill: "",
+    company_country: "",
+    company_name: "",
+    company_industry: ""
+  });
+  const [id, setId] = useState("")
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -150,12 +160,10 @@ const Virtual_Tech_Village = () => {
     const id = decodedToken.user_id;
 
     setUser(decodedToken);
+    setId(id)
     // console.log(decodedToken);
 
     const fetchData = async () => {
-      const body = {
-        page: "1",
-      };
       const response = await fetch(
         `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${id}/`,
         {
@@ -163,13 +171,19 @@ const Virtual_Tech_Village = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(body),
+          body: JSON.stringify({filters:{...filters}}),
         }
       );
 
       const data = await response.json();
-      setMemberList(data);
 
+      const pages = Array.from(
+        { length: data.talent_total_pages },
+        (_, index) => index + 1
+      );
+
+      setTalentPages(pages);
+      setMemberList(data);
       const accountType = data.user[0]?.account_type || "";
 
       setCompanyShow(accountType === "village company profile");
@@ -187,7 +201,31 @@ const Virtual_Tech_Village = () => {
   useEffect(() => {
     checkProfileComplete();
     scrollToTop();
-  }, [memberList]);
+    console.log(selectedAttributes)
+    console.log(selectedCompanyAttributes);
+  }, [selectedCompanyAttributes]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    const decodedToken = jwt_decode(token);
+    const id = decodedToken.user_id;
+
+
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/country_skills/${id}/`
+        );
+        setSelectedAttributes(response.data);
+        // console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -199,10 +237,10 @@ const Virtual_Tech_Village = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/country_skills/${id}/`
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/country_industries/${id}/`
         );
-        setSelectedAttributes(response.data)
-        console.log(response.data)
+        setSelectedCompanyAttributes(response.data);
+
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -245,7 +283,9 @@ const Virtual_Tech_Village = () => {
   };
 
   const handleChatClick = (modalId) => {
-    router.push(`/virtual_tech_village/inbox/${memberList.user[0].user_id}/${modalId}`);
+    router.push(
+      `/virtual_tech_village/inbox/${memberList.user[0].user_id}/${modalId}`
+    );
   };
 
   const checkProfileComplete = () => {
@@ -299,50 +339,12 @@ const Virtual_Tech_Village = () => {
     fetchDataFromAPI();
   };
 
-  const handlePageClick = (pageNumber) => {
-    setMemberList(null);
-    const token = localStorage.getItem("token");
-
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
-
-    setUser(decodedToken);
-    console.log(decodedToken);
-
-    const fetchData = async () => {
-      const body = {
-        page: pageNumber.toString(),
-      };
-      const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${id}/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      );
-
-      const data = await response.json();
-
-      setMemberList(data);
-
-      setActivePage(pageNumber);
-    };
-
-    fetchData();
-
-    setIsLoading(false);
-  };
-
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideProfile);
     document.addEventListener("mousedown", handleClickOutsideCompany);
     document.addEventListener("mousedown", handleClickOutsideNewJob);
 
     login();
-    handlePageFetch();
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideProfile);
@@ -371,22 +373,15 @@ const Virtual_Tech_Village = () => {
     setAddNewJobShow(true);
   };
 
-  const [filters, setFilters] = useState({
-    country: "",
-    name: "",
-    skill: "",
-  });
-
-
   const handleInputChange = async (e) => {
     e.preventDefault();
 
     const { name, value } = e.target;
 
-    setFilters({
-      ...filters,
+    setFilters((prevFilters) => ({
+      ...prevFilters,
       [name]: value,
-    });
+    }));
 
     const token = localStorage.getItem("token");
     const decodedToken = jwt_decode(token);
@@ -394,26 +389,30 @@ const Virtual_Tech_Village = () => {
 
     try {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_search/${id}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${id}/`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ filters }),
+          body: JSON.stringify({ filters: { ...filters, [name]: value } }),
         }
       );
 
       if (response.ok) {
         const data = await response.json();
-        console.log("====> This is my filtered data: ", data)
+
+        // console.log("====> This is my filtered data: ", data);
         const pages = Array.from(
           { length: data.talent_total_pages },
           (_, index) => index + 1
         );
 
+        console.log("========> Total number of pages: ", pages);
+
         setMemberList(data);
-        console.log(data);
+        setTalentPages(pages);
+        console.log();
       } else {
         console.error("Something went wrong, please try again!");
       }
@@ -421,14 +420,6 @@ const Virtual_Tech_Village = () => {
       console.error("Error:", error);
     }
   };
-
-  const uniqueCountries = Array.from(new Set(individuals)).map(
-    (profile) => profile.country
-  );
-
-  const uniqueRoles = Array.from(new Set(individuals)).map(
-    (profile) => profile.skills
-  );
 
   if (!memberList) {
     return (
@@ -443,8 +434,12 @@ const Virtual_Tech_Village = () => {
       ? profile.country === filters.country
       : true;
     const searchFilter = filters.name
-      ? profile?.first_name?.toLowerCase().includes(filters.name.toLocaleLowerCase()) ||
-        profile.last_name?.toLocaleLowerCase().includes(filters.name.toLocaleLowerCase())
+      ? profile?.first_name
+          ?.toLowerCase()
+          .includes(filters.name.toLocaleLowerCase()) ||
+        profile.last_name
+          ?.toLocaleLowerCase()
+          .includes(filters.name.toLocaleLowerCase())
       : true;
     const skillFilter = filters.skill
       ? profile.skills.toLowerCase() === filters.skill.toLowerCase()
@@ -507,7 +502,8 @@ const Virtual_Tech_Village = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5 relative pb-8" ref={parent}>
+    <div className="flex flex-col gap-5 relative py-8" ref={parent}>
+      <div className="relative" ref={memberStartRef}></div>
       <div>
         {addNewJobShow && (
           <motion.div
@@ -523,18 +519,20 @@ const Virtual_Tech_Village = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <New_job />
+                <New_job userId={id}/>
               </motion.div>
             </div>
           </motion.div>
         )}
       </div>
 
-      <div ref={memberStartRef}></div>
-      <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2">
+      <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2 fixed w-full top-14 p-4 pr-40 bg-opacity-25 backdrop-blur z-40 border-none">
         <div className="flex flex-wrap gap-4">
-          {(memberList && memberList?.user[0]?.account_type === "village talent profile" ||
-           memberList && memberList?.user[0]?.account_type === "village admin profile") && (
+          {((memberList &&
+            memberList?.user[0]?.account_type === "village talent profile") ||
+            (memberList &&
+              memberList?.user[0]?.account_type ===
+                "village admin profile")) && (
             <div
               className={` pb-1 w-max cursor-pointer  ${
                 memberShow
@@ -569,60 +567,121 @@ const Virtual_Tech_Village = () => {
         </div>
 
         <div className="flex-grow flex-wrap">
-          <form className="flex flex-col md:flex-row md:justify-around">
-            <div className="mb-4 md:mb-0">
-              <select
-                name="country"
-                id="country"
-                className="border-gray-300 border-2 rounded px-1 w-full"
-                onChange={(e) => handleInputChange(e)}
-                value={filters.country}
-              >
-                <option value="" disabled>
-                  Country
-                </option>
-                <option value="">All</option>
-
-                {selectedAttributes?.countries?.map((country, index) => (
-                  <option value={country.country} key={index}>
-                    {country.country}
+          {(memberList?.user[0]?.account_type === "village talent profile" ||
+            memberList?.user[0]?.account_type === "village admin profile") && (
+            <form className="flex flex-col md:flex-row md:justify-around">
+              <div className="mb-4 md:mb-0">
+                <select
+                  name="country"
+                  id="country"
+                  className="border-gray-300 border-2 rounded px-1 w-full"
+                  onChange={(e) => handleInputChange(e)}
+                  value={filters.country}
+                >
+                  <option value="" disabled>
+                    Country
                   </option>
-                ))}
-              </select>
-            </div>
+                  <option value="">All</option>
 
-            <div className="mb-4 md:mb-0">
-              <input
-                type="text"
-                placeholder="Search by name"
-                className="border-gray-300 border-2 rounded px-1 w-full"
-                onChange={(e) => handleInputChange(e)}
-                name="name"
-                id="name"
-                value={filters.name}
-              />
-            </div>
+                  {selectedAttributes?.countries?.map((country, index) => (
+                    <option value={country.country} key={index}>
+                      {country.country}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            <div>
-              <select
-                name="skill"
-                id="skills"
-                className="border-gray-300 border-2 rounded px-1 w-full"
-                onChange={(e) => handleInputChange(e)}
-                value={filters.skill}
-              >
-                <option value="" disabled>
-                  Skills
-                </option>
-                <option value="">All</option>
-                {selectedAttributes?.skills?.map((skill, index) => (
-                  <option value={skill.skill} key={index}>
-                    {skill.skill}
+              <div className="mb-4 md:mb-0">
+                <input
+                  type="text"
+                  placeholder="Search by name"
+                  className="border-gray-300 border-2 rounded px-1 w-full"
+                  onChange={(e) => handleInputChange(e)}
+                  name="name"
+                  id="name"
+                  value={filters.name}
+                />
+              </div>
+
+              <div>
+                <select
+                  name="skill"
+                  id="skills"
+                  className="border-gray-300 border-2 rounded px-1 w-full"
+                  onChange={(e) => handleInputChange(e)}
+                  value={filters.skill}
+                >
+                  <option value="" disabled>
+                    Skills
                   </option>
-                ))}
-              </select>
-            </div>
-          </form>
+                  <option value="">All</option>
+                  {selectedAttributes?.skills?.map((skill, index) => (
+                    <option value={skill.skill} key={index}>
+                      {skill.skill}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </form>
+          )}
+
+          {(memberList?.user[0]?.account_type === "village company profile" ||
+            memberList?.user[0]?.account_type === "village admin profile") && (
+              <form className="flex flex-col md:flex-row md:justify-around">
+              <div className="mb-4 md:mb-0">
+                <select
+                  name="company_country"
+                  id="company_country"
+                  className="border-gray-300 border-2 rounded px-1 w-full"
+                  onChange={(e) => handleInputChange(e)}
+                  value={filters.company_country}
+                >
+                  <option value="" disabled>
+                    Country
+                  </option>
+                  <option value="">All</option>
+
+                  {selectedCompanyAttributes?.countries?.map((country, index) => (
+                    <option value={country.country} key={index}>
+                      {country.country}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mb-4 md:mb-0">
+                <input
+                  type="text"
+                  placeholder="Search by company name"
+                  className="border-gray-300 border-2 rounded px-1 w-full"
+                  onChange={(e) => handleInputChange(e)}
+                  name="company_name"
+                  id="company_name"
+                  value={filters.company_name}
+                />
+              </div>
+
+              <div>
+                <select
+                  name="company_industry"
+                  id="company_industry "
+                  className="border-gray-300 border-2 rounded px-1 w-full"
+                  onChange={(e) => handleInputChange(e)}
+                  value={filters.company_industry}
+                >
+                  <option value="" disabled>
+                    Industry
+                  </option>
+                  <option value="">All industries</option>
+                  {selectedCompanyAttributes?.industries?.map((industry, index) => (
+                    <option value={industry.industry} key={index}>
+                      {industry.industry}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </form>
+            )}
         </div>
 
         {/* {incompleteProfile && (

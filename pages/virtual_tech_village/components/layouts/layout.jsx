@@ -245,8 +245,8 @@ const Layout = ({ children, sideHighlight }) => {
             </div>
           </div>
         </nav>
-        <nav className="fixed bg-white top-0 left-0 w-full h-20 px-14 gap-4 flex justify-end items-center z-40">
-          <div className="relative flex flex-col justify-center items-center">
+        <nav className="fixed bg-white top-0 left-0 w-full h-20 px-14 gap-4 flex justify-end items-center z-40 bg-opacity-25 backdrop-blur">
+          <div className="relative flex flex-col justify-center items-center z-[99]">
             <AiOutlineBell
               className={`text-lg cursor-pointer ${
                 unreadMessageCount > 0 ? "animate-pulse" : ""
@@ -345,7 +345,7 @@ const Layout = ({ children, sideHighlight }) => {
             </div>
           </Link>
         </nav>
-        <div className="w-full h-screen overflow-y-scroll px-4 pt-24">
+        <div className="w-full h-screen overflow-y-scroll px-4 pt-20">
           <div className="w-full h-max flex flex-col gap-5">{children}</div>
         </div>
       </main>

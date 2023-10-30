@@ -32,7 +32,10 @@ const Index = () => {
   const [page, setPage] = useState(2);
   const [meTyping, setMeTyping] = useState(false);
   const [typing, setTyping] = useState(false);
-  const [roomName, setRoomName] = useState("")
+  const [roomName, setRoomName] = useState("");
+  const [pinned, setPinned] = useState("");
+  const [archived, setArchived] = useState("");
+  const [unread, setUnread] = useState("");
 
   // MESSAGE INPUT STATE
   const [messageText, setMessageText] = useState("");
@@ -129,8 +132,11 @@ const Index = () => {
             updateTyping(data);
             break;
           case "conversation_id":
-            setRoomName(data.id)
-            console.log("This is the conversation data: ", data)
+            setRoomName(data.id);
+            setPinned(data.pin);
+            setArchived(data.archive);
+            setUnread(data.unread);
+            console.log("This is the conversation data: ", data);
           default:
             console.error("Unknown message type!");
             break;
@@ -165,7 +171,7 @@ const Index = () => {
   };
 
   useEffect(() => {
-    setMessageHistory([])
+    setMessageHistory([]);
     fetchInfo();
   }, [id]);
 
@@ -206,7 +212,15 @@ const Index = () => {
 
           <div className="relative grow shadow overflow-hidden h-full flex justify-center">
             <div className="grow relative p-4 py-1 overflow-hidden max-h-[500px] pt-10 max-w-3xl">
-              <Toolbar names={usersName} avatar={userPicture} roomName={roomName} userId={id}/>
+              <Toolbar
+                names={usersName}
+                avatar={userPicture}
+                roomName={roomName}
+                userId={id}
+                pinned={pinned}
+                unread={unread}
+                archived={archived}
+              />
               <div className="scrollbar h-full">
                 <div className="mx-auto max-w-6xl px-14 py-4 pb-4 max-h-full overflow-y-auto">
                   <div className="">

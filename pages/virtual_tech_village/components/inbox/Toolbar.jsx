@@ -3,20 +3,31 @@ import { useRouter } from "next/router";
 import { RiMenuAddFill } from "react-icons/ri";
 import Image from "next/image";
 
-const Toolbar = ({ names, avatar, roomName, userId }) => {
+const Toolbar = ({
+  names,
+  avatar,
+  roomName,
+  userId,
+  pinned,
+  archived,
+  unread,
+}) => {
   const [toolbarToggle, setToolbarToggle] = useState(false);
   const [requestBody, setRequestBody] = useState({
-    pin: false,
-    unread: false,
-    archive: false,
+    pin: pinned,
+    unread: archived,
+    archive: unread,
     delete: false,
     conversation_id: roomName,
     users_id: userId,
   });
   const [deleteChange, setDeleteChange] = useState(false);
   const [pinChange, setPinChange] = useState(false);
+  const [pinUnchange, setPinUnchange] = useState(false);
   const [archiveChange, setArchiveChange] = useState(false);
+  const [archiveUnChange, setArchiveUnChange] = useState(false);
   const [unreadChange, setUnreadChange] = useState(false);
+  const [unreadUnChange, setUnreadUnChange] = useState(false);
   const divRef = useRef(null);
   const router = useRouter();
 
@@ -33,161 +44,256 @@ const Toolbar = ({ names, avatar, roomName, userId }) => {
     };
   }, []);
 
+  // useEffect(() => {
+  //   console.log(requestBody)
+  // }, [requestBody])
+
   const toggleToolbar = () => {
     setToolbarToggle((prevToggle) => !prevToggle);
+  };
+
+  const sendPinData = () => {
+    const sendData = async () => {
+      try {
+        console.log(requestBody);
+
+        const response = await fetch(
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          }
+        );
+
+        if (response.ok) {
+          alert("Pinned successfully");
+        }
+
+        if (response.status === 400) {
+          console.log("Error:", response.status);
+        }
+      } catch (error) {
+        console.error("Error sending data:", error);
+      }
+    };
+
+  
+      sendData();
+
   };
 
   const handlePin = () => {
     setRequestBody((prevBody) => ({
       ...prevBody,
       pin: true,
+      unread: requestBody.unread,
+      archive: requestBody.archive,
     }));
+  
     setPinChange(!pinChange);
-    setToolbarToggle(false)
+    setToolbarToggle(false);
+    setTimeout(() => {
+      sendPinData();
+    }, 1000);
   };
+  
 
-  useEffect(() => {
-    if (requestBody.pin !== false) {
-      const sendData = async () => {
-        try {
-          console.log(requestBody);
+  const sendUnPinData = () => {
+    const sendData = async () => {
+      try {
+        console.log(requestBody);
 
-          const response = await fetch(
-            `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(requestBody),
-            }
-          );
-
-          if (response.ok) {
-            alert("Pinned successfully");
+        const response = await fetch(
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
           }
+        );
 
-          if (response.status === 400) {
-            console.log("Error:", response.status);
-          }
-        } catch (error) {
-          console.error("Error sending data:", error);
+        if (response.ok) {
+          alert("Unpinned successfully");
         }
-      };
+
+        if (response.status === 400) {
+          console.log("Error:", response.status);
+        }
+      } catch (error) {
+        console.error("Error sending data:", error);
+      }
+    };
+
 
       sendData();
-    }
-  }, [pinChange]);
+  
+  };
+
+  const handleUnpin = () => {
+    setRequestBody((prevBody) => ({
+      ...prevBody,
+      pin: "False",
+    }));
+
+    setPinUnchange(!pinUnchange);
+    setToolbarToggle(false);
+        setTimeout(() => {
+      sendUnPinData();
+    }, 100);
+  };
+
+  const sendDeleteData = () => {
+    const sendData = async () => {
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+
+      if (response.ok) {
+        alert("Conversation deleted");
+        router.push("/virtual_tech_village/inbox");
+      }
+
+      if (response.status === 400) {
+        console.log("Error:", response.status);
+      }
+    };
+    setTimeout(() => {
+      sendData();
+    }, 1000);
+  };
 
   const handleDelete = () => {
     setRequestBody((prevBody) => ({
       ...prevBody,
-      delete: true,
+      delete: "True",
     }));
     setDeleteChange(!deleteChange);
-    setToolbarToggle(false)
-
+    setToolbarToggle(false);
+    sendDeleteData();
   };
 
-  useEffect(() => {
-    if (requestBody.delete !== false) {
-      const sendData = async () => {
-        const response = await fetch(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestBody),
-          }
-        );
-
-        if (response.ok) {
-          alert("Conversation deleted");
-          router.push("/virtual_tech_village/inbox");
+  const sendArchivedData = () => {
+    const sendData = async () => {
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
         }
+      );
+      if (response.ok) {
+        alert("Archived successfully");
+      }
 
-        if (response.status === 400) {
-          console.log("Error:", response.status);
-        }
-      };
-      sendData();
-    }
-  }, [deleteChange]);
+      if (response.status === 400) {
+        console.log("Error:", response.status);
+      }
+    };
+
+    sendData();
+  };
 
   const handleArchive = () => {
-    setRequestBody((prevBody) => ({
-      ...prevBody,
-      archive: true,
-    }));
-    setArchiveChange(!archiveChange);
-    setToolbarToggle(false)
+      setRequestBody((prevBody) => ({
+        ...prevBody,
+        archive: "True",
+      }));
+  
 
+    setArchiveChange(!archiveChange);
+    setToolbarToggle(false);
+    sendArchivedData();
   };
 
-  useEffect(() => {
-    if (requestBody.archive !== false) {
-      const sendData = async () => {
-        const response = await fetch(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestBody),
-          }
-        );
-        if (response.ok) {
-          alert("Archived successfully");
+  const handleSendUnread = () => {
+    const sendData = async () => {
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
         }
+      );
+      if (response.ok) {
+        alert("Marked unread successfully");
+      }
 
-        if (response.status === 400) {
-          console.log("Error:", response.status);
-        }
-      };
+      if (response.status === 400) {
+        console.log("Error:", response.status);
+      }
+    };
 
-      sendData();
-    }
-  }, [archiveChange]);
+    sendData();
+  };
 
   const handleMarkUnread = () => {
-    setRequestBody((prevBody) => ({
-      ...prevBody,
-      unreadread: true,
-    }));
+ 
+      setRequestBody((prevBody) => ({
+        ...prevBody,
+        unread: "True",
+      }));
 
     setUnreadChange(!unreadChange);
-    setToolbarToggle(false)
-
+    setToolbarToggle(false);
+    handleSendUnread();
   };
 
-  useEffect(() => {
-    if (requestBody.unread !== false) {
-      const sendData = async () => {
-        const response = await fetch(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestBody),
-          }
-        );
-        if (response.ok) {
-          alert("Marked unread successfully");
+  const handleSendRead = () => {
+    const sendData = async () => {
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
         }
+      );
+      if (response.ok) {
+        alert("Marked unread successfully");
+      }
 
-        if (response.status === 400) {
-          console.log("Error:", response.status);
-        }
-      };
+      if (response.status === 400) {
+        console.log("Error:", response.status);
+      }
+    };
 
+    setTimeout(() => {
       sendData();
-    }
-  }, [unreadChange]);
+    }, 100);
+  };
+
+  const handleMarkRead = () => {
+
+      setRequestBody((prevBody) => ({
+        ...prevBody,
+        unread: "False",
+      }));
+
+
+    setUnreadChange(!unreadChange);
+    setToolbarToggle(false);
+    handleSendRead();
+  };
 
   return (
     <div className="absolute  z-[2] px-10 p-1 left-10 right-10 top-3 shadow border rounded bg-white">
@@ -217,31 +323,56 @@ const Toolbar = ({ names, avatar, roomName, userId }) => {
           </div>
         </div>
         {toolbarToggle && (
-          <div class="relative" ref={divRef}>
+          <div className="relative" ref={divRef}>
             <div
-              class="absolute end-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg"
+              className="absolute end-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg"
               role="menu"
             >
-              <div class="p-2">
-                <a
-                  href="#"
-                  class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                  role="menuitem"
-                >
-                  Mark Unread
-                </a>
+              <div className="p-2">
+                {requestBody.unread === "False" && (
+                  <div
+                    className="block rounded-lg px-4 py-2 text-sm cursor-pointer text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                    role="menuitem"
+                    onClick={handleMarkUnread}
+                  >
+                    Mark Unread
+                  </div>
+                )}
 
-                <div
-                  onClick={handlePin}
-                  class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 cursor-pointer"
-                  role="menuitem"
-                >
-                  Pin Conversation
-                </div>
+                {requestBody.unread === "True" && (
+                  <div
+                    href="#"
+                    className="block rounded-lg px-4 py-2 text-sm text-gray-500 cursor-pointer hover:bg-gray-50 hover:text-gray-700"
+                    role="menuitem"
+                    onClick={handleMarkRead}
+                  >
+                    Mark Read
+                  </div>
+                )}
+
+                {requestBody.pin === "False" && (
+                  <div
+                    onClick={handlePin}
+                    className="block rounded-lg px-4 py-2 text-sm text-gray-500 cursor-pointer hover:bg-gray-50 hover:text-gray-700 cursor-pointer"
+                    role="menuitem"
+                  >
+                    Pin Conversation
+                  </div>
+                )}
+
+                {requestBody.pin === "True" && (
+                  <div
+                    onClick={handleUnpin}
+                    className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 cursor-pointer"
+                    role="menuitem"
+                  >
+                    Unpin Conversation
+                  </div>
+                )}
 
                 <div
                   onClick={handleArchive}
-                  class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                  className="block rounded-lg px-4 py-2 text-sm text-gray-500 cursor-pointer hover:bg-gray-50 hover:text-gray-700"
                   role="menuitem"
                 >
                   Archive Conversation
@@ -250,13 +381,13 @@ const Toolbar = ({ names, avatar, roomName, userId }) => {
                 <div>
                   <button
                     type="button"
-                    class="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50"
+                    className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50"
                     role="menuitem"
                     onClick={handleDelete}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4"
+                      className="h-4 w-4"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"

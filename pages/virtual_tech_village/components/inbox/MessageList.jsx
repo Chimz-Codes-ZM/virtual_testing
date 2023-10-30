@@ -38,7 +38,7 @@ const MessageList = ({ selectedConversation, onConversationClick }) => {
 
   const handleConversationClick = (route) => {
 
-    router.push(`/virtual_tech_village/${route}`);
+    router.push(`/virtual_tech_village${route}`);
   };
 
   return (
