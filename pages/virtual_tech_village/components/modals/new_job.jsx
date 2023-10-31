@@ -1,49 +1,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
-const New_job = ({userId}) => {
-  const [newJob, setNewJob] = useState({
-    position: "",
-    job_type: "",
-    location: "",
-    link: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setNewJob({
-      ...newJob,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const sendData = async () => {
-      const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/job_listings/${userId}/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newJob),
-        }
-      );
-      if (response.ok) {
-        alert("New job added successfully");
-        
-      }
-
-      if (response.status === 400) {
-        console.log("Error:", response.status);
-      }
-    };
-
-    sendData()
-    console.log(newJob)
-  };
+const New_job = ({ onSubmit, onChange, value}) => {
+ 
   return (
     <div className="p-6 bg-white border z-50 rounded flex flex-col gap-2">
       <div className="flex flex-col gap-4">
@@ -53,7 +12,7 @@ const New_job = ({userId}) => {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={onSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <label htmlFor="position" className="text-sm font-medium">
             Position
@@ -61,9 +20,9 @@ const New_job = ({userId}) => {
           <input
             type="text"
             name="position"
-            value={newJob.position}
+            value={value?.position}
             className="border rounded px-1"
-            onChange={handleChange}
+            onChange={onChange}
           />
         </div>
 
@@ -74,9 +33,9 @@ const New_job = ({userId}) => {
           <input
             type="text"
             name="job_type"
-            value={newJob.job_type}
+            value={value?.job_type}
             className="border rounded px-1"
-            onChange={handleChange}
+            onChange={onChange}
             placeholder="e.g., Full Time"
           />
         </div>
@@ -88,9 +47,9 @@ const New_job = ({userId}) => {
           <input
             type="text"
             name="location"
-            value={newJob.location}
+            value={value?.location}
             className="border rounded px-1"
-            onChange={handleChange}
+            onChange={onChange}
             placeholder="e.g., On-site"
           />
         </div>
@@ -102,9 +61,9 @@ const New_job = ({userId}) => {
           <input
             type="text"
             name="link"
-            value={newJob.link}
+            value={value?.link}
             className="border rounded px-1"
-            onChange={handleChange}
+            onChange={onChange}
             placeholder="e.g., www.glassdoor.com/job-123"
           />
         </div>

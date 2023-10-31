@@ -21,13 +21,7 @@ const Toolbar = ({
     conversation_id: roomName,
     users_id: userId,
   });
-  const [deleteChange, setDeleteChange] = useState(false);
-  const [pinChange, setPinChange] = useState(false);
-  const [pinUnchange, setPinUnchange] = useState(false);
-  const [archiveChange, setArchiveChange] = useState(false);
-  const [archiveUnChange, setArchiveUnChange] = useState(false);
-  const [unreadChange, setUnreadChange] = useState(false);
-  const [unreadUnChange, setUnreadUnChange] = useState(false);
+ 
   const divRef = useRef(null);
   const router = useRouter();
 
@@ -44,10 +38,6 @@ const Toolbar = ({
     };
   }, []);
 
-  // useEffect(() => {
-  //   console.log(requestBody)
-  // }, [requestBody])
-
   const toggleToolbar = () => {
     setToolbarToggle((prevToggle) => !prevToggle);
   };
@@ -55,8 +45,6 @@ const Toolbar = ({
   const sendPinData = () => {
     const sendData = async () => {
       try {
-        console.log(requestBody);
-
         const response = await fetch(
           `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
           {
@@ -64,12 +52,20 @@ const Toolbar = ({
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(requestBody),
+            body: JSON.stringify({
+              pin: "True",
+              unread: requestBody.unread,
+              archive: requestBody.archive,
+              delete: requestBody.delete,
+              conversation_id: roomName,
+              users_id: userId,
+            }),
           }
         );
 
         if (response.ok) {
           alert("Pinned successfully");
+          console.log(requestBody);
         }
 
         if (response.status === 400) {
@@ -80,26 +76,22 @@ const Toolbar = ({
       }
     };
 
-  
-      sendData();
-
+    sendData();
   };
 
   const handlePin = () => {
     setRequestBody((prevBody) => ({
       ...prevBody,
-      pin: true,
+      pin: "True",
       unread: requestBody.unread,
       archive: requestBody.archive,
     }));
-  
-    setPinChange(!pinChange);
+
     setToolbarToggle(false);
-    setTimeout(() => {
+
       sendPinData();
-    }, 1000);
+
   };
-  
 
   const sendUnPinData = () => {
     const sendData = async () => {
@@ -113,7 +105,14 @@ const Toolbar = ({
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(requestBody),
+            body: JSON.stringify({
+              pin: "False",
+              unread: requestBody.unread,
+              archive: requestBody.archive,
+              delete: requestBody.delete,
+              conversation_id: roomName,
+              users_id: userId,
+            }),
           }
         );
 
@@ -129,9 +128,7 @@ const Toolbar = ({
       }
     };
 
-
-      sendData();
-  
+    sendData();
   };
 
   const handleUnpin = () => {
@@ -140,11 +137,10 @@ const Toolbar = ({
       pin: "False",
     }));
 
-    setPinUnchange(!pinUnchange);
     setToolbarToggle(false);
-        setTimeout(() => {
+ 
       sendUnPinData();
-    }, 100);
+
   };
 
   const sendDeleteData = () => {
@@ -156,7 +152,14 @@ const Toolbar = ({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(requestBody),
+          body: JSON.stringify({
+            pin: requestBody.pin,
+            unread: requestBody.unread,
+            archive: requestBody.archive,
+            delete: "True",
+            conversation_id: roomName,
+            users_id: userId,
+          }),
         }
       );
 
@@ -169,9 +172,7 @@ const Toolbar = ({
         console.log("Error:", response.status);
       }
     };
-    setTimeout(() => {
       sendData();
-    }, 1000);
   };
 
   const handleDelete = () => {
@@ -179,7 +180,6 @@ const Toolbar = ({
       ...prevBody,
       delete: "True",
     }));
-    setDeleteChange(!deleteChange);
     setToolbarToggle(false);
     sendDeleteData();
   };
@@ -193,7 +193,14 @@ const Toolbar = ({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(requestBody),
+          body: JSON.stringify({
+            pin: requestBody.pin,
+            unread: requestBody.unread,
+            archive: "True",
+            delete: requestBody.delete,
+            conversation_id: roomName,
+            users_id: userId,
+          }),
         }
       );
       if (response.ok) {
@@ -209,15 +216,54 @@ const Toolbar = ({
   };
 
   const handleArchive = () => {
-      setRequestBody((prevBody) => ({
-        ...prevBody,
-        archive: "True",
-      }));
-  
+    setRequestBody((prevBody) => ({
+      ...prevBody,
+      archive: "True",
+    }));
 
-    setArchiveChange(!archiveChange);
     setToolbarToggle(false);
     sendArchivedData();
+  };
+
+  const sendUnarchivedData = () => {
+    const sendData = async () => {
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pin: requestBody.pin,
+            unread: requestBody.unread,
+            archive: "False",
+            delete: requestBody.delete,
+            conversation_id: roomName,
+            users_id: userId,
+          }),
+        }
+      );
+      if (response.ok) {
+        alert("Archived successfully");
+      }
+
+      if (response.status === 400) {
+        console.log("Error:", response.status);
+      }
+    };
+
+    sendData();
+  };
+
+  const handleUnarchive = () => {
+    setRequestBody((prevBody) => ({
+      ...prevBody,
+      archive: "False",
+    }));
+
+    setToolbarToggle(false);
+    sendUnarchivedData();
   };
 
   const handleSendUnread = () => {
@@ -229,7 +275,14 @@ const Toolbar = ({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(requestBody),
+          body: JSON.stringify({
+            pin: requestBody.pin,
+            unread: "True",
+            archive: requestBody.archive,
+            delete: requestBody.delete,
+            conversation_id: roomName,
+            users_id: userId,
+          }),
         }
       );
       if (response.ok) {
@@ -245,13 +298,11 @@ const Toolbar = ({
   };
 
   const handleMarkUnread = () => {
- 
-      setRequestBody((prevBody) => ({
-        ...prevBody,
-        unread: "True",
-      }));
+    setRequestBody((prevBody) => ({
+      ...prevBody,
+      unread: "True",
+    }));
 
-    setUnreadChange(!unreadChange);
     setToolbarToggle(false);
     handleSendUnread();
   };
@@ -265,7 +316,14 @@ const Toolbar = ({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(requestBody),
+          body: JSON.stringify({
+            pin: requestBody.pin,
+            unread: "False",
+            archive: requestBody.archive,
+            delete: requestBody.delete,
+            conversation_id: roomName,
+            users_id: userId,
+          }),
         }
       );
       if (response.ok) {
@@ -277,20 +335,16 @@ const Toolbar = ({
       }
     };
 
-    setTimeout(() => {
       sendData();
-    }, 100);
+   
   };
 
   const handleMarkRead = () => {
+    setRequestBody((prevBody) => ({
+      ...prevBody,
+      unread: "False",
+    }));
 
-      setRequestBody((prevBody) => ({
-        ...prevBody,
-        unread: "False",
-      }));
-
-
-    setUnreadChange(!unreadChange);
     setToolbarToggle(false);
     handleSendRead();
   };
@@ -369,14 +423,25 @@ const Toolbar = ({
                     Unpin Conversation
                   </div>
                 )}
+                {requestBody.archive === "False" && (
+                  <div
+                    onClick={handleArchive}
+                    className="block rounded-lg px-4 py-2 text-sm text-gray-500 cursor-pointer hover:bg-gray-50 hover:text-gray-700"
+                    role="menuitem"
+                  >
+                    Archive Conversation
+                  </div>
+                )}
 
-                <div
-                  onClick={handleArchive}
+                {requestBody.archive === "True" && (
+                  <div
+                  onClick={handleUnarchive}
                   className="block rounded-lg px-4 py-2 text-sm text-gray-500 cursor-pointer hover:bg-gray-50 hover:text-gray-700"
                   role="menuitem"
                 >
-                  Archive Conversation
+                  Unarchive Conversation
                 </div>
+                )}
 
                 <div>
                   <button

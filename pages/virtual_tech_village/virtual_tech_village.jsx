@@ -119,7 +119,8 @@ const Virtual_Tech_Village = () => {
   const [profile, setProfile] = useState(false);
   const [company, setCompany] = useState(false);
   const [incompleteProfile, setIncompleteProfile] = useState(false);
-  const [incompleteCompanyProfile, setIncompleteCompanyProfile] = useState(false);
+  const [incompleteCompanyProfile, setIncompleteCompanyProfile] =
+    useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const expandedProfileRef = useRef(null);
@@ -133,7 +134,9 @@ const Virtual_Tech_Village = () => {
   const [memberList, setMemberList] = useState(null);
   const [activePage, setActivePage] = useState(1);
   const [selectedAttributes, setSelectedAttributes] = useState({});
-  const [selectedCompanyAttributes, setSelectedCompanyAttributes] = useState({})
+  const [selectedCompanyAttributes, setSelectedCompanyAttributes] = useState(
+    {}
+  );
   const [filters, setFilters] = useState({
     page: "1",
     country: "",
@@ -141,9 +144,9 @@ const Virtual_Tech_Village = () => {
     skill: "",
     company_country: "",
     company_name: "",
-    company_industry: ""
+    company_industry: "",
   });
-  const [id, setId] = useState("")
+  const [id, setId] = useState("");
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -160,7 +163,7 @@ const Virtual_Tech_Village = () => {
     const id = decodedToken.user_id;
 
     setUser(decodedToken);
-    setId(id)
+    setId(id);
     // console.log(decodedToken);
 
     const fetchData = async () => {
@@ -171,7 +174,7 @@ const Virtual_Tech_Village = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({filters:{...filters}}),
+          body: JSON.stringify({ filters: { ...filters } }),
         }
       );
 
@@ -201,7 +204,7 @@ const Virtual_Tech_Village = () => {
   useEffect(() => {
     checkProfileComplete();
     scrollToTop();
-    console.log(selectedAttributes)
+    console.log(selectedAttributes);
     console.log(selectedCompanyAttributes);
   }, [selectedCompanyAttributes]);
 
@@ -210,7 +213,6 @@ const Virtual_Tech_Village = () => {
 
     const decodedToken = jwt_decode(token);
     const id = decodedToken.user_id;
-
 
     async function fetchData() {
       try {
@@ -240,7 +242,6 @@ const Virtual_Tech_Village = () => {
           `https://baobabpad-334a8864da0e.herokuapp.com/village/country_industries/${id}/`
         );
         setSelectedCompanyAttributes(response.data);
-
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -371,6 +372,54 @@ const Virtual_Tech_Village = () => {
 
   const handleNewJobShow = () => {
     setAddNewJobShow(true);
+  };
+
+  const [newJob, setNewJob] = useState({
+    position: "",
+    job_type: "",
+    location: "",
+    link: "",
+  });
+
+  const handleNewJobChange = (e) => {
+    const { name, value } = e.target;
+
+    setNewJob({
+      ...newJob,
+      [name]: value,
+    });
+  };
+
+  const handleNewJobSubmit = (e) => {
+    e.preventDefault();
+    const sendData = async () => {
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/job_listings/${id}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newJob),
+        }
+      );
+      if (response.ok) {
+        alert("New job added successfully");
+        setAddNewJobShow(false);
+        setNewJob({
+          position: "",
+          job_type: "",
+          location: "",
+          link: "",
+        });
+      }
+
+      if (response.status === 400) {
+        console.log("Error:", response.status);
+      }
+    };
+
+    sendData();
   };
 
   const handleInputChange = async (e) => {
@@ -519,7 +568,12 @@ const Virtual_Tech_Village = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <New_job userId={id}/>
+                <New_job
+                  userId={id}
+                  onSubmit={handleNewJobSubmit}
+                  onChange={handleNewJobChange}
+                  value={newJob}
+                />
               </motion.div>
             </div>
           </motion.div>
@@ -567,8 +621,8 @@ const Virtual_Tech_Village = () => {
         </div>
 
         <div className="flex-grow flex-wrap">
-          {(memberList?.user[0]?.account_type === "village talent profile" ||
-            memberList?.user[0]?.account_type === "village admin profile") && (
+          {(memberList?.user[0]?.account_type === "village talent profile" && memberShow ||
+            memberList?.user[0]?.account_type === "village admin profile" && memberShow) && (
             <form className="flex flex-col md:flex-row md:justify-around">
               <div className="mb-4 md:mb-0">
                 <select
@@ -625,9 +679,9 @@ const Virtual_Tech_Village = () => {
             </form>
           )}
 
-          {(memberList?.user[0]?.account_type === "village company profile" ||
-            memberList?.user[0]?.account_type === "village admin profile") && (
-              <form className="flex flex-col md:flex-row md:justify-around">
+          {(memberList?.user[0]?.account_type === "village company profile" && companyShow ||
+            memberList?.user[0]?.account_type === "village admin profile" && companyShow) && (
+            <form className="flex flex-col md:flex-row md:justify-around">
               <div className="mb-4 md:mb-0">
                 <select
                   name="company_country"
@@ -641,11 +695,13 @@ const Virtual_Tech_Village = () => {
                   </option>
                   <option value="">All</option>
 
-                  {selectedCompanyAttributes?.countries?.map((country, index) => (
-                    <option value={country.country} key={index}>
-                      {country.country}
-                    </option>
-                  ))}
+                  {selectedCompanyAttributes?.countries?.map(
+                    (country, index) => (
+                      <option value={country.country} key={index}>
+                        {country.country}
+                      </option>
+                    )
+                  )}
                 </select>
               </div>
 
@@ -673,15 +729,17 @@ const Virtual_Tech_Village = () => {
                     Industry
                   </option>
                   <option value="">All industries</option>
-                  {selectedCompanyAttributes?.industries?.map((industry, index) => (
-                    <option value={industry.industry} key={index}>
-                      {industry.industry}
-                    </option>
-                  ))}
+                  {selectedCompanyAttributes?.industries?.map(
+                    (industry, index) => (
+                      <option value={industry.industry} key={index}>
+                        {industry.industry}
+                      </option>
+                    )
+                  )}
                 </select>
               </div>
             </form>
-            )}
+          )}
         </div>
 
         {/* {incompleteProfile && (

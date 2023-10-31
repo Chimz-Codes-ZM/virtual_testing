@@ -21,6 +21,7 @@ const StartConversation = () => {
           `https://baobabpad-334a8864da0e.herokuapp.com/village/chat_list/${id}/`
         );
         setUserData(response.data);
+        console.log(response.data)
       } catch (error) {
         console.error("Error fetching data: ", error);
       }

@@ -100,7 +100,7 @@ const Index = () => {
         switch (data.type) {
           case "chat_message_echo":
             setMessageHistory((prev) => [...prev, data.message]);
-
+            console.log("This is the recently sent message: ", data.message)
             break;
 
           case "last_50_messages":
