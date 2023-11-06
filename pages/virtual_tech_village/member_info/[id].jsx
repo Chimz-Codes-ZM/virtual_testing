@@ -25,6 +25,7 @@ const MemberInfo = () => {
       })
       .then((responseData) => {
         setInfo(responseData);
+        console.log(responseData)
 
         setTimeout(function () {
           setLoading(false);

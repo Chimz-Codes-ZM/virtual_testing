@@ -14,6 +14,7 @@ import Logo from "/public/logo.png";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { MdOutlineConnectWithoutContact } from "react-icons/md";
 import { FaSlideshare } from "react-icons/fa";
+import { FcSupport } from "react-icons/fc"
 import { GoInbox } from "react-icons/go";
 import { CgProfile } from "react-icons/cg";
 import { BiLogOut } from "react-icons/bi";
@@ -127,7 +128,7 @@ const Layout = ({ children, sideHighlight }) => {
   return (
     <>
       <main className="h-screen w-screen flex relative">
-        <nav className="sm:w-60 w-20 transition-all z-50 h-screen relative pt-10 group">
+        <nav className="sm:w-60 w-20 transition-all z-[100] h-screen relative pt-10 group">
           <div className="w-full h-full flex flex-col">
             <div
               className="w-full pl-5 flex-shrink-0 h-20 gap-4 flex items-center cursor-pointer"
@@ -227,6 +228,23 @@ const Layout = ({ children, sideHighlight }) => {
                     </div>
                   </Link>
                 </div>
+
+                <div className="w-full flex flex-col">
+                  <Link href="/virtual_tech_village/support/2">
+                    <div
+                      className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
+											${
+                        sideHighlight === "support"
+                          ? "font-bold bg-gray-100 text-gray-900"
+                          : " hover:font-bold hover:bg-gray-100 hover:text-gray-800"
+                      }
+										`}
+                    >
+                      <FcSupport className="text-xl" />
+                      <h1 className="hidden sm:block">Support</h1>
+                    </div>
+                  </Link>
+                </div>
               </div>
 
               <div className="w-full h-max rounded-r-full pt-5 pr-5">
@@ -245,8 +263,8 @@ const Layout = ({ children, sideHighlight }) => {
             </div>
           </div>
         </nav>
-        <nav className="fixed bg-white top-0 left-0 w-full h-20 px-14 gap-4 flex justify-end items-center z-40 bg-opacity-25 backdrop-blur">
-          <div className="relative flex flex-col justify-center items-center z-[99]">
+        <nav className="fixed bg-white top-0 left-0 w-full h-20 px-14 gap-4 flex justify-end items-center z-[99] bg-opacity-25 backdrop-blur">
+          <div className="relative flex flex-col justify-center items-center">
             <AiOutlineBell
               className={`text-lg cursor-pointer ${
                 unreadMessageCount > 0 ? "animate-pulse" : ""
@@ -293,7 +311,7 @@ const Layout = ({ children, sideHighlight }) => {
                         </div>
                       ))
                     ) : (
-                      <div className="p-2">No notifications.</div>
+                      <div className="p-2">No new notifications.</div>
                     )}
                   </div>
                 )}
@@ -302,7 +320,7 @@ const Layout = ({ children, sideHighlight }) => {
           </div>
 
           <Link href="/virtual_tech_village/profile/">
-            <div className="w-max truncate px-4 py-2 transition-all duration-500 hover:bg-gray-100 rounded cursor-pointer flex items-center gap-1 sm:gap-2 rounded">
+            <div className="w-max truncate px-4 py-2 transition-all duration-500 hover:bg-gray-100 rounded cursor-pointer flex items-center gap-1 sm:gap-2">
               <div className="w-7 h-7 rounded overflow-hidden relative">
                 {userData ? (
                   <div>

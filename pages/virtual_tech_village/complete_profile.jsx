@@ -198,12 +198,12 @@ const Complete_profile = () => {
 
   // const formInputs = [completedProfile, socialMedia, softSkills, language, workHistory, education]
   const formInputs = {
-    "completedP rofile" : completedProfile,
-    "socialMediaLinks": socialMedia,
-    "softSkills": softSkills,
-    "language": language,
-    "workHistory": workHistory,
-    "education": education
+    "completedP rofile": completedProfile,
+    socialMediaLinks: socialMedia,
+    softSkills: softSkills,
+    language: language,
+    workHistory: workHistory,
+    education: education,
   };
 
   const handleSubmit = async (e) => {
@@ -261,10 +261,46 @@ const Complete_profile = () => {
     router.push("/");
   };
 
+  // <========================= PDF LOGIC ========================>
+
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handlePdfSubmit = async (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem("token");
+    const decodedToken = jwt_decode(token);
+    const user_id = decodedToken.user_id;
+
+    const formData = new FormData();
+    formData.append('pdfFile', file);
+
+    try {
+      const response = await fetch(`https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${user_id}/`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        
+        console.log('PDF uploaded successfully');
+      } else {
+        
+        console.error('Failed to upload PDF');
+      }
+    } catch (error) {
+      console.error('Error uploading PDF', error);
+    }
+  };
+
   return (
     <>
       <Layout>
-        <div className="w-full flex justify-center flex-col">
+        <div className="w-full flex justify-center flex-col pb-4">
           {/* Gray background */}
 
           <div className="w-full bg-gray-50 h-40 overflow-auto"></div>
@@ -880,6 +916,13 @@ const Complete_profile = () => {
                     </div>
                   </div>
                 </div>
+              </form>
+            </div>
+
+            <div>
+              <form onSubmit={handlePdfSubmit }>
+                <input type="file" accept=".pdf" onChange={handleFileChange} />
+                <button type="submit">Upload PDF</button>
               </form>
             </div>
           </div>

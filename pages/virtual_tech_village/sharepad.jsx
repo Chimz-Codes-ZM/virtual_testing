@@ -10,7 +10,7 @@ const sharepad = () => {
 
       <Layout sideHighlight="sharepad">
         <SharepadLayout title="knowledgehub">
-          <div>sharapad</div>
+          <div>sharepad</div>
         </SharepadLayout>
       </Layout>
     </>
