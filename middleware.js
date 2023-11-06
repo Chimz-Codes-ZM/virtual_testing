@@ -1,5 +1,21 @@
-export { default } from 'next-auth/middleware'
+import { withAuth } from "next-auth/middleware"
 
-// export const config = {
-//     matcher: '/virtual_tech_village/:path*',
-//   }
+// middleware is applied to all routes, use conditionals to select
+
+export default withAuth(
+  function middleware (req) {
+  },
+  {
+    callbacks: {
+      authorized: ({ req, token }) => {
+        if (
+          req.nextUrl.pathname.startsWith('/virtual_tech_village') &&
+          token === null
+        ) {
+          return false
+        }
+        return true
+      }
+    }
+  }
+)
