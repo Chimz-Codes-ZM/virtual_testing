@@ -6,8 +6,8 @@ import { FcPicture } from "react-icons/fc";
 import Link from "next/link";
 import jwt_decode from "jwt-decode";
 
-import { techPositions } from "@/pages/data";
-import { countries } from "@/pages/data";
+import { techPositions } from "../../data";
+import { countries } from "../../data";
 
 
 const Edit_profile_component = () => {

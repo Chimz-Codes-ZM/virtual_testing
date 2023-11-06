@@ -13,7 +13,8 @@ import Deca from "/public/assets/deca-logo.png";
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
 // import Form_success from '@/pages/homepage/components/alerts/form_success';
-import Image_success from "@/pages/homepage/components/alerts/image_success";
+// import Image_success from "@/";
+import Image_success from "../../../pages/homepage/components/alerts/image_success"
 
 const Settings = () => {
   const [formImage, setFormImage] = useState(null);

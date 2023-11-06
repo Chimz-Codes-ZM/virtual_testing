@@ -1,5 +1,5 @@
 import React from 'react'
-import Layout from '@/pages/layout'
+import Layout from '../../layout'
 import TeamSection from '../components/teams'
 import {AiOutlineLinkedin} from 'react-icons/ai';
 import Home from '../home';

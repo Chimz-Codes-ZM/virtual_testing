@@ -4,7 +4,7 @@ import Image from "next/image";
 import SettingsLayout from "./layout";
 import { BsFillCaretDownFill } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
-import Deca from "public/assets/deca-logo.png";
+import Deca from "../../../public/assets/deca-logo.png";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
 

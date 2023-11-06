@@ -1,10 +1,10 @@
 import React from "react";
 import Image from "next/image";
-import Layout from "@/pages/layout";
+import Layout from "../../layout";
 import Home from "../home";
 // import Sal from "../../../public/assets/selma.png";
 import { AiOutlineLinkedin } from "react-icons/ai";
-import { management_info as Management_info }  from "@/pages/data";
+import { management_info as Management_info }  from "../../data";
 
 function Management() {
   return (

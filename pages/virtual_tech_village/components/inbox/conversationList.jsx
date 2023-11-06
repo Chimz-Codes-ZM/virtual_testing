@@ -1,17 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import Toolbar from "./Toolbar";
-import MessageInput from "./MessageInput";
-import Image from "next/image";
-import Christina from "../../../../public/placeholders/christina.webp";
-import { conversationMessages } from "@/pages/data";
 import useWebSocket, { ReadyState, SendMessage } from "react-use-websocket";
 
 const ConversationList = ({
-  selectedConversation,
-  convoLabel,
-  onSendMessage,
-  names,
-  avatar,
   roomName,
   loggedInID,
 }) => {

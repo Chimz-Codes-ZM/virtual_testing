@@ -29,12 +29,12 @@ const Navbar = () => {
   };
 
   const handleTeamClick = () => {
-    setTeamMobile(!teamMobile)
-  }
+    setTeamMobile(!teamMobile);
+  };
 
   const handleTeamClickout = () => {
-    setTeamMobile(false)
-  }
+    setTeamMobile(false);
+  };
 
   useEffect(() => {
     const handleShadow = () => {
@@ -73,18 +73,15 @@ const Navbar = () => {
           </Link>
 
           <ul className="absolute w-max flex gap-4 text-white font-bold text-xl right-32 h-full items-center">
-            
             <Link href="/homepage/about" onMouseEnter={handleTeamExit}>
               <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
                 About
               </li>
             </Link>
             <div className="relative" onMouseEnter={handleTeamEnter}>
-              
-                <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
-                  Team
-                </li>
-              
+              <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
+                Team
+              </li>
 
               {team && (
                 <div
@@ -112,7 +109,7 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-{/* 
+            {/* 
             <Link href="/homepage/partners" onMouseEnter={handleTeamExit}>
               <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
                 Partners
@@ -143,7 +140,7 @@ const Navbar = () => {
               </li>
             </Link> */}
 
-<Link href="/homepage/tech_village" onMouseEnter={handleTeamExit}>
+            <Link href="/homepage/tech_village" onMouseEnter={handleTeamExit}>
               <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
                 Tech Village
               </li>
@@ -180,16 +177,6 @@ const Navbar = () => {
         >
           <div>
             <div className="flex w-full items-center justify-between">
-              <Link href="/">
-                <div>
-                  {/* <Image
-                    src={NavLogo}
-                    width='87'
-                    height='35'
-                    alt='/'
-                  /> */}
-                </div>
-              </Link>
               <div onClick={handleNav} className="p-3 cursor-pointer">
                 <AiOutlineClose className="text-4xl font-bold" />
               </div>
@@ -202,7 +189,7 @@ const Navbar = () => {
                   Home
                 </li>
               </Link>
-            
+
               <Link href="/homepage/about">
                 <li onClick={() => setNav(false)} className="py-4 text-sm">
                   About
@@ -221,38 +208,35 @@ const Navbar = () => {
               </Link> */}
 
               <div className="relative">
-                
-                  <li onClick={handleTeamClick} className="py-4 text-sm">
-                    Team
-                  </li>
-                
+                <li onClick={handleTeamClick} className="py-4 text-sm">
+                  Team
+                </li>
 
                 {teamMobile && (
                   <div
-                  className="absolute end-0 z-10 mt-2 left-0 max-w-3xl border border-gray-100 bg-white shadow-lg"
-                  role="menu"
-                  onClick={() => setNav(false)}                >
-                  <div className="p-2">
-                    <Link
-                      href="/homepage/team/management"
-                      className="block rounded-lg px-4 py-2 text-sm hover:bg-gray-50 hover:text-gray-700"
-                      role="menuitem"
-                    >
-                      Management
-                    </Link>
+                    className="absolute end-0 z-10 mt-2 left-0 max-w-3xl border border-gray-100 bg-white shadow-lg"
+                    role="menu"
+                    onClick={() => setNav(false)}
+                  >
+                    <div className="p-2">
+                      <Link
+                        href="/homepage/team/management"
+                        className="block rounded-lg px-4 py-2 text-sm hover:bg-gray-50 hover:text-gray-700"
+                        role="menuitem"
+                      >
+                        Management
+                      </Link>
 
-                    <Link
-                      href="/homepage/team/technical_professionals"
-                      className="block rounded-lg px-4 py-2 text-sm hover:bg-gray-50 hover:text-gray-700"
-                      role="menuitem"
-                    >
-                      Technical Professionals
-                    </Link>
+                      <Link
+                        href="/homepage/team/technical_professionals"
+                        className="block rounded-lg px-4 py-2 text-sm hover:bg-gray-50 hover:text-gray-700"
+                        role="menuitem"
+                      >
+                        Technical Professionals
+                      </Link>
+                    </div>
                   </div>
-                </div>
                 )}
-
-                
               </div>
 
               <Link href="/homepage/careers">
@@ -271,7 +255,7 @@ const Navbar = () => {
                 </li>
               </Link> */}
 
-<Link href="/homepage/tech_village">
+              <Link href="/homepage/tech_village">
                 <li onClick={() => setNav(false)} className="py-4 text-sm">
                   Tech Village
                 </li>
