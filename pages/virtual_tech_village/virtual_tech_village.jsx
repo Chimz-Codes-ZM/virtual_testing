@@ -8,7 +8,7 @@ import jwt_decode from "jwt-decode";
 import Complete_Profile from "../virtual_tech_village/components/alerts/completeProfile";
 import MemberProfile from "./components/profiles/MemberProfile";
 import ExpandedProfileModal from "./components/profiles/ExpandedProfileModal";
-import New_job from "./components/modals/new_job";
+import New_job from "./components/forms/new_job";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { JellyTriangle } from "@uiball/loaders";
@@ -316,28 +316,43 @@ const Virtual_Tech_Village = () => {
     router.push("/complete_company_profile");
   };
 
-  const handlePageFetch = () => {
-    const fetchDataFromAPI = async () => {
-      try {
-        const response = await fetch(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/pagination/2/`
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not okay");
-        }
-        const data = await response.json();
-        // console.log(data);
+  const handlePageFetch = (number) => {
+    setMemberList(null)
 
+    const token = localStorage.getItem("token");
+
+    const decodedToken = jwt_decode(token);
+    const id = decodedToken.user_id;
+    const fetchData = async () => {
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${id}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ filters: { ...filters, page: number } }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
         const pages = Array.from(
           { length: data.talent_total_pages },
           (_, index) => index + 1
         );
+
         setTalentPages(pages);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+        setMemberList(data);
+        const accountType = data.user[0]?.account_type || "";
+
+        setCompanyShow(accountType === "village company profile");
+        setMemberShow(accountType !== "village company profile");
+        setActivePage(number)
       }
     };
-    fetchDataFromAPI();
+    fetchData();
   };
 
   useEffect(() => {
@@ -580,7 +595,7 @@ const Virtual_Tech_Village = () => {
         )}
       </div>
 
-      <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2 fixed w-full top-14 p-4 pr-40 bg-opacity-25 backdrop-blur z-40 border-none">
+      <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2 fixed w-full top-16 p-4 pr-40 bg-white bg-opacity-25 backdrop-blur z-40 border-none">
         <div className="flex flex-wrap gap-4">
           {((memberList &&
             memberList?.user[0]?.account_type === "village talent profile") ||
@@ -621,8 +636,10 @@ const Virtual_Tech_Village = () => {
         </div>
 
         <div className="flex-grow flex-wrap">
-          {(memberList?.user[0]?.account_type === "village talent profile" && memberShow ||
-            memberList?.user[0]?.account_type === "village admin profile" && memberShow) && (
+          {((memberList?.user[0]?.account_type === "village talent profile" &&
+            memberShow) ||
+            (memberList?.user[0]?.account_type === "village admin profile" &&
+              memberShow)) && (
             <form className="flex flex-col md:flex-row md:justify-around">
               <div className="mb-4 md:mb-0">
                 <select
@@ -679,8 +696,10 @@ const Virtual_Tech_Village = () => {
             </form>
           )}
 
-          {(memberList?.user[0]?.account_type === "village company profile" && companyShow ||
-            memberList?.user[0]?.account_type === "village admin profile" && companyShow) && (
+          {((memberList?.user[0]?.account_type === "village company profile" &&
+            companyShow) ||
+            (memberList?.user[0]?.account_type === "village admin profile" &&
+              companyShow)) && (
             <form className="flex flex-col md:flex-row md:justify-around">
               <div className="mb-4 md:mb-0">
                 <select
@@ -772,9 +791,9 @@ const Virtual_Tech_Village = () => {
               exit={{ opacity: 0 }}
             >
               {filteredData.length === 0 ? (
-                <p className="font-bold text-slate-600 text-lg col-span-3 text-center">
-                  No profiles match your filter criteria.
-                </p>
+                <div className="flex min-h-[10rem] h-full w-screen items-center justify-center ">
+                <JellyTriangle size={40} color="#231F20" />
+              </div>
               ) : (
                 visibleData.map((profile, index) => (
                   <MemberProfile
@@ -825,7 +844,7 @@ const Virtual_Tech_Village = () => {
               {talentPages.map((pageNumber) => (
                 <div className="flex gap-2" key={pageNumber}>
                   <button
-                    onClick={() => handlePageClick(pageNumber)}
+                    onClick={() => handlePageFetch(pageNumber)}
                     className={`inline-block rounded-full border border-black p-3 transition-colors delay-75 ${
                       pageNumber === activePage
                         ? "bg-transparent text-black cursor-not-allowed"
