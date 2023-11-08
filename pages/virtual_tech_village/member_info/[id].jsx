@@ -64,7 +64,7 @@ const MemberInfo = () => {
 
     fetchData();
   }, []);
-
+ 
   const handleCVDownload = (e) => {
     e.preventDefault();
     const sendData = async () => {
