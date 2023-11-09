@@ -58,7 +58,7 @@ const SharepadLayout = ({ children, title }) => {
           </div>
         </div>
       </div>
-      <div className="flex py-3 px-5 overflow-x-hidden overflow-y-auto flex-grow shadow rounded flex-col grow ">
+      <div className="flex py-3 px-1 md:px-5 overflow-x-hidden overflow-y-auto flex-grow shadow rounded flex-col grow ">
         {children}
       </div>
     </div>

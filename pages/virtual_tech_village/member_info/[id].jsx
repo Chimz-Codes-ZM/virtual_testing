@@ -1,19 +1,40 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/layouts/layout";
-import { JellyTriangle } from "@uiball/loaders";
+
 import { useRouter } from "next/router";
-import Resume_component from "../components/cv/Resume_component";
+
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import Cookies from 'js-cookie';
+
+import Resume_component from "../components/cv/Resume_component";
+
+
+import { JellyTriangle } from "@uiball/loaders";
 
 const MemberInfo = () => {
   const [info, setInfo] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loggedIn, setLoggedIn] = useState([]);
   const router = useRouter();
+// const csrfToken = Cookies.get('next-auth.csrf-token')
 
   const { id } = router.query;
   const [error, setError] = useState(null);
+
+  // function getCsrfToken() {
+  //   const cookies = document.cookie.split("; ");
+  //   const csrfCookie = cookies.find(cookie => cookie.startsWith("next-auth-csrf-token="));
+  
+  //   if (csrfCookie) {
+  //     return csrfCookie.split("=")[1];
+  //   }
+  
+  //   return null;
+  // }
+  
+  
+  // const csrfToken = getCsrfToken();
 
   const fetchInfo = async (e) => {
     const userInfoUrl = `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${id}`;
@@ -65,7 +86,9 @@ const MemberInfo = () => {
     fetchData();
   }, []);
  
+
   const handleCVDownload = (e) => {
+    // console.log(csrfToken)
     e.preventDefault();
     const sendData = async () => {
       const response = await fetch(
@@ -75,10 +98,18 @@ const MemberInfo = () => {
           headers: {
             "Content-Type": "application/json",
           },  
+          credentials: 'include',
           body: JSON.stringify({ profile_id: id }),
         }
       );
       if (response.ok) {
+        const blob = await response.blob();
+
+        
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'zamanis.pdf';
+        link.click();
       }
 
       if (response.status === 400) {
@@ -114,10 +145,10 @@ const MemberInfo = () => {
           soft_skills={info[0]?.soft_skills}
         />
         <div
-          className="p-1 rounded border shadow w-fit cursor-pointer mb-3"
+          className="p-1 px-2 rounded-lg border shadow-md w-fit cursor-pointer bg-black text-white fixed bottom-10 right-10"
           onClick={handleCVDownload}
         >
-          download
+          Download CV
         </div>
       </Layout>
     </>

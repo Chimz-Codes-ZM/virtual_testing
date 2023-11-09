@@ -1110,6 +1110,62 @@ export const languages = [
   ]
 
 
+export const event_grid = [
+  {
+    id: 1,
+    img_src: "https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Virtual Hackathon",
+    host: "CodeCraftersHub",
+    date_time: "November 25, 2023, 8:00 PM",
+    price: "Price: $75"
+  },
+
+  {
+    id: 2,
+    img_src: "https://plus.unsplash.com/premium_photo-1661290247940-5450aa0babaf?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Webinar Series on Emerging Technologies",
+    host: "TechInsightsConnect",
+    date_time: "November 25, 2023, 8:00 PM",
+    price: "Price: $75"
+  },
+
+  {
+    id: 3,
+    img_src: "https://images.unsplash.com/photo-1597484661973-ee6cd0b6482c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Tech Talk Panel Discussion",
+    host: "ByteMindsForum",
+    date_time: "November 25, 2023, 8:00 PM",
+    price: "Price: $75"
+  },
+
+  {
+    id: 4,
+    img_src: "https://plus.unsplash.com/premium_photo-1680859126164-ac4fd8f56625?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Code Review Sessions",
+    host: "DevCritiqueHub",
+    date_time: "November 25, 2023, 8:00 PM",
+    price: "Price: $75"
+  },
+
+  {
+    id: 5,
+    img_src: "https://images.unsplash.com/photo-1598908314766-3e3ce9bd2f48?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Virtual Tech Networking Event",
+    host: "ConnectTechPros",
+    date_time: "November 25, 2023, 8:00 PM",
+    price: "Price: $75"
+  },
+
+  {
+    id: 6,
+    img_src: "https://plus.unsplash.com/premium_photo-1681122423210-f7639c75f338?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Tech Demos and Showcases",
+    host: "InnovateTechExpo",
+    date_time: "November 25, 2023, 8:00 PM",
+    price: "Price: $75"
+  }
+]
+
 
 
 export default () => null;
