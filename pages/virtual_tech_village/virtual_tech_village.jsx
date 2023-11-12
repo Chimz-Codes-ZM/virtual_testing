@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useEffect, useContext, useLayoutEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -195,14 +195,14 @@ const Virtual_Tech_Village = () => {
     memberStartRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     checkProfileComplete();
     scrollToTop();
     console.log(selectedAttributes);
     console.log(selectedCompanyAttributes);
   }, [selectedCompanyAttributes]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const token = localStorage.getItem("token");
 
     const decodedToken = jwt_decode(token);
@@ -223,7 +223,7 @@ const Virtual_Tech_Village = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const token = localStorage.getItem("token");
 
     const decodedToken = jwt_decode(token);
@@ -349,7 +349,7 @@ const Virtual_Tech_Village = () => {
     fetchData();
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideProfile);
     document.addEventListener("mousedown", handleClickOutsideCompany);
     document.addEventListener("mousedown", handleClickOutsideNewJob);

@@ -80,7 +80,7 @@ const Layout = ({ children, sideHighlight }) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideNotification);
 
     return () => {
