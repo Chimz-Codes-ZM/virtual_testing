@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import Tech2 from "/public/tech-village/tech2.jpg";
 import jwt_decode from "jwt-decode";
 
-import { signIn, getSession, getProviders } from "next-auth/react";
+
 
 function Login() {
   const [email_, setEmail] = useState("");

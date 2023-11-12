@@ -11,7 +11,6 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import axios from "axios";
-import { signOut } from "next-auth/react";
 
 import jwt_decode from "jwt-decode";
 
@@ -24,7 +23,7 @@ import { GoInbox } from "react-icons/go";
 import { CgProfile } from "react-icons/cg";
 import { BiLogOut } from "react-icons/bi";
 import { AiOutlineBell } from "react-icons/ai";
-import { useSession } from "next-auth/react";
+
 
 const Layout = ({ children, sideHighlight }) => {
   const [userData, setUserData] = useState(null);
@@ -145,7 +144,7 @@ const Layout = ({ children, sideHighlight }) => {
           <div className="w-full h-full flex flex-col">
             <div
               className="w-full pl-5 flex-shrink-0 h-20 gap-4 flex items-center cursor-pointer"
-              onClick={signOut}
+              
             >
               <div className="relative w-10 h-10 rounded">
                 <Image src={Logo} priority alt="logo" fill />

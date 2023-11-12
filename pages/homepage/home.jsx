@@ -4,12 +4,12 @@ import Image from "next/image";
 import { AiOutlineMail } from "react-icons/ai";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
-import { signOut } from "next-auth/react";
+
 
 
 const Home = ({ title, mediaSrc, mediaType, description, buttons }) => {
   const handleSignOut = () => {
-  signOut()
+
   }
   return (
     <div className="w-screen h-screen relative overflow-hidden text-center">
