@@ -11,7 +11,6 @@ import jwt_decode from "jwt-decode";
 
 import { signIn, getSession, getProviders } from "next-auth/react";
 
-
 function Login() {
   const [email_, setEmail] = useState("");
   const [password_, setPassword] = useState("");
@@ -51,91 +50,85 @@ function Login() {
 
   const { username, password } = formData;
 
-
-
   const onChange = (e) => {
     setLoginError(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(formData)
+    console.log(formData);
   };
 
-  // const onSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   console.log("Before token fetch");
-
-  //   // const response = await fetch("http://127.0.0.1:8000/api/token/", {
-  //   const response = await fetch(
-  //     "https://baobabpad-334a8864da0e.herokuapp.com/api/token/",
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         email: username,
-  //         password: password,
-  //       }),
-  //     }
-  //   );
-
-
-  //   const data = await response.json();
-
-  //   if (response.ok) {
-  //     localStorage.setItem("token", data.access);
-
-  //     const token = data.access;
-  //     const decodedToken = jwt_decode(token);
-  //     const id = decodedToken.user_id;
-
-  //     // const response = await fetch(`http://127.0.0.1:8000/api/user_type/${id}/`, {
-  //     const response = await fetch(
-  //       `https://baobabpad-334a8864da0e.herokuapp.com/api/user_type/${id}/`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-
-  //     if (response.ok) {
-  //       // console.log(response.text());
-
-  //       const responseData = await response.text();
-
-  //        if (responseData === `"company profile"`|| responseData === `"talent profile"`) {
-          
-  //         router.push("/dashboard");
-  //       }
-         
-  //       else if (responseData === `"village profile"`) {
-          
-  //         router.push("/virtual_tech_village");
-  //       }
-  //       else if (responseData === `"village company profile"`) {
-          
-  //         router.push("/virtual_tech_village");
-  //       }
-  //     } else {
-  //       // Handle error cases (e.g., network errors)
-  //       handleLoginError();
-  //     }
-  //   }
-  // };
-
-  const handleLoginUser = async (e) => {    
+  const onSubmit = async (e) => {
     e.preventDefault();
-    await signIn("credentials", {
-      redirect: false,
-      email: formData.username,
-      password: formData.password
-    })
 
-    router.push("/virtual_tech_village")
-  }
+    console.log("Before token fetch");
 
+    // const response = await fetch("http://127.0.0.1:8000/api/token/", {
+    const response = await fetch(
+      "https://baobabpad-334a8864da0e.herokuapp.com/api/token/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.username,
+          password: formData.password,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem("token", data.access);
+
+      const token = data.access;
+      const decodedToken = jwt_decode(token);
+      const id = decodedToken.user_id;
+
+      // const response = await fetch(`http://127.0.0.1:8000/api/user_type/${id}/`, {
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/api/user_type/${id}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        // console.log(response.text());
+
+        const responseData = await response.text();
+
+        if (
+          responseData === `"company profile"` ||
+          responseData === `"talent profile"`
+        ) {
+          router.push("/dashboard");
+        } else if (
+          responseData === `"village profile"` ||
+          responseData === `"talent profile"` ||
+          responseData === `"community manager"`
+        ) {
+          router.push("/virtual_tech_village");
+        }
+      } else {
+        handleLoginError();
+      }
+    }
+  };
+
+  // const handleLoginUser = async (e) => {
+  //   e.preventDefault();
+  //   await signIn("credentials", {
+  //     redirect: false,
+  //     email: formData.username,
+  //     password: formData.password
+  //   })
+
+  //   router.push("/virtual_tech_village")
+  // }
 
   return (
     <div className="flex items-center justify-center p-6 sm:p-12 md:p-16 border h-screen relative">
@@ -162,7 +155,6 @@ function Login() {
           alt="baobab tree"
           className="h-full object-cover z-10 absolute"
         />
-       
       </div>
 
       <div className="w-full sm:w-1/2 md:w-1/3 h-full relative">
@@ -172,7 +164,7 @@ function Login() {
           </Link>
         </div>
         <form
-          onSubmit={handleLoginUser}
+          onSubmit={onSubmit}
           className="flex flex-col gap-4 w-full h-full border border-l-teal-700 md:border-l-slate-50 border-r-teal-700 border-y-teal-700 p-4 py-8 rounded-l-xl md:rounded-l-none rounded-r-xl justify-center relative"
         >
           <h1 className="text-center text-2xl pb-4">Login</h1>

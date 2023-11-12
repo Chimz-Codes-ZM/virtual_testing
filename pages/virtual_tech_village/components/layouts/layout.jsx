@@ -1,9 +1,14 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
+import React, {
+  useEffect,
+  useContext,
+  useState,
+  useRef,
+  useLayoutEffect,
+} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import ContextProvider from "../context/context";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import axios from "axios";
 import { signOut } from "next-auth/react";
@@ -14,7 +19,7 @@ import Logo from "/public/logo.png";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { MdOutlineConnectWithoutContact } from "react-icons/md";
 import { FaSlideshare } from "react-icons/fa";
-import { FcSupport } from "react-icons/fc"
+import { FcSupport } from "react-icons/fc";
 import { GoInbox } from "react-icons/go";
 import { CgProfile } from "react-icons/cg";
 import { BiLogOut } from "react-icons/bi";
@@ -30,7 +35,6 @@ const Layout = ({ children, sideHighlight }) => {
   const router = useRouter();
   const notificationRef = useRef();
 
-  const { data: session } = useSession();
 
   const handleClickOutsideNotification = (event) => {
     if (
@@ -41,11 +45,20 @@ const Layout = ({ children, sideHighlight }) => {
     }
   };
 
-  useEffect(() => {
-    if (session) {
-      localStorage.setItem("token", session.access);
-      // console.log(session);
+  function checkToken() {
+    if (!localStorage.getItem("token")) {
+      router.push("../homepage/login");
+      return;
     }
+  }
+
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+    router.push("/");
+  };
+
+  useLayoutEffect(() => {
+    checkToken();
 
     const token = localStorage.getItem("token");
 
@@ -249,11 +262,8 @@ const Layout = ({ children, sideHighlight }) => {
 
               <div className="w-full h-max rounded-r-full pt-5 pr-5">
                 <div className="w-full flex flex-col">
-                  <div href="/" className="" onClick={signOut}>
-                    <div
-                      className="flex transition-all duration-500 gap-3 flex items-center rounded px-2 py-1 text-gray-100 hover:font-bold hover:bg-gray-100 hover:text-gray-800 cursor-pointer "
-                      onClick={signOut}
-                    >
+                  <div href="/" className="" onClick={logoutHandler}>
+                    <div className="flex transition-all duration-500 gap-3 flex items-center rounded px-2 py-1 text-gray-100 hover:font-bold hover:bg-gray-100 hover:text-gray-800 cursor-pointer ">
                       <BiLogOut className="text-xl logout" />
                       <h1 className="hidden sm:block">Logout</h1>
                     </div>
@@ -285,7 +295,9 @@ const Layout = ({ children, sideHighlight }) => {
                     {notificationContent && notificationContent.length > 0 ? (
                       notificationContent.map((notification, index) => (
                         <div className="p-2" key={index}>
-                          <Link href={`/virtual_tech_village/${notification.route}`}>
+                          <Link
+                            href={`/virtual_tech_village/${notification.route}`}
+                          >
                             <div className="flex items-center gap-2 hover:bg-gray-50 hover:text-gray-700">
                               <div className="h-8 w-8 relative">
                                 <Image
@@ -371,11 +383,5 @@ const Layout = ({ children, sideHighlight }) => {
 };
 
 export default function WrappedLayout(props) {
-  return (
-    <middleware>
-      <ContextProvider>
-        <Layout {...props} />
-      </ContextProvider>
-    </middleware>
-  );
+  return <Layout {...props} />;
 }

@@ -5,7 +5,9 @@ import Layout from "./components/layouts/layout";
 import SharepadLayout from "./components/layouts/sharepadLayout";
 import SidePanel from "./components/events/SidePanel";
 
-import New_Event from "./components/forms/new_event";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+
 
 import { motion, AnimatePresence } from "framer-motion";
 import { BsFillCalendar2EventFill } from "react-icons/bs";
@@ -20,33 +22,47 @@ const Events = () => {
     date_time: "",
     host: "",
     description: "",
-    image: null
+    image: null,
   });
+
+  const [image, setImage] = useState(null);
+  const imageRef = useRef();
   const [addEvent, setAddEvent] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+
+  const [events, setEvents] = useState([])
 
   const handleAddEvent = () => {
     setAddEvent(true);
   };
 
   const handleEventChange = (e) => {
-    if (e.target) {
-      const { name, value, files } = e.target;
-  
-      setNewEvent((prevEvent) => ({
-        ...prevEvent,
-        [name]: name === 'image' ? files[0] : value,
-      }));
-    }
+    const { name, value } = e.target;
+
+    setNewEvent({
+      ...newEvent,
+      [name]: value,
+    });
   };
-  
+
+  const handleChange = (e) => {
+    imageRef.current = e.target.files[0];
+  };
 
   const handleSelectEvent = (item) => {
     setSelectedEvent(item);
   };
 
-  const handleEventSubmit = (formData) => {
-    console.log(formData)
+  const handleEventSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    for (const key of Object.keys(newEvent)) {
+      formData.append(key, newEvent[key]);
+    }
+
+    formData.append("image", imageRef.current);
     const sendData = async () => {
       const response = await fetch(
         `https://baobabpad-334a8864da0e.herokuapp.com/village/events/109/`,
@@ -57,14 +73,13 @@ const Events = () => {
       );
       if (response.ok) {
         alert("New event added successfully");
-        setAddEvent(false)
+        setAddEvent(false);
         setNewEvent({
           event_name: "",
           date_time: "",
           host: "",
           description: "",
-          image: "",
-        })
+        });
       }
 
       if (response.status === 400) {
@@ -73,6 +88,7 @@ const Events = () => {
     };
 
     sendData();
+    console.log(formData)
   };
 
   const handleClickOutsideNewEvent = (event) => {
@@ -103,6 +119,31 @@ const Events = () => {
     };
   }, []);
 
+
+  // AXIOS REQUEST
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    const decodedToken = jwt_decode(token);
+    const id = decodedToken.user_id;
+
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/events/${id}/`
+        );
+        console.log("This is the events ===>", response.data);
+        setEvents(response.data)
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    }
+
+    fetchData();
+  }, []);
+ 
+
   return (
     <>
       <Layout sideHighlight="sharepad">
@@ -113,10 +154,10 @@ const Events = () => {
                 initial={{ opacity: 0, x: "100%" }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: "100%" }}
-                className="fixed inset-0 z-[99] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-sm"
+                className="fixed inset-0 z-[99] bg-gray-900 bg-opacity-20 transition backdrop-blur-sm"
               >
                 <div
-                  className="fixed top-0 right-0 h-full bg-white overflow-y-auto p-4"
+                  className="fixed top-0 right-0 h-full bg-gray-900 overflow-y-auto overflow-x-hidden"
                   ref={selectedEventRef}
                 >
                   <SidePanel
@@ -141,11 +182,126 @@ const Events = () => {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                     >
-                      <New_Event
+                      {/* <New_Event
                         onSubmit={handleEventSubmit}
                         onChange={handleEventChange}
+                        imageChange={handleChange}
                         value={newEvent}
-                      />
+                        imageValue={image}
+                      /> */}
+
+                      <div className="p-6 bg-white border z-50 rounded flex flex-col gap-2">
+                        <div className="flex flex-col gap-4">
+                          <h1 className="text-2xl font-semibold">
+                            Create a New Community Event
+                          </h1>
+                          <p className="text-lg font-normal text-gray-500">
+                            Fill out the details below to create a new event for
+                            the community
+                          </p>
+                        </div>
+
+                        <form
+                          onSubmit={handleEventSubmit}
+                          className="flex flex-col gap-4"
+                        >
+                          <div className="flex flex-col gap-1">
+                            <label
+                              htmlFor="event_name"
+                              className="text-sm font-medium"
+                            >
+                              Event Name
+                            </label>
+                            <input
+                              type="text"
+                              name="event_name"
+                              value={newEvent.event_name}
+                              className="border rounded px-1"
+                              onChange={handleEventChange}
+                            />
+                          </div>
+
+                          <div className="flex flex-col gap-1">
+                            <label
+                              htmlFor="host"
+                              className="text-sm font-medium"
+                            >
+                              Hosted By:
+                            </label>
+                            <input
+                              type="text"
+                              name="host"
+                              value={newEvent.host}
+                              className="border rounded px-1"
+                              onChange={handleEventChange}
+                              placeholder="e.g., Baobabpad"
+                            />
+                          </div>
+
+                          <div className="flex flex-col gap-1">
+                            <label
+                              htmlFor="date_time"
+                              className="text-sm font-medium"
+                            >
+                              Date and time
+                            </label>
+                            <input
+                              type="datetime-local"
+                              name="date_time"
+                              value={newEvent.date_time}
+                              className="border rounded px-1"
+                              onChange={handleEventChange}
+                              placeholder="e.g., On-site"
+                            />
+                          </div>
+
+                          <div className="flex flex-col gap-1">
+                            <div>
+                              <label
+                                htmlFor="description"
+                                className="block text-sm font-medium text-gray-700"
+                              >
+                                Description
+                              </label>
+
+                              <textarea
+                                id="OrderNotes"
+                                className="mt-2 w-full px-2 rounded-lg border-gray-200 align-top shadow-sm sm:text-sm"
+                                rows="4"
+                                placeholder="Enter the event description..."
+                                name="description"
+                                value={newEvent.description}
+                                onChange={handleEventChange}
+                              ></textarea>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col gap-1">
+                            <label
+                              htmlFor="image"
+                              className="text-sm font-medium"
+                            >
+                              Cover Image
+                            </label>
+                            <input
+                              accept="image/*"
+                              id="image"
+                              type="file"
+                              name="image"
+                              value={image}
+                              className="border rounded px-1"
+                              onChange={handleChange}
+                              placeholder="e.g., www.glassdoor.com/job-123"
+                            />
+                          </div>
+
+                          <div className="">
+                            <button className="bg-gray-900 text-white w-full rounded-md p-1 shadow hover:bg-gray-800 transition delay-100">
+                              Add New Event
+                            </button>
+                          </div>
+                        </form>
+                      </div>
                     </motion.div>
                   </div>
                 </motion.div>
@@ -168,33 +324,33 @@ const Events = () => {
               </div>
             </div>
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:p-6 ">
-              {event_grid.map((item) => (
+              {events.map((item, index) => (
                 <div
                   className="border shadow p-2 flex flex-col gap-3 transform hover:scale-105 transition-transform cursor-pointer"
                   onClick={() => handleSelectEvent(item)}
-                  key={item.id}
+                  key={index}
                 >
                   <div>
                     <img
-                      alt="Event 1"
+                      alt={item.event_name}
                       className="object-cover w-full h-60 rounded-md"
                       height="200"
-                      src={item.img_src}
+                      src={item.image}
                       style={{
                         aspectRatio: "300/200",
                         objectFit: "cover",
                       }}
                     />
-                    <h1 className="text-lg font-semibold">{item.title}</h1>
+                    <h1 className="text-lg font-semibold">{item.event_name}</h1>
                     <p className="font-medium text-xs md:text-sm text-gray-700">
                       Hosted by {item.host}
                     </p>
                   </div>
                   <div>
                     <p className="text-red-700">
-                      Date & Time: {item.date_time}
+                      Date & Time: {item.data_time}
                     </p>
-                    <p className="font-semibold">{item.price}</p>
+                    <p className="font-semibold">$75</p>
                   </div>
                 </div>
               ))}

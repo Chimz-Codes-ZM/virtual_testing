@@ -6,17 +6,17 @@ const SharepadLayout = ({ children, title }) => {
     <div className="w-full flex flex-col xl:flex-row gap-5">
       <div className="w-30 gap-3 flex flex-col flex-shrink-0">
         <div className="w-full flex flex-col gap-2">
-          <h1 className="text-green-600">Virtual Tech Village</h1>
+          {/* <h1 className="text-green-600">Virtual Tech Village</h1> */}
           <div className="w-full flex flex-col gap-2 pl-2">
             <Link href="/virtual_tech_village/sharepad">
               <h1
                 className={
-                  title === "knowledgehub"
+                  title === "trends"
                     ? "border-l-4 pl-2 border-green-600"
-                    : "hover:border-l-4 pl-2"
+                    : "hover:border-l-4 pl-2 border-l-4 border-white hover:border-gray-200"
                 }
               >
-                Knowledgehub
+                Trends
               </h1>
             </Link>
 
@@ -25,31 +25,31 @@ const SharepadLayout = ({ children, title }) => {
                 className={
                   title === "events"
                     ? "border-l-4 pl-2 border-green-600"
-                    : "hover:border-l-4 pl-2"
+                    : "hover:border-l-4 pl-2 border-l-4 border-white hover:border-gray-200"
                 }
               >
                 Events
               </h1>
             </Link>
 
-            <Link href="/virtual_tech_village/resources">
+            {/* <Link href="/virtual_tech_village/resources">
               <h1
                 className={
                   title === "resources"
                     ? "border-l-4 pl-2 border-green-600"
-                    : "hover:border-l-4 pl-2"
+                    : "hover:border-l-4 pl-2 border-l-4 border-white hover:border-gray-200"
                 }
               >
                 Resources
               </h1>
-            </Link>
+            </Link> */}
 
             <Link href="/virtual_tech_village/careers">
               <h1
                 className={
                   title === "careers"
                     ? "border-l-4 pl-2 border-green-600"
-                    : "hover:border-l-4 pl-2"
+                    : "hover:border-l-4 pl-2 border-l-4 border-white hover:border-gray-200"
                 }
               >
                 Careers
@@ -58,7 +58,7 @@ const SharepadLayout = ({ children, title }) => {
           </div>
         </div>
       </div>
-      <div className="flex py-3 px-1 md:px-5 overflow-x-hidden overflow-y-auto flex-grow shadow rounded flex-col grow ">
+      <div className="flex py-3 px-1 md:px-5 overflow-x-hidden overflow-y-auto shadow rounded flex-col grow ">
         {children}
       </div>
     </div>

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 
-const New_Event = ({ onSubmit, onChange, value }) => {
+const New_Event = ({ onSubmit, onChange, value, imageChange, imageValue }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -11,13 +11,17 @@ const New_Event = ({ onSubmit, onChange, value }) => {
     formData.append("date_time", value?.date_time);
     formData.append("description", value?.description);
   
-    if (value?.image instanceof File) {
-      formData.append("image", value?.image);
-    }
-  
     onSubmit(formData);
   };
-  
+
+  const [image, setImage] = useState(value?.image)  
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+    imageChange({
+      image: e.target.files[0],
+    });
+  };
 
   return (
     <div className="p-6 bg-white border z-50 rounded flex flex-col gap-2">
@@ -100,9 +104,9 @@ const New_Event = ({ onSubmit, onChange, value }) => {
             id="image"
             type="file"
             name="image"
-            value={value?.image}
+            value={image}
             className="border rounded px-1"
-            onChange={onChange}
+            onChange={handleImageChange}
             placeholder="e.g., www.glassdoor.com/job-123"
           />
         </div>

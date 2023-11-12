@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
@@ -148,14 +147,9 @@ const Virtual_Tech_Village = () => {
   });
   const [id, setId] = useState("");
 
-  const router = useRouter();
-  const { data: session } = useSession();
+  const router = useRouter(); 
 
   const login = () => {
-    if (session) {
-      localStorage.setItem("token", session.access);
-      // console.log(session);
-    }
 
     const token = localStorage.getItem("token");
 

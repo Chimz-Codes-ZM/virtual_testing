@@ -3,10 +3,8 @@ import Layout from "../../components/layouts/layout";
 import Head from "next/head";
 import Inbox from "../../components/inbox/inbox";
 import MessageInput from "../../components/inbox/MessageInput";
-import { Context, ContextProvider } from "../../components/context/context";
 import { useRouter } from "next/router";
 import { JellyTriangle } from "@uiball/loaders";
-import { useSession } from "next-auth/react";
 import jwt_decode from "jwt-decode";
 import MessageList from "../../components/inbox/MessageList";
 import ConversationList from "../../components/inbox/conversationList";
@@ -51,13 +49,10 @@ const Index = () => {
   const userId =
     userData && userData.length > 0 ? `${userData[0].user_id}` : "";
 
-  const { data: session } = useSession();
+
 
   useEffect(() => {
-    if (session) {
-      localStorage.setItem("token", session.access);
-      // console.log(session);
-    }
+
     const token = localStorage.getItem("token");
 
     const decodedToken = jwt_decode(token);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import Layout from "../components/layouts/layout";
 
 import { useRouter } from "next/router";
@@ -61,11 +61,11 @@ const MemberInfo = () => {
         setLoading(false);
       });
   };
-  useEffect(() => {
+  useLayoutEffect(() => {
     fetchInfo();
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const token = localStorage.getItem("token");
 
     const decodedToken = jwt_decode(token);
