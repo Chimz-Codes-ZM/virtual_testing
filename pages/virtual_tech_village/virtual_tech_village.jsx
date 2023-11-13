@@ -195,14 +195,14 @@ const Virtual_Tech_Village = () => {
     memberStartRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     checkProfileComplete();
     scrollToTop();
     console.log(selectedAttributes);
     console.log(selectedCompanyAttributes);
   }, [selectedCompanyAttributes]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
 
     const decodedToken = jwt_decode(token);
@@ -223,7 +223,7 @@ const Virtual_Tech_Village = () => {
     fetchData();
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
 
     const decodedToken = jwt_decode(token);
@@ -349,7 +349,7 @@ const Virtual_Tech_Village = () => {
     fetchData();
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideProfile);
     document.addEventListener("mousedown", handleClickOutsideCompany);
     document.addEventListener("mousedown", handleClickOutsideNewJob);
