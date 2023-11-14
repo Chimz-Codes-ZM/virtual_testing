@@ -15,6 +15,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 import Logo from "/public/logo.png";
+import { IoPeopleCircleOutline } from "react-icons/io5";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { MdOutlineConnectWithoutContact } from "react-icons/md";
 import { FaSlideshare } from "react-icons/fa";
@@ -172,6 +173,24 @@ const Layout = ({ children, sideHighlight }) => {
                     </div>
                   </Link>
                 </div>
+
+                <div className="w-full flex flex-col">
+                  <Link href="/virtual_tech_village/v_internship">
+                    <div
+                      className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
+											${
+                        sideHighlight === "virtual internship"
+                          ? "font-bold bg-gray-100 text-gray-900"
+                          : "hover:font-bold hover:bg-gray-100 hover:text-gray-800"
+                      }
+										`}
+                    >
+                      <IoPeopleCircleOutline className="text-xl" />
+                      <h1 className="hidden sm:block">Intern Pool</h1>
+                    </div>
+                  </Link>
+                </div>
+
 
                 <div className="w-full flex flex-col">
                   <Link href="/virtual_tech_village/connect">

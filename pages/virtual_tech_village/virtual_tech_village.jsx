@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, useContext, useLayoutEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useContext,
+  useLayoutEffect,
+} from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -147,10 +153,9 @@ const Virtual_Tech_Village = () => {
   });
   const [id, setId] = useState("");
 
-  const router = useRouter(); 
+  const router = useRouter();
 
   const login = () => {
-
     const token = localStorage.getItem("token");
 
     const decodedToken = jwt_decode(token);
@@ -311,7 +316,7 @@ const Virtual_Tech_Village = () => {
   };
 
   const handlePageFetch = (number) => {
-    setMemberList(null)
+    setMemberList(null);
 
     const token = localStorage.getItem("token");
 
@@ -343,7 +348,7 @@ const Virtual_Tech_Village = () => {
 
         setCompanyShow(accountType === "village company profile");
         setMemberShow(accountType !== "village company profile");
-        setActivePage(number)
+        setActivePage(number);
       }
     };
     fetchData();
@@ -594,8 +599,11 @@ const Virtual_Tech_Village = () => {
           {((memberList &&
             memberList?.user[0]?.account_type === "village talent profile") ||
             (memberList &&
-              memberList?.user[0]?.account_type ===
-                "village admin profile")) && (
+              memberList?.user[0]?.account_type === "village admin profile") ||
+            (memberList &&
+              memberList?.user[0]?.account_type === "community manager") || (
+                memberList && memberList?.user[0]?.account_type === "village company profile"
+              )) && (
             <div
               className={` pb-1 w-max cursor-pointer  ${
                 memberShow
@@ -611,8 +619,8 @@ const Virtual_Tech_Village = () => {
             </div>
           )}
 
-          {(memberList?.user[0]?.account_type === "village company profile" ||
-            memberList?.user[0]?.account_type === "village admin profile") && (
+          {(memberList?.user[0]?.account_type === "village admin profile" ||
+            memberList?.user[0]?.account_type === "community manager") && (
             <div
               className={`"pb-1 w-max cursor-pointer ${
                 companyShow
@@ -633,7 +641,11 @@ const Virtual_Tech_Village = () => {
           {((memberList?.user[0]?.account_type === "village talent profile" &&
             memberShow) ||
             (memberList?.user[0]?.account_type === "village admin profile" &&
-              memberShow)) && (
+              memberShow) ||
+            (memberList?.user[0]?.account_type === "community manager" &&
+              memberShow) ||
+            memberList?.user[0]?.account_type ===
+              "village company profile") && (
             <form className="flex flex-col md:flex-row md:justify-around">
               <div className="mb-4 md:mb-0">
                 <select
@@ -690,7 +702,7 @@ const Virtual_Tech_Village = () => {
             </form>
           )}
 
-          {((memberList?.user[0]?.account_type === "village company profile" &&
+          {((memberList?.user[0]?.account_type === "community manager" &&
             companyShow) ||
             (memberList?.user[0]?.account_type === "village admin profile" &&
               companyShow)) && (
@@ -775,7 +787,9 @@ const Virtual_Tech_Village = () => {
       </div>
 
       {(memberList.user[0]?.account_type === "village talent profile" ||
-        memberList.user[0].account_type === "village admin profile") && (
+        memberList.user[0].account_type === "village admin profile" ||
+        memberList.user[0].account_type === "community manager" || 
+        memberList.user[0].account_type === "village company profile") && (
         <AnimatePresence>
           {memberShow && (
             <motion.div
@@ -786,8 +800,8 @@ const Virtual_Tech_Village = () => {
             >
               {filteredData.length === 0 ? (
                 <div className="flex min-h-[10rem] h-full w-screen items-center justify-center ">
-                <JellyTriangle size={40} color="#231F20" />
-              </div>
+                  <JellyTriangle size={40} color="#231F20" />
+                </div>
               ) : (
                 visibleData.map((profile, index) => (
                   <MemberProfile
@@ -907,7 +921,7 @@ const Virtual_Tech_Village = () => {
         )}
       </AnimatePresence>
 
-      {(memberList.user[0].account_type === "village company profile" ||
+      {(memberList.user[0].account_type === "community manager" ||
         memberList.user[0].account_type === "village admin profile") && (
         <div
           className="fixed bottom-5 right-10 rounded p-2 bg-white text-2xl border cursor-pointer transition transform hover:scale-105"

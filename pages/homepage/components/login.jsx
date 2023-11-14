@@ -101,15 +101,11 @@ function Login() {
 
         const responseData = await response.text();
 
-        if (
-          responseData === `"company profile"` ||
-          responseData === `"talent profile"`
-        ) {
-          router.push("/dashboard");
-        } else if (
+       if (
           responseData === `"village profile"` ||
-          responseData === `"talent profile"` ||
-          responseData === `"community manager"`
+          responseData === `"village admin profile"` ||
+          responseData === `"community manager"`||
+          responseData === `"village company profile"`
         ) {
           router.push("/virtual_tech_village");
         }
