@@ -8,7 +8,6 @@ import SidePanel from "./components/events/SidePanel";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-
 import { motion, AnimatePresence } from "framer-motion";
 import { BsFillCalendar2EventFill } from "react-icons/bs";
 
@@ -173,7 +172,7 @@ const Events = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
+                  className="fixed inset-0 flex items-center justify-center z-[999] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
                 >
                   <div ref={newEventRef}>
                     {" "}
@@ -190,7 +189,7 @@ const Events = () => {
                         imageValue={image}
                       /> */}
 
-                      <div className="p-6 bg-white border z-50 rounded flex flex-col gap-2">
+                      <div className="p-6 bg-white border z-[50] rounded flex flex-col gap-2">
                         <div className="flex flex-col gap-4">
                           <h1 className="text-2xl font-semibold">
                             Create a New Community Event

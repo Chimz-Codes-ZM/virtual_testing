@@ -381,7 +381,8 @@ const Layout = ({ children, sideHighlight }) => {
               <span className="text-sm truncate flex sm:max-w-[200px] font-bold">
                 {userData &&
                   (userData[0]?.account_type === "village talent profile" ||
-                  userData[0]?.account_type === "village admin profile" ? (
+                  userData[0]?.account_type === "village admin profile" ||
+                  userData[0]?.account_type === "community manager" ? (
                     <div>
                       {userData[0]?.first_name} {userData[0]?.last_name}
                     </div>

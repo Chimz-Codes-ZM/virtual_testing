@@ -92,7 +92,7 @@ const MemberInfo = () => {
     e.preventDefault();
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/download_cv/${loggedIn}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/download_cv/${id}/`,
         {
           method: "POST",
           headers: {

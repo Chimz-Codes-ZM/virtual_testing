@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
-const New_job = ({ onSubmit, onChange, value}) => {
- 
+const New_job = ({ onSubmit, onChange, value }) => {
   return (
     <div className="p-6 bg-white border z-50 rounded flex flex-col gap-2">
       <div className="flex flex-col gap-4">
@@ -64,6 +63,22 @@ const New_job = ({ onSubmit, onChange, value}) => {
             value={value?.link}
             className="border rounded px-1"
             onChange={onChange}
+            placeholder="e.g., www.glassdoor.com/job-123"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="image" className="text-sm font-medium">
+            Cover Image
+          </label>
+          <input
+            accept="image/*"
+            id="image"
+            type="file"
+            name="image"
+            value=""
+            className="border rounded px-1"
+            onChange=""
             placeholder="e.g., www.glassdoor.com/job-123"
           />
         </div>

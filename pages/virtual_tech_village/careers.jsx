@@ -4,12 +4,14 @@ import Layout from "./components/layouts/layout";
 import SharepadLayout from "./components/layouts/sharepadLayout";
 import SidePanel from "./components/events/SidePanel";
 
-import New_Event from "./components/forms/new_event";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { BsFillCalendar2EventFill } from "react-icons/bs";
 
 import { event_grid } from "../data";
+import { GiJawbone } from "react-icons/gi";
 const Careers = () => {
     const newEventRef = useRef();
     const selectedEventRef = useRef();
@@ -25,6 +27,7 @@ const Careers = () => {
     const imageRef = useRef();
     const [addEvent, setAddEvent] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [jobs, setJobs] = useState([])
   
     const handleAddEvent = () => {
       setAddEvent(true);
@@ -99,6 +102,27 @@ const Careers = () => {
         setSelectedEvent(false);
       }
     };
+
+    useEffect(() => {
+      const token = localStorage.getItem("token");
+  
+      const decodedToken = jwt_decode(token);
+      const id = decodedToken.user_id;
+  
+      async function fetchData() {
+        try {
+          const response = await axios.get(
+            `https://baobabpad-334a8864da0e.herokuapp.com/village/job_listings/${id}/`
+          );
+          console.log("This is the careers data ===>", response.data);
+          setJobs(response.data)
+        } catch (error) {
+          console.error("Error fetching data: ", error);
+        }
+      }
+  
+      fetchData();
+    }, []);
   
     useEffect(() => {
       document.addEventListener("mousedown", handleClickOutsideNewEvent);
@@ -293,33 +317,33 @@ const Careers = () => {
               </div>
             </div>
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:p-6 ">
-              {event_grid.map((item) => (
+              {jobs.map((job, index) => (
                 <div
                   className="border shadow p-2 flex flex-col gap-3 transform hover:scale-105 transition-transform cursor-pointer"
                   onClick={() => handleSelectEvent(item)}
-                  key={item.id}
+                  key={index}
                 >
                   <div>
                     <img
                       alt="Event 1"
                       className="object-cover w-full h-60 rounded-md"
                       height="200"
-                      src={item.img_src}
+                      src={job.image}
                       style={{
                         aspectRatio: "300/200",
                         objectFit: "cover",
                       }}
                     />
-                    <h1 className="text-lg font-semibold">{item.title}</h1>
+                    <h1 className="text-lg font-semibold">{job.position}</h1>
                     <p className="font-medium text-xs md:text-sm text-gray-700">
-                      Hosted by {item.host}
+                      {job.job_type}
                     </p>
                   </div>
                   <div>
-                    <p className="text-red-700">
-                      Date & Time: {item.date_time}
+                    <p className="">
+                      {job.location}
                     </p>
-                    <p className="font-semibold">{item.price}</p>
+                    <p className="font-semibold">{job.price}</p>
                   </div>
                 </div>
               ))}

@@ -388,6 +388,10 @@ const Virtual_Tech_Village = () => {
     setAddNewJobShow(true);
   };
 
+  const imageRef = useRef()
+  
+  const [jobImage, setJobImage] = useState(null)
+
   const [newJob, setNewJob] = useState({
     position: "",
     job_type: "",
@@ -404,17 +408,27 @@ const Virtual_Tech_Village = () => {
     });
   };
 
+  const handleNewJobImage = (e) => {
+    imageRef.current = e.target.files[0]
+  }
+
   const handleNewJobSubmit = (e) => {
     e.preventDefault();
+
+    const formData = new FormData()
+
+    for (const key of Object.keys(newJob)) {
+      formData.append(key, newJob[key]);
+    }
+
+    formData.append("image", imageRef.current);
+
     const sendData = async () => {
       const response = await fetch(
         `https://baobabpad-334a8864da0e.herokuapp.com/village/job_listings/${id}/`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newJob),
+          body: formData,
         }
       );
       if (response.ok) {
@@ -434,6 +448,7 @@ const Virtual_Tech_Village = () => {
     };
 
     sendData();
+    console.log(formData)
   };
 
   const handleInputChange = async (e) => {
@@ -573,7 +588,7 @@ const Virtual_Tech_Village = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
+            className="fixed inset-0 flex items-center justify-center z-[999] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
           >
             <div ref={newJobRef}>
               {" "}
@@ -582,12 +597,100 @@ const Virtual_Tech_Village = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <New_job
+                {/* <New_job
                   userId={id}
                   onSubmit={handleNewJobSubmit}
                   onChange={handleNewJobChange}
                   value={newJob}
-                />
+                /> */}
+
+<div className="p-6 bg-white border z-50 rounded flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
+        <h1 className="text-2xl font-semibold">Enter New Job Listing</h1>
+        <p className="text-lg font-normal text-gray-500">
+          Fill out the details below to post a new job opportunity
+        </p>
+      </div>
+
+      <form onSubmit={handleNewJobSubmit} className="flex flex-col gap-4">
+        <div className="flex flex-col gap-1">
+          <label htmlFor="position" className="text-sm font-medium">
+            Position
+          </label>
+          <input
+            type="text"
+            name="position"
+            value={newJob.position}
+            className="border rounded px-1"
+            onChange={handleNewJobChange}
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="job_type" className="text-sm font-medium">
+            Job Type
+          </label>
+          <input
+            type="text"
+            name="job_type"
+            value={newJob.job_type}
+            className="border rounded px-1"
+            onChange={handleNewJobChange}
+            placeholder="e.g., Full Time"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="location" className="text-sm font-medium">
+            Location
+          </label>
+          <input
+            type="text"
+            name="location"
+            value={newJob.location}
+            className="border rounded px-1"
+            onChange={handleNewJobChange}
+            placeholder="e.g., On-site"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="link" className="text-sm font-medium">
+            Link
+          </label>
+          <input
+            type="text"
+            name="link"
+            value={newJob.link}
+            className="border rounded px-1"
+            onChange={handleNewJobChange}
+            placeholder="e.g., www.glassdoor.com/job-123"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="image" className="text-sm font-medium">
+            Cover Image
+          </label>
+          <input
+            accept="image/*"
+            id="image"
+            type="file"
+            name="image"
+            value={jobImage}
+            className="border rounded px-1"
+            onChange={handleNewJobImage}
+            placeholder="e.g., www.glassdoor.com/job-123"
+          />
+        </div>
+
+        <div className="">
+          <button className="bg-gray-900 text-white w-full rounded-md p-1 shadow hover:bg-gray-800 transition delay-100">
+            Add New Job
+          </button>
+        </div>
+      </form>
+    </div>
               </motion.div>
             </div>
           </motion.div>
