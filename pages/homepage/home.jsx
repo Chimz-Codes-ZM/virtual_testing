@@ -51,7 +51,7 @@ const Home = ({ title, mediaSrc, mediaType, description, buttons }) => {
 
             <div className="gap-6 sm:gap-10 flex flex-col sm:flex-row h-10 rounded">
             <div className="flex text-white text-xl sm:text-2xl font-bold hover:text-gray-100 items-center justify-center px-5 h-10 rounded background-green">
-                <Link href="/virtual_tech_village" className="self-center">
+                <Link href="/homepage/login" className="self-center">
                   Virtual Tech Village
                 </Link>
               </div>
