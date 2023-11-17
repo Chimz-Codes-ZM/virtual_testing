@@ -192,7 +192,7 @@ const Layout = ({ children, sideHighlight }) => {
                 </div>
 
 
-                <div className="w-full flex flex-col">
+                {/* <div className="w-full flex flex-col">
                   <Link href="/virtual_tech_village/connect">
                     <div
                       className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
@@ -207,9 +207,9 @@ const Layout = ({ children, sideHighlight }) => {
                       <h1 className="hidden sm:block">Connect</h1>
                     </div>
                   </Link>
-                </div>
+                </div> */}
 
-                <div className="w-full flex flex-col">
+                {/* <div className="w-full flex flex-col">
                   <Link href="/virtual_tech_village/sharepad">
                     <div
                       className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
@@ -224,7 +224,7 @@ const Layout = ({ children, sideHighlight }) => {
                       <h1 className="hidden  sm:block">SharePad</h1>
                     </div>
                   </Link>
-                </div>
+                </div> */}
 
                 <div className="w-full flex flex-col">
                   <Link href="/virtual_tech_village/inbox">
@@ -260,7 +260,7 @@ const Layout = ({ children, sideHighlight }) => {
                   </Link>
                 </div>
 
-                <div className="w-full flex flex-col">
+                {/* <div className="w-full flex flex-col">
                   <Link href="/virtual_tech_village/support/2">
                     <div
                       className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
@@ -275,7 +275,7 @@ const Layout = ({ children, sideHighlight }) => {
                       <h1 className="hidden sm:block">Support</h1>
                     </div>
                   </Link>
-                </div>
+                </div> */}
               </div>
 
               <div className="w-full h-max rounded-r-full pt-5 pr-5">
