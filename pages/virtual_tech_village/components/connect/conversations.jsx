@@ -15,7 +15,7 @@ const Conversations = () => {
       
       <Connect_toolbar />
       <div className="py-8 pb-32 w-full h-full">
-        <div className="border-4 w-full h-full px-4 p-2">
+        <div className=" w-full h-full px-4 p-2">
           <div className=" rounded-xl cursor-pointer p-1 px-2 border w-fit bg-gray-900 text-gray-50" onClick={handleToggle}>
             Hello
           </div>

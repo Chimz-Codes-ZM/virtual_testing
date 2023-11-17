@@ -12,14 +12,15 @@ const MemberProfile = ({
     country,
     experience,
     certificate,
-    user_id
+    user_id,
+    bio
   }) => {
 
     const router = useRouter();
 
 
     const handleShowProfile = () => {
-        showProfile({ image, name, skills, country, experience, certificate, user_id });
+        showProfile({ image, name, skills, country, experience, certificate, user_id, bio });
       };
 
 

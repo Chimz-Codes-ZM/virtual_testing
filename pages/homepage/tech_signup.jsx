@@ -25,6 +25,16 @@ const tech_signup = () => {
     marketing_opt_in: "false",
     accountType: "Company",
   });
+
+  const [internValues, setInternValues] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    confirm_password: "",
+    marketing_opt_in: "false",
+    accountType: "Talent",
+  });
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -40,7 +50,7 @@ const tech_signup = () => {
   };
 
   const handleCompanyChange = (e) => {
-    const { name, value, type, checked  } = e.target;
+    const { name, value, type, checked } = e.target;
 
     const newValue = type === "checkbox" ? (checked ? "true" : "false") : value;
 
@@ -48,7 +58,19 @@ const tech_signup = () => {
       ...previousValues,
       [name]: newValue,
     }));
-    console.log(companyValues)
+    console.log(companyValues);
+  };
+
+  const handleInternChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    const newValue = type === "checkbox" ? (checked ? "true" : "false") : value;
+
+    setInternValues((previousValues) => ({
+      ...previousValues,
+      [name]: newValue,
+    }));
+    console.log(internValues);
   };
 
   // Form Validatiion section
@@ -150,7 +172,7 @@ const tech_signup = () => {
   };
 
   const handleCompanySubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     const response = await fetch(
       // "http://127.0.0.1:8000/village/village_signup/",
@@ -180,9 +202,8 @@ const tech_signup = () => {
         alert("A user with that email already exists!");
       }
     });
-console.log(companyValues)
-  }
-
+    console.log(companyValues);
+  };
 
   return (
     <div className="bg-gray-900">
@@ -236,7 +257,7 @@ console.log(companyValues)
                       <span className="ml-2 text-sm">Company</span>
                     </label>
 
-                    <label className="inline-flex items-center">
+                    <label className="inline-flex items-center mr-4">
                       <input
                         type="radio"
                         className="form-radio text-green-500 h-4 w-4"
@@ -248,8 +269,143 @@ console.log(companyValues)
                       <span className="ml-2 text-sm">Talent</span>
                     </label>
 
-                    {/* Add more radio buttons as needed */}
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        className="form-radio text-green-500 h-4 w-4"
+                        name="accountType"
+                        value="Intern"
+                        checked={values.accountType === "Intern"}
+                        onChange={handleChange}
+                      />
+                      <span className="ml-2 text-sm">Intern</span>
+                    </label>
                   </div>
+
+                  {values.accountType === "Company" && (
+                    <form
+                      onSubmit={handleCompanySubmit}
+                      className="mt-8 grid grid-cols-6 gap-6"
+                    >
+                      <div className="col-span-6 ">
+                        <label
+                          htmlFor="FirstName"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Company Name
+                        </label>
+
+                        <input
+                          type="text"
+                          id="CompanyName"
+                          name="company_name"
+                          onChange={handleCompanyChange}
+                          className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
+                        />
+                      </div>
+
+                      <div className="col-span-6">
+                        <label
+                          htmlFor="Email"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Email
+                        </label>
+
+                        <input
+                          type="email"
+                          id="Company_Email"
+                          name="email"
+                          onChange={handleCompanyChange}
+                          className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
+                        />
+                      </div>
+
+                      <div className="col-span-6">
+                        <div>
+                          <label
+                            htmlFor="Password"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Password
+                          </label>
+
+                          <input
+                            type="password"
+                            id="Company_Password"
+                            name="password"
+                            onChange={handleCompanyChange}
+                            className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
+                          />
+                        </div>
+
+                        <div className="mt-4">
+                        <label
+                          htmlFor="PasswordConfirmation"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Password Confirmation
+                        </label>
+
+                        <input
+                          type="password"
+                          id="CompanyPasswordConfirmation"
+                          name="confirm_password"
+                          onChange={handleCompanyChange}
+                          className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
+                        />
+                      </div>
+                      </div>
+
+                      
+
+                      <div className="col-span-6">
+                        <label htmlFor="MarketingAccept" className="flex gap-4">
+                          <input
+                            type="checkbox"
+                            id="MarketingAccept"
+                            name="marketing_opt_in"
+                            checked={companyValues.marketing_opt_in === "true"}
+                            onChange={handleCompanyChange}
+                            className="h-5 w-5 rounded-md border-gray-200 bg-white shadow-sm"
+                          />
+
+                          <span className="text-sm text-gray-700">
+                            I want to receive emails about events, product
+                            updates and company announcements.
+                          </span>
+                        </label>
+                      </div>
+
+                      <div className="col-span-6">
+                        <p className="text-sm text-gray-500">
+                          By creating an account, you agree to our
+                          <a href="#" className="text-gray-700 underline mx-1">
+                            terms and conditions
+                          </a>
+                          and
+                          <a href="#" className="text-gray-700 underline mx-1">
+                            privacy policy
+                          </a>
+                          .
+                        </p>
+                      </div>
+
+                      <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
+                        <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
+                          Create an account
+                        </button>
+
+                        <p className="mt-4 text-sm text-gray-500 sm:mt-0">
+                          Already have an account?
+                          <Link href="/homepage/login" className="text-gray-700 underline mx-1">
+                            Log in
+                          </Link>
+                          .
+                        </p>
+                      </div>
+                    </form>
+                  )}
 
                   {values.accountType === "Talent" && (
                     <form
@@ -326,38 +482,39 @@ console.log(companyValues)
                         )}
                       </div>
 
-                      <div className="col-span-4 sm:col-span-2">
-                        <label
-                          for="Password"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Password
-                        </label>
+                      <div className="col-span-4">
+                        <div className="flex flex-col">
+                          <label
+                            for="Password"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Password
+                          </label>
+                          <input
+                            type="password"
+                            id="Password"
+                            name="password"
+                            onChange={handleChange}
+                            className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                          />
+                        </div>
 
-                        <input
-                          type="password"
-                          id="Password"
-                          name="password"
-                          onChange={handleChange}
-                          className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                        />
-                      </div>
+                        <div className="mt-4">
+                          <label
+                            for="PasswordConfirmation"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Password Confirmation
+                          </label>
 
-                      <div className="col-span-4 sm:col-span-2">
-                        <label
-                          for="PasswordConfirmation"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Password Confirmation
-                        </label>
-
-                        <input
-                          type="password"
-                          id="PasswordConfirmation"
-                          name="confirm_password"
-                          onChange={handleChange}
-                          className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                        />
+                          <input
+                            type="password"
+                            id="PasswordConfirmation"
+                            name="confirm_password"
+                            onChange={handleChange}
+                            className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                          />
+                        </div>
                       </div>
 
                       <div className="col-span-4">
@@ -381,13 +538,13 @@ console.log(companyValues)
                       <div className="col-span-4">
                         <p className="text-sm text-gray-500">
                           By creating an account, you agree to our{" "}
-                          <span>
+                          <span className="mx-2">
                             <a href="#" className="text-gray-700 underline">
                               terms and conditions
                             </a>{" "}
                           </span>
                           and{" "}
-                          <span>
+                          <span className="mx-2">
                             {" "}
                             <a href="#" className="text-gray-700 underline">
                               privacy policy
@@ -408,8 +565,8 @@ console.log(companyValues)
                         <p className="mt-4 text-sm text-gray-500 sm:mt-0">
                           Already have an account?
                           <Link
-                            href="/homepage/virtual_tech_login"
-                            className="text-gray-700 underline"
+                            href="/homepage/login"
+                            className="text-gray-700 underline mx-1"
                           >
                             Log in
                           </Link>
@@ -418,138 +575,174 @@ console.log(companyValues)
                       </div>
                     </form>
                   )}
+                  {values.accountType === "Intern" && (
+                    <form
+                      onSubmit={handleSubmit}
+                      className="mt-8 grid grid-cols-4 gap-5"
+                    >
+                      <div className="col-span-4">
+                        <label
+                          for="FirstName"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          First Name
+                        </label>
 
-                  {values.accountType === "Company" && (
-                   <form
-                   onSubmit={handleCompanySubmit}
-                   className="mt-8 grid grid-cols-6 gap-6"
-                 >
-                   <div className="col-span-6 ">
-                     <label
-                       htmlFor="FirstName"
-                       className="block text-sm font-medium text-gray-700"
-                     >
-                       Company Name
-                     </label>
+                        <input
+                          type="text"
+                          id="FirstName"
+                          name="first_name"
+                          onChange={handleChange}
+                          className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
+                          // required={}
+                        />
 
-                     <input
-                       type="text"
-                       id="CompanyName"
-                       name="company_name"
-                       onChange={handleCompanyChange}
-                       className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
-                     />
-                   </div>
+                        {validationErrors?.first_name && (
+                          <p className="text-red-500 text-sm">
+                            {validationErrors.first_name}
+                          </p>
+                        )}
+                      </div>
 
-                   <div className="col-span-6">
-                     <label
-                       htmlFor="Email"
-                       className="block text-sm font-medium text-gray-700"
-                     >
-                       Email
-                     </label>
+                      <div className="col-span-4 ">
+                        <label
+                          for="LastName"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Last Name
+                        </label>
 
-                     <input
-                       type="email"
-                       id="Company_Email"
-                       name="email"
-                       onChange={handleCompanyChange}
-                       className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
-                     />
-                   </div>
+                        <input
+                          type="text"
+                          id="LastName"
+                          name="last_name"
+                          onChange={handleChange}
+                          className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
+                        />
 
-                   <div className="col-span-6 sm:col-span-3">
-                     <label
-                       htmlFor="Password"
-                       className="block text-sm font-medium text-gray-700"
-                     >
-                       Password
-                     </label>
+                        {validationErrors?.last_name && (
+                          <p className="text-red-500 text-sm">
+                            {validationErrors.last_name}
+                          </p>
+                        )}
+                      </div>
 
-                     <input
-                       type="password"
-                       id="Company_Password"
-                       name="password"
-                       onChange={handleCompanyChange}
-                       className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
-                     />
-                   </div>
+                      <div className="col-span-4">
+                        <label
+                          for="Email"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Email
+                        </label>
 
-                   <div className="col-span-6 sm:col-span-3">
-                     <label
-                       htmlFor="PasswordConfirmation"
-                       className="block text-sm font-medium text-gray-700"
-                     >
-                       Password Confirmation
-                     </label>
+                        <input
+                          type="email"
+                          id="Email"
+                          name="email"
+                          onChange={handleChange}
+                          className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
+                        />
 
-                     <input
-                       type="password"
-                       id="CompanyPasswordConfirmation"
-                       name="confirm_password"
-                       onChange={handleCompanyChange}
-                       className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
-                     />
-                   </div>
+                        {validationErrors?.email && (
+                          <p className="text-red-500 text-sm">
+                            {validationErrors.email}
+                          </p>
+                        )}
+                      </div>
 
-                   <div className="col-span-6">
-                     <label
-                       htmlFor="MarketingAccept"
-                       className="flex gap-4"
-                     >
-                       <input
-                         type="checkbox"
-                         id="MarketingAccept"
-                         name="marketing_opt_in"
-                         checked={companyValues.marketing_opt_in === "true"}
-                         onChange={handleCompanyChange}
-                         className="h-5 w-5 rounded-md border-gray-200 bg-white shadow-sm"
-                       />
+                      <div className="col-span-4 flex flex-col">
+                        <div className="flex flex-col">
+                          <label
+                            for="Password"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Password
+                          </label>
 
-                       <span className="text-sm text-gray-700">
-                         I want to receive emails about events,
-                         product updates and company announcements.
-                       </span>
-                     </label>
-                   </div>
+                          <input
+                            type="password"
+                            id="Password"
+                            name="password"
+                            onChange={handleChange}
+                            className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                          />
+                        </div>
 
-                   <div className="col-span-6">
-                     <p className="text-sm text-gray-500">
-                       By creating an account, you agree to our
-                       <a
-                         href="#"
-                         className="text-gray-700 underline"
-                       >
-                         terms and conditions
-                       </a>
-                       and
-                       <a
-                         href="#"
-                         className="text-gray-700 underline"
-                       >
-                         privacy policy
-                       </a>
-                       .
-                     </p>
-                   </div>
+                        <div className="mt-4">
+                          <label
+                            for="PasswordConfirmation"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Password Confirmation
+                          </label>
 
-                   <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                     <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
-                       Create an account
-                     </button>
+                          <input
+                            type="password"
+                            id="PasswordConfirmation"
+                            name="confirm_password"
+                            onChange={handleChange}
+                            className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                          />
+                        </div>
+                      </div>
 
-                     <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-                       Already have an account?
-                       <a
-                         href="#"
-                         className="text-gray-700 underline"
-                       >
-                         Log in
-                       </a>
-                       .
-                     </p>
-                   </div>
-                 </form>
+                      <div className="col-span-4">
+                        <label for="MarketingAccept" className="flex gap-4">
+                          <input
+                            type="checkbox"
+                            id="MarketingAccept"
+                            name="marketing_opt_in"
+                            checked={values.marketing_opt_in === "true"}
+                            onChange={handleChange}
+                            className="h-5 w-5 rounded-md border-gray-200 bg-white shadow-sm"
+                          />
+
+                          <span className="text-sm text-gray-700">
+                            I want to receive emails about events, product
+                            updates and company announcements.
+                          </span>
+                        </label>
+                      </div>
+
+                      <div className="col-span-4">
+                        <p className="text-sm text-gray-500">
+                          By creating an account, you agree to our{" "}
+                          <span className="mx-1">
+                            <a href="#" className="text-gray-700 underline">
+                              terms and conditions
+                            </a>{" "}
+                          </span>
+                          and{" "}
+                          <span className="mx-1">
+                            {" "}
+                            <a href="#" className="text-gray-700 underline">
+                              privacy policy
+                            </a>
+                          </span>
+                          .
+                        </p>
+                      </div>
+
+                      <div className="col-span-4 sm:flex sm:items-center sm:gap-4">
+                        <button
+                          className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+                          disabled={!validateForm() || buttonClicked}
+                        >
+                          Create an account
+                        </button>
+
+                        <p className="mt-4 text-sm text-gray-500 sm:mt-0">
+                          Already have an account? <span className="mx-1"><Link
+                            href="/homepage/login"
+                            className="text-gray-700 underline"
+                          >
+                            Log in
+                          </Link></span>
+                          
+                          .
+                        </p>
+                      </div>
+                    </form>
                   )}
                 </div>
               </main>

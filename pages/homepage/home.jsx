@@ -50,17 +50,17 @@ const Home = ({ title, mediaSrc, mediaType, description, buttons }) => {
             </div>
 
             <div className="gap-6 sm:gap-10 flex flex-col sm:flex-row h-10 rounded">
-            <div className="flex text-white text-xl sm:text-2xl font-bold hover:text-gray-100 items-center justify-center px-5 h-10 rounded background-green">
-                <Link href="/homepage/login" className="self-center">
+            <div className="flex text-white text-xl xl:text-2xl font-bold hover:text-gray-100 items-center justify-center px-5 h-10 lg:h-12 rounded background-green">
+                <Link href="/homepage/tech_signup" className="self-center">
                   Virtual Tech Village
                 </Link>
               </div>
-              <div className="flex text-white text-xl sm:text-2xl font-bold hover:text-gray-100 items-center justify-center px-5 h-10 rounded background-green">
+              <div className="flex text-white text-xl xl:text-2xl font-bold hover:text-gray-100 items-center justify-center px-5 h-10 lg:h-12 rounded background-green">
                 <Link href="/homepage/careers" className="self-center">
                   Join Baobabpad
                 </Link>
               </div>
-              <div className="flex text-white text-xl sm:text-2xl font-bold hover:text-gray-100 items-center justify-center px-5 h-10 rounded background-green">
+              <div className="flex text-white text-xl xl:text-2xl font-bold hover:text-gray-100 items-center justify-center px-5 h-10 lg:h-12 rounded background-green">
                 <Link href="/homepage/signup/subscription">
                   Company Subscription
                 </Link>

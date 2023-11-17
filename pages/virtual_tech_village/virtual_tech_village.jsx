@@ -249,6 +249,10 @@ const Virtual_Tech_Village = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    console.log(memberList);
+  }, [memberList]);
+
   const { companies, individuals } = memberList || {
     companies: [],
     individuals: [],
@@ -388,9 +392,9 @@ const Virtual_Tech_Village = () => {
     setAddNewJobShow(true);
   };
 
-  const imageRef = useRef()
-  
-  const [jobImage, setJobImage] = useState(null)
+  const imageRef = useRef();
+
+  const [jobImage, setJobImage] = useState(null);
 
   const [newJob, setNewJob] = useState({
     position: "",
@@ -409,13 +413,13 @@ const Virtual_Tech_Village = () => {
   };
 
   const handleNewJobImage = (e) => {
-    imageRef.current = e.target.files[0]
-  }
+    imageRef.current = e.target.files[0];
+  };
 
   const handleNewJobSubmit = (e) => {
     e.preventDefault();
 
-    const formData = new FormData()
+    const formData = new FormData();
 
     for (const key of Object.keys(newJob)) {
       formData.append(key, newJob[key]);
@@ -448,7 +452,7 @@ const Virtual_Tech_Village = () => {
     };
 
     sendData();
-    console.log(formData)
+    console.log(formData);
   };
 
   const handleInputChange = async (e) => {
@@ -604,93 +608,98 @@ const Virtual_Tech_Village = () => {
                   value={newJob}
                 /> */}
 
-<div className="p-6 bg-white border z-50 rounded flex flex-col gap-2">
-      <div className="flex flex-col gap-4">
-        <h1 className="text-2xl font-semibold">Enter New Job Listing</h1>
-        <p className="text-lg font-normal text-gray-500">
-          Fill out the details below to post a new job opportunity
-        </p>
-      </div>
+                <div className="p-6 bg-white border z-50 rounded flex flex-col gap-2">
+                  <div className="flex flex-col gap-4">
+                    <h1 className="text-2xl font-semibold">
+                      Enter New Job Listing
+                    </h1>
+                    <p className="text-lg font-normal text-gray-500">
+                      Fill out the details below to post a new job opportunity
+                    </p>
+                  </div>
 
-      <form onSubmit={handleNewJobSubmit} className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1">
-          <label htmlFor="position" className="text-sm font-medium">
-            Position
-          </label>
-          <input
-            type="text"
-            name="position"
-            value={newJob.position}
-            className="border rounded px-1"
-            onChange={handleNewJobChange}
-          />
-        </div>
+                  <form
+                    onSubmit={handleNewJobSubmit}
+                    className="flex flex-col gap-4"
+                  >
+                    <div className="flex flex-col gap-1">
+                      <label htmlFor="position" className="text-sm font-medium">
+                        Position
+                      </label>
+                      <input
+                        type="text"
+                        name="position"
+                        value={newJob.position}
+                        className="border rounded px-1"
+                        onChange={handleNewJobChange}
+                      />
+                    </div>
 
-        <div className="flex flex-col gap-1">
-          <label htmlFor="job_type" className="text-sm font-medium">
-            Job Type
-          </label>
-          <input
-            type="text"
-            name="job_type"
-            value={newJob.job_type}
-            className="border rounded px-1"
-            onChange={handleNewJobChange}
-            placeholder="e.g., Full Time"
-          />
-        </div>
+                    <div className="flex flex-col gap-1">
+                      <label htmlFor="job_type" className="text-sm font-medium">
+                        Job Type
+                      </label>
+                      <input
+                        type="text"
+                        name="job_type"
+                        value={newJob.job_type}
+                        className="border rounded px-1"
+                        onChange={handleNewJobChange}
+                        placeholder="e.g., Full Time"
+                      />
+                    </div>
 
-        <div className="flex flex-col gap-1">
-          <label htmlFor="location" className="text-sm font-medium">
-            Location
-          </label>
-          <input
-            type="text"
-            name="location"
-            value={newJob.location}
-            className="border rounded px-1"
-            onChange={handleNewJobChange}
-            placeholder="e.g., On-site"
-          />
-        </div>
+                    <div className="flex flex-col gap-1">
+                      <label htmlFor="location" className="text-sm font-medium">
+                        Location
+                      </label>
+                      <input
+                        type="text"
+                        name="location"
+                        value={newJob.location}
+                        className="border rounded px-1"
+                        onChange={handleNewJobChange}
+                        placeholder="e.g., On-site"
+                      />
+                    </div>
 
-        <div className="flex flex-col gap-1">
-          <label htmlFor="link" className="text-sm font-medium">
-            Link
-          </label>
-          <input
-            type="text"
-            name="link"
-            value={newJob.link}
-            className="border rounded px-1"
-            onChange={handleNewJobChange}
-            placeholder="e.g., www.glassdoor.com/job-123"
-          />
-        </div>
+                    <div className="flex flex-col gap-1">
+                      <label htmlFor="link" className="text-sm font-medium">
+                        Link
+                      </label>
+                      <input
+                        type="text"
+                        name="link"
+                        value={newJob.link}
+                        className="border rounded px-1"
+                        onChange={handleNewJobChange}
+                        placeholder="e.g., www.glassdoor.com/job-123"
+                      />
+                    </div>
 
-        <div className="flex flex-col gap-1">
-          <label htmlFor="image" className="text-sm font-medium">
-            Cover Image
-          </label>
-          <input
-            accept="image/*"
-            id="image"
-            type="file"
-            name="image"
-            value={jobImage}
-            className="border rounded px-1"
-            onChange={handleNewJobImage}
-            placeholder="e.g., www.glassdoor.com/job-123"
-          />
-        </div>
+                    <div className="flex flex-col gap-1">
+                      <label htmlFor="image" className="text-sm font-medium">
+                        Cover Image
+                      </label>
+                      <input
+                        accept="image/*"
+                        id="image"
+                        type="file"
+                        name="image"
+                        value={jobImage}
+                        className="border rounded px-1"
+                        onChange={handleNewJobImage}
+                        placeholder="e.g., www.glassdoor.com/job-123"
+                      />
+                    </div>
 
-        <div className="">
-          <button className="bg-gray-900 text-white w-full rounded-md p-1 shadow hover:bg-gray-800 transition delay-100">
-            Add New Job
-          </button>
-        </div>
-      </form>
-    </div>
+                    <div className="">
+                      <button className="bg-gray-900 text-white w-full rounded-md p-1 shadow hover:bg-gray-800 transition delay-100">
+                        Add New Job
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </motion.div>
             </div>
           </motion.div>
@@ -704,9 +713,10 @@ const Virtual_Tech_Village = () => {
             (memberList &&
               memberList?.user[0]?.account_type === "village admin profile") ||
             (memberList &&
-              memberList?.user[0]?.account_type === "community manager") || (
-                memberList && memberList?.user[0]?.account_type === "village company profile"
-              )) && (
+              memberList?.user[0]?.account_type === "community manager") ||
+            (memberList &&
+              memberList?.user[0]?.account_type ===
+                "village company profile")) && (
             <div
               className={` pb-1 w-max cursor-pointer  ${
                 memberShow
@@ -871,13 +881,13 @@ const Virtual_Tech_Village = () => {
         </div>
 
         {/* {incompleteProfile && (
-            <div className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm">
-              <Complete_Profile
-                message="Your profile is incomplete! Please complete setting up your profile."
-                alertDismiss={profileReroute}
-              />
-            </div>
-          )} */}
+  <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-[99] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-sm">
+    <Complete_Profile
+      message="Your profile is incomplete! Please complete setting up your profile."
+      alertDismiss={profileReroute}
+    />
+  </div>
+)} */}
 
         {incompleteCompanyProfile && (
           <div className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm">
@@ -891,12 +901,12 @@ const Virtual_Tech_Village = () => {
 
       {(memberList.user[0]?.account_type === "village talent profile" ||
         memberList.user[0].account_type === "village admin profile" ||
-        memberList.user[0].account_type === "community manager" || 
+        memberList.user[0].account_type === "community manager" ||
         memberList.user[0].account_type === "village company profile") && (
         <AnimatePresence>
           {memberShow && (
             <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 relative"
+              className="grid grid-cols-1 xl:min-h-[500px] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 relative"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -915,8 +925,9 @@ const Virtual_Tech_Village = () => {
                     showProfile={showProfile}
                     country={profile.country}
                     experience={profile.experience}
-                    certificate={profile.certificate}
+                    certificate={profile.education[0]?.degree_name}
                     user_id={profile.user_id}
+                    bio={profile.bio}
                   />
                 ))
               )}
@@ -926,7 +937,7 @@ const Virtual_Tech_Village = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
+                    className="fixed inset-0 flex items-center justify-center z-[999] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
                   >
                     <div ref={expandedProfileRef}>
                       <ExpandedProfileModal
@@ -937,6 +948,7 @@ const Virtual_Tech_Village = () => {
                         country={profile.country}
                         certificate={profile.certificate}
                         experience={profile.experience}
+                        bio={profile.bio}
                         onClick={() => {
                           handleMoreInfoClick(profile.user_id);
                         }}

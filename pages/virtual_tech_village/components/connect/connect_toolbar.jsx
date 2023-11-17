@@ -39,7 +39,7 @@ const Connect_toolbar = () => {
                 />
               </div>
               <div className="flex items-center">
-                <h1 className=" text-sm ">{"names"}</h1>
+                <h1 className=" text-sm "></h1>
               </div>
             </div>
             <div className=" absolute right-3 inset-y-0  rounded cursor-pointer">
