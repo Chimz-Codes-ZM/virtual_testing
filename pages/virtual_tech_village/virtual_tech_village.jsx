@@ -188,8 +188,8 @@ const Virtual_Tech_Village = () => {
       setMemberList(data);
       const accountType = data.user[0]?.account_type || "";
 
-      setCompanyShow(accountType === "village company profile");
-      setMemberShow(accountType !== "village company profile");
+      // setCompanyShow(accountType === "village company profile");
+      // setMemberShow(accountType !== "village company profile");
     };
 
     fetchData();
@@ -312,11 +312,11 @@ const Virtual_Tech_Village = () => {
   };
 
   const profileReroute = () => {
-    router.push("/complete_profile");
+    router.push("/virtual_tech_village/complete_profile");
   };
 
   const companyProfileReroute = () => {
-    router.push("/complete_company_profile");
+    router.push("/virtual_tech_village/complete_company_profile");
   };
 
   const handlePageFetch = (number) => {
@@ -706,7 +706,7 @@ const Virtual_Tech_Village = () => {
         )}
       </div>
 
-      <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2 fixed w-full top-16 p-4 pr-40 bg-white bg-opacity-25 backdrop-blur z-40 border-none">
+      <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2 relative w-full p-4 bg-white">
         <div className="flex flex-wrap gap-4">
           {((memberList &&
             memberList?.user[0]?.account_type === "village talent profile") ||
@@ -764,7 +764,7 @@ const Virtual_Tech_Village = () => {
                 <select
                   name="country"
                   id="country"
-                  className="border-gray-300 border-2 rounded px-1 w-full"
+                  className="border-gray-900 bg-white border-2 h-7 rounded px-1 w-full"
                   onChange={(e) => handleInputChange(e)}
                   value={filters.country}
                 >
@@ -785,7 +785,7 @@ const Virtual_Tech_Village = () => {
                 <input
                   type="text"
                   placeholder="Search by name"
-                  className="border-gray-300 border-2 rounded px-1 w-full"
+                  className="border-gray-900 border-2 h-7 rounded px-1 w-full"
                   onChange={(e) => handleInputChange(e)}
                   name="name"
                   id="name"
@@ -797,7 +797,7 @@ const Virtual_Tech_Village = () => {
                 <select
                   name="skill"
                   id="skills"
-                  className="border-gray-300 border-2 rounded px-1 w-full"
+                  className="border-gray-900 border-2 h-7 bg-white rounded px-1 w-full"
                   onChange={(e) => handleInputChange(e)}
                   value={filters.skill}
                 >
@@ -879,15 +879,15 @@ const Virtual_Tech_Village = () => {
             </form>
           )}
         </div>
-
-        {/* {incompleteProfile && (
-  <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-[99] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-sm">
-    <Complete_Profile
-      message="Your profile is incomplete! Please complete setting up your profile."
-      alertDismiss={profileReroute}
-    />
-  </div>
-)} */}
+{/* 
+        {incompleteProfile && (
+          <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[99] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-sm">
+            <Complete_Profile
+              message="Your profile is incomplete! Please complete setting up your profile."
+              alertDismiss={profileReroute}
+            />
+          </div>
+         )} */}
 
         {incompleteCompanyProfile && (
           <div className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm">

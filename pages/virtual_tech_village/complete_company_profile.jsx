@@ -114,7 +114,7 @@ const Complete_company_profile = () => {
           <div className="relative">
             {/* Profile Picture and button */}
             <div className="flex items-center justify-between absolute w-full px-10 -top-5">
-              <div className="rounded-full border shadow h-20 w-20 flex justify-center items-center text-6xl overflow-hidden">
+              <div className="rounded-full border shadow h-20 w-20 flex justify-center items-center text-4xl sm:text-6xl overflow-hidden">
                 {completedProfile.selectedImage ? (
                   <img
                     src={completedProfile.selectedImage}
@@ -130,13 +130,12 @@ const Complete_company_profile = () => {
               <div className="text-white bg-black rounded h-min">
                 <div
                   class="group relative inline-block text-sm cursor-pointer font-medium text-gray-900 focus:outline-none focus:ring active:text-gray-900"
-                  href=""
                 >
                   <span class="absolute inset-0 translate-x-0.5 translate-y-0.5 bg-gray-900 transition-transform group-hover:translate-y-0 group-hover:translate-x-0"></span>
 
                   <Link
                     href={"/virtual_tech_village/profile/"}
-                    class="relative block border border-current bg-white px-6 py-3"
+                    class="relative block border border-current bg-white sm:px-6 py-1 px-2 sm:py-3"
                   >
                     View Profile
                   </Link>
@@ -144,9 +143,9 @@ const Complete_company_profile = () => {
               </div>
             </div>
 
-            <div className="flex w-full px-10 pt-24 pb-4 items-center justify-between border-b-2">
-              <div className="flex flex-col gap-3">
-                <h2 className="font-semibold text-2xl">
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:px-10 pt-24 pb-4 items-center justify-between border-b-2">
+              <div className="flex flex-col gap-3 ">
+                <h2 className="font-semibold sm:text-2xl">
                   Tech Village Company Profile
                 </h2>
                 <p>Set company details here</p>
@@ -156,7 +155,7 @@ const Complete_company_profile = () => {
                 <div className="cursor-pointer rounded p-2 py-1 hover:text-white hover:bg-black transition-colors border shadow duration-300">
                   Cancel
                 </div>
-                <div className="cursor-pointer rounded p-2 py-1 text-white bg-black hover:text-black hover:bg-white hover:border hover:shadow duration-300">
+                <div className="cursor-pointer rounded p-2 py-1 text-white bg-black hover:text-black hover:bg-white border hover:shadow duration-300">
                   Save Changes
                 </div>
               </div>
@@ -164,9 +163,9 @@ const Complete_company_profile = () => {
 
             <div>
               <form onSubmit={handleImageSubmit}>
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 border-b-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full sm:px-10 pt-4 pb-4 border-b-2">
                   <div className="flex flex-col gap-3 col-span-1">
-                    <h2 className="font-semibold text-xl">Company logo</h2>
+                    <h2 className="font-semibold sm:text-xl">Company logo</h2>
                     <p>Start by setting your company logo here</p>
                   </div>
 
@@ -216,11 +215,11 @@ const Complete_company_profile = () => {
                 </div>
               </form>
 
-              <form onSubmit={handleSubmit}>
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 ">
+              <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full sm:px-10">
                   <label
                     htmlFor="experience"
-                    className="font-semibold text-xl col-span-1"
+                    className="font-semibold sm:text-xl col-span-1"
                   >
                     Country:
                   </label>
@@ -245,10 +244,10 @@ const Complete_company_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full gap-2 sm:px-10  ">
                   <label
                     htmlFor="professional_profile"
-                    className="font-semibold text-xl col-span-1"
+                    className="font-semibold sm:text-xl col-span-1"
                   >
                     Company website:
                   </label>
@@ -263,10 +262,10 @@ const Complete_company_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 gap-2 ">
                   <label
                     htmlFor="experience"
-                    className="font-semibold text-xl col-span-1"
+                    className="font-semibold sm:text-xl col-span-1"
                   >
                     Industry:
                   </label>
@@ -281,10 +280,10 @@ const Complete_company_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 gap-2">
                   <label
                     htmlFor="certs_courses"
-                    className="font-semibold text-xl col-span-1"
+                    className="font-semibold sm:text-xl col-span-1"
                   >
                     Company description:
                   </label>
@@ -299,10 +298,10 @@ const Complete_company_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 gap-2">
                   <label
                     htmlFor="social_media_profiles"
-                    className="font-semibold text-xl col-span-1"
+                    className="font-semibold sm:text-xl col-span-1"
                   >
                     Social Media profile
                   </label>

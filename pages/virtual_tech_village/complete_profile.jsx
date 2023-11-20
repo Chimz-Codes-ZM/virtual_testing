@@ -307,7 +307,7 @@ const Complete_profile = () => {
 
           <div className="relative">
             {/* Profile Picture and button */}
-            <div className="flex items-center justify-between absolute w-full px-10 -top-5">
+            <div className="flex items-center justify-between absolute w-full sm:px-10 -top-5">
               <div className="rounded-full border shadow h-20 w-20 flex justify-center items-center text-6xl overflow-hidden">
                 {selectedFile ? (
                   <img
@@ -330,7 +330,7 @@ const Complete_profile = () => {
 
                   <Link
                     href={"/virtual_tech_village/profile/"}
-                    class="relative block border border-current bg-white px-6 py-3"
+                    class="relative block border border-current bg-white px-2 py-1 sm:px-6 sm:py-3"
                   >
                     View Profile
                   </Link>
@@ -338,9 +338,9 @@ const Complete_profile = () => {
               </div>
             </div>
 
-            <div className="flex w-full px-10 pt-24 pb-4 items-center justify-between border-b-2">
-              <div className="flex flex-col gap-3">
-                <h2 className="font-semibold text-2xl">Tech Village Profile</h2>
+            <div className="flex flex-col sm:flex-row w-full sm:px-10  pt-24 pb-4 items-center justify-between border-b-2">
+              <div className="flex flex-col gap-3 pb-4">
+                <h2 className="font-semibold text-lg sm:text-2xl">Tech Village Profile</h2>
                 <p>Set your details here</p>
               </div>
 
@@ -362,8 +362,8 @@ const Complete_profile = () => {
 
             <div>
               <form onSubmit={handleImageSubmit}>
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 border-b-2">
-                  <div className="flex flex-col gap-3 col-span-1">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 pb-4 border-b-2">
+                  <div className="flex flex-col gap-3 col-span-1 pb-4">
                     <h2 className="font-semibold text-xl">Profile picture</h2>
                     <p>Start by setting your profile picture here</p>
                   </div>
@@ -414,14 +414,14 @@ const Complete_profile = () => {
                 </div>
               </form>
               <form onSubmit={handleSubmit}>
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 ">
                   <label
                     htmlFor="experience"
-                    className="font-semibold text-xl col-span-1"
+                    className="font-semibold sm:text-xl col-span-1 pb-1"
                   >
                     Country:
                   </label>
-                  <div className="flex col-span-2 md:col-span-1">
+                  <div className="flex col-span-1">
                     <select
                       name="country"
                       id="country"
@@ -442,10 +442,10 @@ const Complete_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 ">
                   <label
                     htmlFor="address"
-                    className="font-semibold text-xl col-span-1"
+                    className="font-semibold sm:text-xl col-span-1"
                   >
                     City
                   </label>
@@ -463,11 +463,11 @@ const Complete_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 ">
                   <div className="col-span-1">
                     <label
                       htmlFor="experience"
-                      className="font-semibold text-xl"
+                      className="font-semibold sm:text-xl"
                     >
                       Language{"('s)"}
                     </label>
@@ -512,7 +512,7 @@ const Complete_profile = () => {
                   <div className=" col-span-1">
                     <button
                       type="button"
-                      className="bg-gray-900 text-white py-2 px-4 rounded-md hover:bg-white hover:text-black hover:border transition-colors"
+                      className="bg-gray-900 text-white py-1 px-2 sm:py-2 sm:px-4 rounded-md hover:bg-white hover:text-black hover:border transition-colors"
                       onClick={handleAddLanguage}
                     >
                       Add Language
@@ -520,19 +520,19 @@ const Complete_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-6 gap-4 border-1 border-gray-600 w-full px-10 pt-4 pb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-6 gap-4 border-1 border-gray-600 w-full sm:px-10 pt-4 pb-4">
                   <div className="col-span-1">
                     <label
                       htmlFor="Education"
-                      className="font-semibold text-xl"
+                      className="font-semibold sm:text-xl"
                     >
                       Education
                     </label>
                   </div>
-                  <div className="col-span-5 mx-auto p-6 bg-white">
+                  <div className="col-span-1 sm:col-span-5 mx-auto p-2 w-full bg-white">
                     {education.map((degree, index) => (
-                      <div key={index} className="flex mb-4">
-                        <div className="w-1/4 pr-4">
+                      <div key={index} className="flex mb-4 flex-col sm:flex-row">
+                        <div className="w-full sm:w-1/4 pr-4">
                           <label className="block text-sm font-medium text-gray-600 mb-1">
                             Degree Name:
                           </label>
@@ -549,7 +549,7 @@ const Complete_profile = () => {
                             }
                           />
                         </div>
-                        <div className="w-1/4 pr-4">
+                        <div className="sm:w-1/4 pr-4">
                           <label className="block text-sm font-medium text-gray-600 mb-1">
                             Institution:
                           </label>
@@ -566,7 +566,7 @@ const Complete_profile = () => {
                             }
                           />
                         </div>
-                        <div className="w-1/6 pr-4">
+                        <div className="sm:w-1/6 pr-4">
                           <label className="block text-sm font-medium text-gray-600 mb-1">
                             Year Started:
                           </label>
@@ -583,7 +583,7 @@ const Complete_profile = () => {
                             }
                           />
                         </div>
-                        <div className="w-1/6 pr-4">
+                        <div className="sm:w-1/6 pr-4">
                           <label className="block text-sm font-medium text-gray-600 mb-1">
                             Year Finished:
                           </label>
@@ -613,7 +613,7 @@ const Complete_profile = () => {
                     ))}
                     <button
                       type="button"
-                      className="bg-gray-900 text-white py-2 px-4 rounded-md hover:bg-white hover:text-black hover:border transition-colors"
+                      className="bg-gray-900 text-white py-1 px-2 sm:py-2 sm:px-4 rounded-md hover:bg-white hover:text-black hover:border transition-colors"
                       onClick={handleAddEducation}
                     >
                       Add Degree
@@ -621,19 +621,19 @@ const Complete_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-6 gap-4 border-1 border-gray-600 w-full px-10 pt-4 pb-4">
-                  <div className="col-span-1">
+                <div className="grid grid-cols-1 sm:grid-cols-6 gap-4 border-1 border-gray-600 w-full sm:px-10 pt-4">
+                  <div className="col-span-1 w-full">
                     <label
                       htmlFor="Education"
-                      className="font-semibold text-xl"
+                      className="font-semibold sm:text-xl"
                     >
                       Work experience
                     </label>
                   </div>
-                  <div className="col-span-5 mx-auto p-6 bg-white">
+                  <div className="col-span-1 sm:col-span-5 w-full mx-auto p-6 px-2 bg-white">
                     {workHistory.map((work, index) => (
-                      <div key={index} className="flex mb-4">
-                        <div className="w-1/4 pr-4">
+                      <div key={index} className="flex mb-4 flex-col sm:flex-row">
+                        <div className="w-full sm:w-1/4 pr-4">
                           <label className="block text-sm font-medium text-gray-600 mb-1">
                             Position held:
                           </label>
@@ -650,7 +650,7 @@ const Complete_profile = () => {
                             }
                           />
                         </div>
-                        <div className="w-1/4 pr-4">
+                        <div className="w-full sm:w-1/4 pr-4">
                           <label className="block text-sm font-medium text-gray-600 mb-1">
                             Company name:
                           </label>
@@ -667,7 +667,7 @@ const Complete_profile = () => {
                             }
                           />
                         </div>
-                        <div className="w-1/6 pr-4">
+                        <div className="sm:w-1/6 pr-4">
                           <label className="block text-sm font-medium text-gray-600 mb-1">
                             Year Started:
                           </label>
@@ -684,7 +684,7 @@ const Complete_profile = () => {
                             }
                           />
                         </div>
-                        <div className="w-1/6 pr-4">
+                        <div className="sm:w-1/6 pr-4">
                           <label className="block text-sm font-medium text-gray-600 mb-1">
                             Year Finished:
                           </label>
@@ -714,18 +714,18 @@ const Complete_profile = () => {
                     ))}
                     <button
                       type="button"
-                      className="bg-gray-900 text-white py-2 px-4 rounded-md hover:bg-white hover:text-black hover:border transition-colors"
+                      className="bg-gray-900 text-white py-1 px-2 sm:py-2 sm:px-4 rounded-md hover:bg-white hover:text-black hover:border transition-colors"
                       onClick={handleWorkHistoryAdd}
                     >
-                      Add Degree
+                      Add New Position
                     </button>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 ">
+                <div className="sm:grid grid-cols-1 sm:grid-cols-3 flex flex-col w-full sm:px-10 pt-4 pb-4 ">
                   <label
                     htmlFor="experience"
-                    className="font-semibold text-xl col-span-1"
+                    className="font-semibold sm:text-xl col-span-1"
                   >
                     Position:
                   </label>
@@ -747,10 +747,10 @@ const Complete_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 ">
                   <label
                     htmlFor="experience"
-                    className="font-semibold text-xl col-span-1"
+                    className="font-semibold sm:text-xl col-span-1"
                   >
                     Experience:
                   </label>
@@ -769,12 +769,12 @@ const Complete_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 pb-4 ">
                   <label
                     htmlFor="bio"
-                    className="font-semibold text-xl col-span-1"
+                    className="font-semibold sm:text-xl col-span-1"
                   >
-                    Bio
+                    Bio:
                   </label>
                   <div className="flex col-span-2 md:col-span-1">
                     <textarea
@@ -789,11 +789,11 @@ const Complete_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 ">
                   <div className="col-span-1">
                     <label
                       htmlFor="experience"
-                      className="font-semibold text-xl"
+                      className="font-semibold sm:text-xl"
                     >
                       Soft Skill's
                     </label>
@@ -801,7 +801,7 @@ const Complete_profile = () => {
 
                   <div className="col-span-1 flex flex-col">
                     {softSkills.map((skill, index) => (
-                      <div key={index} className="flex mb-4 col-span-1">
+                      <div key={index} className="flex mb-4 flex-col sm:flex-row col-span-1">
                         <div className="pr-4">
                           <label
                             htmlFor="soft_skills"
@@ -838,7 +838,7 @@ const Complete_profile = () => {
                   <div className=" col-span-1">
                     <button
                       type="button"
-                      className="bg-gray-900 text-white py-2 px-4 rounded-md hover:bg-white hover:text-black hover:border transition-colors"
+                      className="bg-gray-900 text-white px-2 py-1 sm:py-2 sm:px-4 rounded-md hover:bg-white hover:text-black hover:border transition-colors"
                       onClick={handleAddSoftSkill}
                     >
                       Add Soft Skill
@@ -846,20 +846,20 @@ const Complete_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 w-full px-10 pt-4 pb-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 pb-4 ">
                   <div className="col-span-1">
                     <label
                       htmlFor="experience"
-                      className="font-semibold text-xl"
+                      className="font-semibold sm:text-xl"
                     >
                       Social Media Links
                     </label>
                   </div>
 
-                  <div className="col-span-1 flex flex-col">
+                  <div className="col-span-1 flex flex-col w-full">
                     {socialMedia.map((media, index) => (
-                      <div key={index} className="flex mb-4 col-span-1">
-                        <div className="pr-4">
+                      <div key={index} className="flex mb-4 col-span-1 w-full">
+                        <div className="pr-4 w-full">
                           <label
                             htmlFor="socialMedia"
                             className="block text-sm font-medium text-gray-600 mb-1"

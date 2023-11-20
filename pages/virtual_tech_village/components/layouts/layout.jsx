@@ -307,7 +307,7 @@ const Layout = ({ children, sideHighlight }) => {
                 <div className="inline-flex items-center overflow-hidden rounded-md border bg-white"></div>
                 {showNotification && (
                   <div
-                    className="absolute end-0 z-10 w-56 rounded-md border border-gray-100 max-h-40 overflow-x-auto bg-white shadow-lg"
+                    className="absolute -left-8 md:-left-20 md:end-0 z-[999] w-56 rounded-md border border-gray-100 max-h-40 overflow-x-auto bg-white shadow-lg"
                     role="menu"
                   >
                     {notificationContent && notificationContent.length > 0 ? (
@@ -393,7 +393,7 @@ const Layout = ({ children, sideHighlight }) => {
             </div>
           </Link>
         </nav>
-        <div className="w-full h-screen overflow-y-scroll px-4 pt-20">
+        <div className="w-full h-screen overflow-y-scroll px-4">
           <div className="w-full h-max flex flex-col gap-5">{children}</div>
         </div>
       </main>
