@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import Layout from "./components/layouts/layout";
 import Profile_layout from "./components/Profile_layout";
 import Resume_component from "./components/cv/Resume_component";
+import Company_profile from "./components/view_profiles/company_profile";
 import axios from "axios";
-import jwt_decode from "jwt-decode";  
+import jwt_decode from "jwt-decode"; 
+
+import { JellyTriangle } from "@uiball/loaders";
+
 
 const profile = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [info, setInfo] = useState([]);
+  const [info, setInfo] = useState(null);
 
   const handleImageChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -39,6 +43,22 @@ const profile = () => {
 
     fetchData();
   }, []);
+
+  if (!info) {
+    return (
+      <div className="flex h-screen items-center justify-center ">
+        <JellyTriangle size={40} color="#231F20" />
+      </div>
+    );
+  }
+
+  if(info[0]?.account_type === "village company profile") {
+    return (
+      <div>
+        <Company_profile />
+      </div>
+    )
+  }
   return (
     <>
       <Layout sideHighlight="profile">

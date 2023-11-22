@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import axios from "axios";
+import useSWR from "swr";
 
 import jwt_decode from "jwt-decode";
 
@@ -24,7 +25,7 @@ import { GoInbox } from "react-icons/go";
 import { CgProfile } from "react-icons/cg";
 import { BiLogOut } from "react-icons/bi";
 import { AiOutlineBell } from "react-icons/ai";
-
+import { MdOutlineInsights } from "react-icons/md";
 
 const Layout = ({ children, sideHighlight }) => {
   const [userData, setUserData] = useState(null);
@@ -34,7 +35,6 @@ const Layout = ({ children, sideHighlight }) => {
   const [id, setId] = useState("");
   const router = useRouter();
   const notificationRef = useRef();
-
 
   const handleClickOutsideNotification = (event) => {
     if (
@@ -57,6 +57,14 @@ const Layout = ({ children, sideHighlight }) => {
     router.push("/");
   };
 
+  // const fetcher = async () => {
+  //   const response = await fetch(`https://baobabpad-334a8864da0e.herokuapp.com/village/country_skills/${id}/`)
+  //   setSelectedAttributes(response.data)
+  // }
+
+  // const {data, error} = useSWR('attribute', fetcher)
+
+
   useLayoutEffect(() => {
     checkToken();
 
@@ -72,7 +80,7 @@ const Layout = ({ children, sideHighlight }) => {
           `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${user_id}/`
         );
         setUserData(response.data);
-        // console.log(response.data);
+        console.log("This is my signed in user data: ", response.data);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -143,10 +151,7 @@ const Layout = ({ children, sideHighlight }) => {
       <main className="h-screen w-screen flex relative">
         <nav className="sm:w-60 w-20 transition-all z-[100] h-screen relative pt-10 group">
           <div className="w-full h-full flex flex-col">
-            <div
-              className="w-full pl-5 flex-shrink-0 h-20 gap-4 flex items-center cursor-pointer"
-              
-            >
+            <div className="w-full pl-5 flex-shrink-0 h-20 gap-4 flex items-center cursor-pointer">
               <div className="relative w-10 h-10 rounded">
                 <Image src={Logo} priority alt="logo" fill />
               </div>
@@ -175,7 +180,7 @@ const Layout = ({ children, sideHighlight }) => {
                 </div>
 
                 <div className="w-full flex flex-col">
-                  <Link href="/virtual_tech_village/v_internship">
+                  <Link href="/virtual_tech_village/internship">
                     <div
                       className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
 											${
@@ -186,13 +191,12 @@ const Layout = ({ children, sideHighlight }) => {
 										`}
                     >
                       <IoPeopleCircleOutline className="text-xl" />
-                      <h1 className="hidden sm:block">Intern Pool</h1>
+                      <h1 className="hidden sm:block">Internship</h1>
                     </div>
                   </Link>
                 </div>
 
-
-                {/* <div className="w-full flex flex-col">
+                <div className="w-full flex flex-col">
                   <Link href="/virtual_tech_village/connect">
                     <div
                       className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
@@ -207,9 +211,9 @@ const Layout = ({ children, sideHighlight }) => {
                       <h1 className="hidden sm:block">Connect</h1>
                     </div>
                   </Link>
-                </div> */}
+                </div>
 
-                {/* <div className="w-full flex flex-col">
+                <div className="w-full flex flex-col">
                   <Link href="/virtual_tech_village/sharepad">
                     <div
                       className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
@@ -224,7 +228,7 @@ const Layout = ({ children, sideHighlight }) => {
                       <h1 className="hidden  sm:block">SharePad</h1>
                     </div>
                   </Link>
-                </div> */}
+                </div>
 
                 <div className="w-full flex flex-col">
                   <Link href="/virtual_tech_village/inbox">
@@ -242,6 +246,25 @@ const Layout = ({ children, sideHighlight }) => {
                     </div>
                   </Link>
                 </div>
+
+                {userData && userData[0]?.account_type === "village admin profile" && (
+                  <div className="w-full flex flex-col">
+                    <Link href="/virtual_tech_village/admin/insight">
+                      <div
+                        className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
+											${
+                        sideHighlight === "Insight"
+                          ? "font-bold bg-gray-100 text-gray-900"
+                          : " hover:font-bold hover:bg-gray-100 hover:text-gray-800"
+                      }
+										`}
+                      >
+                        <MdOutlineInsights className="text-xl" />
+                        <h1 className="hidden sm:block">Insights</h1>
+                      </div>
+                    </Link>
+                  </div>
+                )}
 
                 <div className="w-full flex flex-col">
                   <Link href="/virtual_tech_village/profile">
@@ -291,20 +314,20 @@ const Layout = ({ children, sideHighlight }) => {
             </div>
           </div>
         </nav>
-        <nav className="fixed bg-white top-0 left-0 w-full h-20 px-14 gap-4 flex justify-end items-center z-[99] bg-opacity-25 backdrop-blur border-none">
+        <nav className="fixed bg-white top-0 left-0 w-full h-16 px-14 gap-4 flex justify-end items-center z-[99] bg-opacity-25 backdrop-blur border-none">
           <div className="relative flex flex-col justify-center items-center">
             <AiOutlineBell
               className={`text-lg cursor-pointer ${
-                unreadMessageCount > 0 ? "animate-pulse" : ""
+                unreadMessageCount > 0 ? "animate-bounce" : ""
               }`}
               onClick={handleShowNotification}
             />
             <div className="absolute -top-2 -right-4">
               {unreadMessageCount > 0 ? unreadMessageCount : ""}
             </div>
-            <div ref={notificationRef}>
+            <div ref={notificationRef} >
               <div className="relative">
-                <div className="inline-flex items-center overflow-hidden rounded-md border bg-white"></div>
+                {/* <div className="inline-flex items-center overflow-hidden rounded-md border bg-white"></div> */}
                 {showNotification && (
                   <div
                     className="absolute -left-8 md:-left-20 md:end-0 z-[999] w-56 rounded-md border border-gray-100 max-h-40 overflow-x-auto bg-white shadow-lg"
@@ -382,7 +405,8 @@ const Layout = ({ children, sideHighlight }) => {
                 {userData &&
                   (userData[0]?.account_type === "village talent profile" ||
                   userData[0]?.account_type === "village admin profile" ||
-                  userData[0]?.account_type === "community manager" ? (
+                  userData[0]?.account_type === "community manager" ||
+                  userData[0]?.account_type === "Intern" ? (
                     <div>
                       {userData[0]?.first_name} {userData[0]?.last_name}
                     </div>

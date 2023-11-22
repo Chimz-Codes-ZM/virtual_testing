@@ -29,7 +29,7 @@ const Resume_component = ({
               <h2 className="text-lg">{title}</h2>
             </div>
 
-            <div class="lg:flex sm:justify-between grid grid-cols-1 sm:grid-cols-3 lg:col-span-3 gap-4 mt-5 pt-4 border-t-2 border-gray-300">
+            <div class="lg:flex sm:justify-between grid grid-cols-1 sm:grid-cols-3 col-span-3 gap-4 mt-5 pt-4 border-t-2 border-gray-300">
               <div className="flex items-center">
                 {/* <!-- Contact 1 Icon --> */}
                 <div className="text-2xl">
@@ -144,16 +144,7 @@ const Resume_component = ({
             <p className="p-2">{bio}</p>
 
             {/* <!-- Skills --> */}
-            <h3 class="mt-12 lg:mt-16 text-2xl font-semibold pb-2 border-b-2 border-gray-300">
-              Soft Skills
-            </h3>
-
-            {/* <!-- Skills 1 --> */}
-            {soft_skills?.map((skill, index) => (
-              <ul key={index}>
-                <li className="list-disc">{skill.name}</li>
-              </ul>
-            ))}
+           
 
             {/* <!-- Education --> */}
             <h3 class="mt-12 lg:mt-16 font-semibold text-2xl pb-2 border-b-2 border-gray-300">
@@ -167,6 +158,17 @@ const Resume_component = ({
                 </h4>
                 <p class="mb-1">{education.degree_name}</p>
               </div>
+            ))}
+
+<h3 class="mt-12 lg:mt-16 text-2xl font-semibold pb-2 border-b-2 border-gray-300">
+              Soft Skills
+            </h3>
+
+            {/* <!-- Skills 1 --> */}
+            {soft_skills?.map((skill, index) => (
+              <ul key={index}>
+                <li className="list-disc">{skill.name}</li>
+              </ul>
             ))}
 
             {/* <!-- References --> */}

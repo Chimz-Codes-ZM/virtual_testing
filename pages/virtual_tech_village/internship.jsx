@@ -10,7 +10,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-import Complete_Profile from "../virtual_tech_village/components/alerts/completeProfile";
+import Layout from "./components/layouts/layout";
+import Complete_Profile from "./components/alerts/completeProfile";
 import MemberProfile from "./components/profiles/MemberProfile";
 import ExpandedProfileModal from "./components/profiles/ExpandedProfileModal";
 import New_job from "./components/forms/new_job";
@@ -116,7 +117,7 @@ const ExpandedCompanyModal = ({
   );
 };
 
-const Virtual_Tech_Village = () => {
+const Virtual_internship = () => {
   const [memberShow, setMemberShow] = useState(true);
   const [companyShow, setCompanyShow] = useState(false);
   const [addNewJobShow, setAddNewJobShow] = useState(false);
@@ -180,7 +181,7 @@ const Virtual_Tech_Village = () => {
       const data = await response.json();
 
       const pages = Array.from(
-        { length: data.talent_total_pages },
+        { length: data.intern_total_pages },
         (_, index) => index + 1
       );
 
@@ -253,9 +254,9 @@ const Virtual_Tech_Village = () => {
     console.log(memberList);
   }, [memberList]);
 
-  const { companies, individuals } = memberList || {
+  const { companies, interns } = memberList || {
     companies: [],
-    individuals: [],
+    interns: [],
   };
 
   const handleClickOutsideProfile = (event) => {
@@ -342,7 +343,7 @@ const Virtual_Tech_Village = () => {
 
       if (response.ok) {
         const pages = Array.from(
-          { length: data.talent_total_pages },
+          { length: data.intern_total_pages },
           (_, index) => index + 1
         );
 
@@ -511,7 +512,7 @@ const Virtual_Tech_Village = () => {
     );
   }
 
-  const filteredData = individuals?.filter((profile) => {
+  const filteredData = interns?.filter((profile) => {
     const countryFilter = filters.country
       ? profile.country === filters.country
       : true;
@@ -584,6 +585,7 @@ const Virtual_Tech_Village = () => {
   };
 
   return (
+    <Layout sideHighlight="virtual internship">
     <div className="flex flex-col gap-5 relative py-8" ref={parent}>
       <div className="relative" ref={memberStartRef}></div>
       <div>
@@ -726,9 +728,9 @@ const Virtual_Tech_Village = () => {
               }`}
               onClick={handleMemberShow}
             >
-              Members{" "}
+              Interns{" "}
               <span className="bg-black text-white rounded p-1">
-                {memberList?.total_talent_profiles}
+                {memberList?.total_intern_profiles}
               </span>
             </div>
           )}
@@ -1048,7 +1050,8 @@ const Virtual_Tech_Village = () => {
         </div>
       )}
     </div>
+    </Layout>
   );
 };
 
-export default Virtual_Tech_Village;
+export default Virtual_internship;

@@ -199,14 +199,14 @@ const Index = () => {
     <>
       <Layout sideHighlight="inbox">
         <div className="flex custom-height">
-          <div className="hidden lg:block">
+          <div className="hidden lg:block py-14">
             <MessageList />
           </div>
 
           {/* CONVERSATION LIST */}
 
           <div className="relative grow shadow overflow-hidden h-full flex justify-center">
-            <div className="grow relative p-4 py-1 overflow-hidden max-h-[500px] pt-10 max-w-3xl">
+            <div className="grow relative sm:p-4 py-1 overflow-hidden max-h-[500px] mt-14 pt-10 max-w-3xl">
               <Toolbar
                 names={usersName}
                 avatar={userPicture}
@@ -217,7 +217,7 @@ const Index = () => {
                 archived={archived}
               />
               <div className="scrollbar h-full">
-                <div className="mx-auto max-w-6xl px-14 py-4 pb-4 max-h-full overflow-y-auto">
+                <div className="mx-auto max-w-6xl sm:px-14 px-4 py-4 pt-10 pb-4 max-h-full overflow-y-auto">
                   <div className="">
                     {messageHistory.length > 0 && (
                       <div className="message-list flex flex-col gap-1 pt-2">

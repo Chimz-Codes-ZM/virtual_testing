@@ -433,6 +433,7 @@ export const countries = [
   { country: "Bangladesh" },
   { country: "Barbados" },
   { country: "Belarus" },
+  { country: "Botswana"},
   { country: "Canada" },
   { country: "Central African Republic" },
   { country: "Chad" },

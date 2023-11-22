@@ -198,7 +198,7 @@ const Complete_profile = () => {
 
   // const formInputs = [completedProfile, socialMedia, softSkills, language, workHistory, education]
   const formInputs = {
-    "completedP rofile": completedProfile,
+    "completedProfile": completedProfile,
     socialMediaLinks: socialMedia,
     softSkills: softSkills,
     language: language,
@@ -225,7 +225,6 @@ const Complete_profile = () => {
     );
     if (response.ok) {
       alert("Profile update complete!");
-      localStorage.removeItem("user_id");
       router.push("/virtual_tech_village");
     } else {
       alert("Something went wrong, please try again!");

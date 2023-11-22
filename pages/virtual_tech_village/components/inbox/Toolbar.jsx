@@ -350,7 +350,7 @@ const Toolbar = ({
   };
 
   return (
-    <div className="absolute  z-[2] px-10 p-1 left-10 right-10 top-3 shadow border rounded bg-white">
+    <div className="absolute z-[2] sm:px-10 p-1 left-10 right-10 top-3 shadow border rounded bg-white">
       <div className="relative w-full">
         <div className="flex gap-3">
           <div className="h-8 w-8 rounded-full relative overflow-hidden">

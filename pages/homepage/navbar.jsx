@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import icon from "../../public/logo.png";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AiOutlineClose, AiOutlineMail, AiOutlineMenu } from "react-icons/ai";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { BsFillPersonLinesFill } from "react-icons/bs";
@@ -13,6 +13,7 @@ const Navbar = () => {
   const [linkColor, setLinkColor] = useState("#fff");
   const [team, setTeam] = useState(false);
   const [teamMobile, setTeamMobile] = useState(false);
+  const navRef = useRef(null);
 
   const [isMouseLeft, setIsMouseLeft] = useState(false);
 
@@ -36,6 +37,12 @@ const Navbar = () => {
     setTeamMobile(false);
   };
 
+  const handleClickOutsideNavbar = (event) => {
+    if (navRef.current && !navRef.current.contains(event.target)) {
+      setNav(!nav);
+    }
+  };
+
   useEffect(() => {
     const handleShadow = () => {
       if (window.scrollY >= 90) {
@@ -45,6 +52,14 @@ const Navbar = () => {
       }
     };
     window.addEventListener("scroll", handleShadow);
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideNavbar);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideNavbar);
+    };
   }, []);
 
   return (
@@ -167,7 +182,6 @@ const Navbar = () => {
           nav ? "lg:hidden fixed left-0 top-0 w-full h-screen bg-black/70" : ""
         }
       >
-        {/* Side Drawer Menu */}
         <div
           className={
             nav
@@ -175,76 +189,77 @@ const Navbar = () => {
               : "fixed left-[-100%] top-0 p-10 ease-in duration-500"
           }
         >
-          <div>
-            <div className="flex w-full items-center justify-between">
-              <div onClick={handleNav} className="p-3 cursor-pointer">
-                <AiOutlineClose className="text-4xl font-bold" />
+          <div ref={navRef} className="">
+            <div className="absolute top-4 right-4">
+              <div className="flex w-full items-center justify-between">
+                <div onClick={handleNav} className="p-3 cursor-pointer">
+                  <AiOutlineClose className="text-4xl font-bold" />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="py-4 flex flex-col">
-            <ul className="font-poppins font-normal cursor-pointer text-[16px]">
-              <Link href="/">
-                <li onClick={() => setNav(false)} className="py-4 text-sm">
-                  Home
-                </li>
-              </Link>
+            <div className="py-4 flex flex-col">
+              <ul className="font-poppins font-normal cursor-pointer text-[16px]">
+                <Link href="/">
+                  <li onClick={() => setNav(false)} className="py-4 text-sm">
+                    Home
+                  </li>
+                </Link>
 
-              <Link href="/homepage/about">
-                <li onClick={() => setNav(false)} className="py-4 text-sm">
-                  About
-                </li>
-              </Link>
-              <Link href="/homepage/partners">
-                <li onClick={() => setNav(false)} className="py-4 text-sm">
-                  Partners
-                </li>
-              </Link>
+                <Link href="/homepage/about">
+                  <li onClick={() => setNav(false)} className="py-4 text-sm">
+                    About
+                  </li>
+                </Link>
+                <Link href="/homepage/partners">
+                  <li onClick={() => setNav(false)} className="py-4 text-sm">
+                    Partners
+                  </li>
+                </Link>
 
-              {/* <Link href='/homepage/news'>
+                {/* <Link href='/homepage/news'>
                 <li onClick={() => setNav(false)} className='py-4 text-sm'>
                   News
                 </li>
               </Link> */}
 
-              <div className="relative">
-                <li onClick={handleTeamClick} className="py-4 text-sm">
-                  Team
-                </li>
+                <div className="relative">
+                  <li onClick={handleTeamClick} className="py-4 text-sm">
+                    Team
+                  </li>
 
-                {teamMobile && (
-                  <div
-                    className="absolute end-0 z-10 mt-2 left-0 max-w-3xl border border-gray-100 bg-white shadow-lg"
-                    role="menu"
-                    onClick={() => setNav(false)}
-                  >
-                    <div className="p-2">
-                      <Link
-                        href="/homepage/team/management"
-                        className="block rounded-lg px-4 py-2 text-sm hover:bg-gray-50 hover:text-gray-700"
-                        role="menuitem"
-                      >
-                        Management
-                      </Link>
+                  {teamMobile && (
+                    <div
+                      className="absolute end-0 z-10 mt-2 left-0 max-w-3xl border border-gray-100 bg-white shadow-lg"
+                      role="menu"
+                      onClick={() => setNav(false)}
+                    >
+                      <div className="p-2">
+                        <Link
+                          href="/homepage/team/management"
+                          className="block rounded-lg px-4 py-2 text-sm hover:bg-gray-50 hover:text-gray-700"
+                          role="menuitem"
+                        >
+                          Management
+                        </Link>
 
-                      <Link
-                        href="/homepage/team/technical_professionals"
-                        className="block rounded-lg px-4 py-2 text-sm hover:bg-gray-50 hover:text-gray-700"
-                        role="menuitem"
-                      >
-                        Technical Professionals
-                      </Link>
+                        <Link
+                          href="/homepage/team/technical_professionals"
+                          className="block rounded-lg px-4 py-2 text-sm hover:bg-gray-50 hover:text-gray-700"
+                          role="menuitem"
+                        >
+                          Technical Professionals
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
 
-              <Link href="/homepage/careers">
-                <li onClick={() => setNav(false)} className="py-4 text-sm">
-                  Careers
-                </li>
-              </Link>
-              {/* <Link href="/homepage/growth">
+                <Link href="/homepage/careers">
+                  <li onClick={() => setNav(false)} className="py-4 text-sm">
+                    Careers
+                  </li>
+                </Link>
+                {/* <Link href="/homepage/growth">
                 <li onClick={() => setNav(false)} className="py-4 text-sm">
                   Growth
                 </li>
@@ -255,17 +270,18 @@ const Navbar = () => {
                 </li>
               </Link> */}
 
-              <Link href="/homepage/tech_village">
-                <li onClick={() => setNav(false)} className="py-4 text-sm">
-                  Tech Village
-                </li>
-              </Link>
-              <Link href="/homepage/login">
-                <li onClick={() => setNav(false)} className="py-4 text-sm">
-                  Sign in
-                </li>
-              </Link>
-            </ul>
+                <Link href="/homepage/tech_village">
+                  <li onClick={() => setNav(false)} className="py-4 text-sm">
+                    Tech Village
+                  </li>
+                </Link>
+                <Link href="/homepage/login">
+                  <li onClick={() => setNav(false)} className="py-4 text-sm">
+                    Sign in
+                  </li>
+                </Link>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

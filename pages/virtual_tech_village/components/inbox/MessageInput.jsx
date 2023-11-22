@@ -59,7 +59,7 @@ const MessageInput = ({ roomName, userId }) => {
   }[readyState];
   return (
     <div className="">
-      <div className="absolute bottom-4 md:px-10 p-1 left-10 right-10 rounded">
+      <div className="absolute bottom-4 md:px-10 p-1 left-2 right-2 rounded">
         <div className="relative flex gap-2">
           <div className="relative grow">
             <textarea
@@ -85,7 +85,7 @@ const MessageInput = ({ roomName, userId }) => {
             onClick={() => {
               handleSendInput();
             }}
-            className="bg-black text-white rounded p-1 px-2 h-8 border self-center"
+            className="bg-gray-900 text-white rounded p-1 px-2 h-8  self-center"
           >
             <AiOutlineSend />
           </button>

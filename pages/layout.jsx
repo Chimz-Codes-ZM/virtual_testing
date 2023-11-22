@@ -3,8 +3,6 @@ import React, { ReactNode } from 'react';
 import Navbar from './homepage/navbar';
 import Contact from './homepage/components/contact';
 import Footer from './homepage/components/footer';
-import Link from 'next/link';
-import Favicon from "../public/favicon.ico"
 
 
 

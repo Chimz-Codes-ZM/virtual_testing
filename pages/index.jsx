@@ -1,8 +1,3 @@
-import Head from 'next/head'
-import { useState } from "react";
-import Image from 'next/image'
-import Link from "next/link"
-import { FaGithub, FaEnvelope, FaLock } from 'react-icons/fa';
 import Layout from './layout'
 import Homepage from "./homepage"
 

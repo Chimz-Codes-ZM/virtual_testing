@@ -105,7 +105,8 @@ function Login() {
           responseData === `"village profile"` ||
           responseData === `"village admin profile"` ||
           responseData === `"community manager"`||
-          responseData === `"village company profile"`
+          responseData === `"village company profile"` ||
+          responseData === `"Intern"`
         ) {
           router.push("/virtual_tech_village");
         }
@@ -115,16 +116,7 @@ function Login() {
     }
   };
 
-  // const handleLoginUser = async (e) => {
-  //   e.preventDefault();
-  //   await signIn("credentials", {
-  //     redirect: false,
-  //     email: formData.username,
-  //     password: formData.password
-  //   })
 
-  //   router.push("/virtual_tech_village")
-  // }
 
   return (
     <div className="flex items-center justify-center p-6 sm:p-12 md:p-16 border h-screen relative">

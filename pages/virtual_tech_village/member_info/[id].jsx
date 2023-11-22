@@ -12,29 +12,19 @@ import Resume_component from "../components/cv/Resume_component";
 
 import { JellyTriangle } from "@uiball/loaders";
 
-const MemberInfo = () => {
+
+
+const MemberInfo = ({member}) => {
   const [info, setInfo] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loggedIn, setLoggedIn] = useState([]);
   const router = useRouter();
 // const csrfToken = Cookies.get('next-auth.csrf-token')
 
-  const { id } = router.query;
+const { id } = router.query;
   const [error, setError] = useState(null);
 
-  // function getCsrfToken() {
-  //   const cookies = document.cookie.split("; ");
-  //   const csrfCookie = cookies.find(cookie => cookie.startsWith("next-auth-csrf-token="));
-  
-  //   if (csrfCookie) {
-  //     return csrfCookie.split("=")[1];
-  //   }
-  
-  //   return null;
-  // }
-  
-  
-  // const csrfToken = getCsrfToken();
+ 
 
   const fetchInfo = async (e) => {
     const userInfoUrl = `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${id}`;
@@ -51,9 +41,9 @@ const MemberInfo = () => {
         setInfo(responseData);
         console.log(responseData);
 
-        setTimeout(function () {
+      
           setLoading(false);
-        }, 2000);
+       
       })
 
       .catch((error) => {
@@ -131,18 +121,18 @@ const MemberInfo = () => {
     <>
       <Layout sideHighlight="Tech Village">
         <Resume_component
-          name={`${info[0]?.first_name} ${info[0]?.last_name}`}
-          bio={info[0]?.bio}
-          country={info[0]?.country}
-          city={info[0]?.city}
-          title={info[0]?.skills}
-          job1={info[0]?.work_experience[0]?.company}
-          position1={info[0]?.work_experience[0]?.position}
-          work_experience={info[0]?.work_experience}
-          education={info[0]?.education}
-          languages={info[0]?.languages}
-          linkedin={info[0]?.link}
-          soft_skills={info[0]?.soft_skills}
+          name={`${member[0]?.first_name} ${member[0].last_name}`}
+          bio={member[0]?.bio}
+          country={member[0]?.country}
+          city={member[0]?.city}
+          title={member[0]?.skills}
+          job1={member[0]?.work_experience[0].company}
+          position1={member[0]?.work_experience[0]?.position}
+          work_experience={member[0]?.work_experience}
+          education={member[0]?.education}
+          languages={member[0]?.languages}
+          linkedin={member[0]?.link}
+          soft_skills={member[0]?.soft_skills}
         />
         <div
           className="p-1 px-2 rounded-lg border shadow-md w-fit cursor-pointer bg-black text-white fixed bottom-10 right-10"
@@ -156,3 +146,42 @@ const MemberInfo = () => {
 };
 
 export default MemberInfo;
+
+export async function getStaticPaths() {
+  const response = await fetch('https://baobabpad-334a8864da0e.herokuapp.com/village/ids/');
+  
+  if (!response.ok) {
+    console.error('Failed to fetch data');
+    return { paths: [], fallback: false };
+  }
+
+  const data = await response.json();
+
+  console.log(data);
+
+  const paths = data.map((person) => {
+    return {
+      params: {
+        id: `${person.id}`,
+      }
+    };
+  });
+
+  return {
+    paths: paths,
+    fallback: false
+  };
+}
+
+export async function getStaticProps(context) {
+  const { params } = context;
+
+  const response = await fetch(`https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${params.id}`)
+  const data = await response.json()
+
+  return {
+    props: {
+      member: data
+    }
+  }
+}
