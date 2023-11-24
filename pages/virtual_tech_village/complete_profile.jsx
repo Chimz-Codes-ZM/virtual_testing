@@ -198,7 +198,7 @@ const Complete_profile = () => {
 
   // const formInputs = [completedProfile, socialMedia, softSkills, language, workHistory, education]
   const formInputs = {
-    "completedProfile": completedProfile,
+    completedProfile: completedProfile,
     socialMediaLinks: socialMedia,
     softSkills: softSkills,
     language: language,
@@ -276,23 +276,24 @@ const Complete_profile = () => {
     const user_id = decodedToken.user_id;
 
     const formData = new FormData();
-    formData.append('pdfFile', file);
+    formData.append("pdfFile", file);
 
     try {
-      const response = await fetch(`https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${user_id}/`, {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${user_id}/`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
-        
-        console.log('PDF uploaded successfully');
+        console.log("PDF uploaded successfully");
       } else {
-        
-        console.error('Failed to upload PDF');
+        console.error("Failed to upload PDF");
       }
     } catch (error) {
-      console.error('Error uploading PDF', error);
+      console.error("Error uploading PDF", error);
     }
   };
 
@@ -339,7 +340,9 @@ const Complete_profile = () => {
 
             <div className="flex flex-col sm:flex-row w-full sm:px-10  pt-24 pb-4 items-center justify-between border-b-2">
               <div className="flex flex-col gap-3 pb-4">
-                <h2 className="font-semibold text-lg sm:text-2xl">Tech Village Profile</h2>
+                <h2 className="font-semibold text-lg sm:text-2xl">
+                  Tech Village Profile
+                </h2>
                 <p>Set your details here</p>
               </div>
 
@@ -530,7 +533,10 @@ const Complete_profile = () => {
                   </div>
                   <div className="col-span-1 sm:col-span-5 mx-auto p-2 w-full bg-white">
                     {education.map((degree, index) => (
-                      <div key={index} className="flex mb-4 flex-col sm:flex-row">
+                      <div
+                        key={index}
+                        className="flex mb-4 flex-col sm:flex-row"
+                      >
                         <div className="w-full sm:w-1/4 pr-4">
                           <label className="block text-sm font-medium text-gray-600 mb-1">
                             Degree Name:
@@ -631,7 +637,10 @@ const Complete_profile = () => {
                   </div>
                   <div className="col-span-1 sm:col-span-5 w-full mx-auto p-6 px-2 bg-white">
                     {workHistory.map((work, index) => (
-                      <div key={index} className="flex mb-4 flex-col sm:flex-row">
+                      <div
+                        key={index}
+                        className="flex mb-4 flex-col sm:flex-row"
+                      >
                         <div className="w-full sm:w-1/4 pr-4">
                           <label className="block text-sm font-medium text-gray-600 mb-1">
                             Position held:
@@ -788,10 +797,10 @@ const Complete_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 ">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 pb-4 ">
                   <div className="col-span-1">
                     <label
-                      htmlFor="experience"
+                      htmlFor="softSkill"
                       className="font-semibold sm:text-xl"
                     >
                       Soft Skill's
@@ -800,8 +809,8 @@ const Complete_profile = () => {
 
                   <div className="col-span-1 flex flex-col">
                     {softSkills.map((skill, index) => (
-                      <div key={index} className="flex mb-4 flex-col sm:flex-row col-span-1">
-                        <div className="pr-4">
+                      <div key={index} className="flex mb-4 col-span-1 w-full">
+                        <div className="pr-4 w-full">
                           <label
                             htmlFor="soft_skills"
                             className="block text-sm font-medium text-gray-600 mb-1"
@@ -812,10 +821,11 @@ const Complete_profile = () => {
                             type="text"
                             className="form-input border w-full rounded-md border-gray-300 px-1"
                             value={skill.softSkills}
+                            placeholder="e.g., Creativity"
                             onChange={(e) =>
                               handleSoftSkillChange(
                                 index,
-                                "softSkill",
+                                "softSkills",
                                 e.target.value
                               )
                             }
@@ -845,28 +855,29 @@ const Complete_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 pb-4 ">
+                <div className="grid grid-cols-1 md:grid-cols-3 w-full sm:px-10 pt-4 pb-4 ">
                   <div className="col-span-1">
                     <label
-                      htmlFor="experience"
+                      htmlFor="sociialMedia"
                       className="font-semibold sm:text-xl"
                     >
-                      Social Media Links
+                      Link to you Linkedin profile
                     </label>
                   </div>
 
                   <div className="col-span-1 flex flex-col w-full">
                     {socialMedia.map((media, index) => (
-                      <div key={index} className="flex mb-4 col-span-1 w-full">
+                      <div key={index} className="flex mb-4 w-full">
                         <div className="pr-4 w-full">
                           <label
                             htmlFor="socialMedia"
                             className="block text-sm font-medium text-gray-600 mb-1"
                           >
-                            Social Link
+                            Linkedin profile
                           </label>
                           <input
                             type="text"
+                            placeholder="e.g., www.linkedin.com/in/janeDoe"
                             className="form-input border w-full rounded-md border-gray-300 px-1"
                             value={media.socialMedia}
                             onChange={(e) =>
@@ -891,7 +902,7 @@ const Complete_profile = () => {
                     ))}
                   </div>
 
-                  <div className=" col-span-1">
+                  {/* <div className=" col-span-1">
                     <button
                       type="button"
                       className="bg-gray-900 text-white py-2 px-4 rounded-md hover:bg-white hover:text-black hover:border transition-colors"
@@ -899,7 +910,7 @@ const Complete_profile = () => {
                     >
                       Add Social Link
                     </button>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="grid grid-cols-3">

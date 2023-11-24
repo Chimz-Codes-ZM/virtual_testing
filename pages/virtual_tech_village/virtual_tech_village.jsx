@@ -881,14 +881,14 @@ const Virtual_Tech_Village = () => {
           )}
         </div>
 
-        {incompleteProfile && (
+        {/* {incompleteProfile && (
           <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-sm">
             <Complete_Profile
               message="Your profile is incomplete! Please complete setting up your profile."
               alertDismiss={profileReroute}
             />
           </div>
-        )}
+        )} */}
 
         {incompleteCompanyProfile && (
           <div className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm">
