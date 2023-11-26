@@ -89,7 +89,7 @@ const Layout = ({ children, sideHighlight }) => {
     fetchData();
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideNotification);
 
     return () => {
@@ -418,7 +418,7 @@ const Layout = ({ children, sideHighlight }) => {
           </Link>
         </nav>
         <div className="w-full h-screen overflow-y-scroll px-4">
-          <div className="w-full h-max flex flex-col gap-5">{children}</div>
+          <div className="w-full h-max flex flex-col gap-5 pt-16">{children}</div>
         </div>
       </main>
     </>

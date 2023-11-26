@@ -357,8 +357,8 @@ html {
 
 /* Custom inbox height */
 .custom-height {
-  /* height: calc(100vh - 50px); */
-  height: 100vh;
+  height: calc(100vh - 70px);
+  /* height: 100vh; */
 }
 
 .custom-height::-webkit-scrollbar {

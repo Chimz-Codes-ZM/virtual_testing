@@ -13,6 +13,8 @@ const Navbar = () => {
   const [linkColor, setLinkColor] = useState("#fff");
   const [team, setTeam] = useState(false);
   const [teamMobile, setTeamMobile] = useState(false);
+  const [about, setAbout] = useState(false);
+  const [aboutMobile, setAboutMobile] = useState(false);
   const navRef = useRef(null);
 
   const [isMouseLeft, setIsMouseLeft] = useState(false);
@@ -33,9 +35,17 @@ const Navbar = () => {
     setTeamMobile(!teamMobile);
   };
 
-  const handleTeamClickout = () => {
-    setTeamMobile(false);
-  };
+const handleAboutEnter = () => {
+  setAbout(true)
+}
+
+const handleAboutExit = () => {
+  setAbout(false)
+}
+
+const handleAboutClick = () => {
+  setAboutMobile(!aboutMobile)
+}
 
   const handleClickOutsideNavbar = (event) => {
     if (navRef.current && !navRef.current.contains(event.target)) {
@@ -88,15 +98,40 @@ const Navbar = () => {
           </Link>
 
           <ul className="absolute w-max flex gap-4 text-white font-bold text-xl right-32 h-full items-center">
-            <Link href="/homepage/about" onMouseEnter={handleTeamExit}>
+          <div className="relative" onMouseEnter={handleAboutEnter}>
               <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
                 About
               </li>
-            </Link>
-            <div className="relative" onMouseEnter={handleTeamEnter}>
-              <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
+
+              {about && (
+                <div
+                  className="absolute end-0 z-10 mt-2 w-56 -left-20 border border-gray-100 bg-white shadow-lg"
+                  role="menu"
+                  onMouseLeave={handleAboutExit}
+                >
+                  <div className="p-2">
+                    <Link
+                      href="/homepage/about/who_we_are"
+                      className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                      role="menuitem"
+                    >
+                      Who We Are
+                    </Link>
+
+                    <Link
+                      href="/homepage/about/what_we_do"
+                      className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                      role="menuitem"
+                    >
+                      What We Do
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+              <Link href="/homepage/team/management" className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
                 Team
-              </li>
+              </Link>
 
               {team && (
                 <div
@@ -123,7 +158,7 @@ const Navbar = () => {
                   </div>
                 </div>
               )}
-            </div>
+
             {/* 
             <Link href="/homepage/partners" onMouseEnter={handleTeamExit}>
               <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">

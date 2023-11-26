@@ -1,15 +1,8 @@
 import React from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { TiChartBar } from "react-icons/ti";
-import { AiFillDatabase, AiOutlineCheck } from "react-icons/ai";
-import { GiArtificialIntelligence } from "react-icons/gi";
 import Layout from '../layout';
 import Home from "./home";
 import Slide from './components/slide_';
 import TitleBox from './components/title_box';
-
-import { HiDocumentReport } from "react-icons/hi"
 
 const Team = () => {
     return (
@@ -22,7 +15,7 @@ const Team = () => {
 
             
             <Home 
-                title='What we do' 
+                title='Who We Are' 
                 mediaSrc='/assets/aboutB.jpg'
                 mediaType='image' 
             />

@@ -33,8 +33,7 @@ import Fido from "../../public/assets/fido.jpeg";
 import pascaline from "../../public/assets/pasc.jpeg";
 import rodney from "../../public/assets/rodney.jpeg";
 import jacob from "../../public/assets/jacob.jpeg";
-import Selma from "../../public/assets/selma.png";
-import Eden from "../../public/assets/Eden.jpg";
+import albert from "../../public/assets/albert.jpeg"
 import Kenny from "../../public/assets/kenny.jpg"
 import Karen from "../../public/assets/karen.jpg"
 
@@ -93,31 +92,13 @@ export const StartUp = [
 ];
 
 export const management_info = [
-  // {
-  //   id: 1,
-  //   img: Selma,
-  //   name: "Selma Nasheya",
-  //   position: "CEO & Co-founder",
-  //   Quote:
-  //     "Pioneering Sustainability in Africa for Global Transformation: Driving Just Transitions through Strategic Collaboration and Information Technology. At BAOBABPAD, we are committed to driving extraordinary innovative solutions.",
-  //     linkedin: "https://www.linkedin.com/in/selma-nasheya/"
-  // },
 
-  // {
-  //   id: 2,
-  //   img: Eden,
-  //   name: "Eden Alem",
-  //   position: "People Strategy & Digital",
-  //   Quote: "Eden is a seasoned professional with a diverse background in people strategy and digital transformation. With years of experience in the business world in New York, Eden has established herself as a trusted partner and an invaluable asset to organizations seeking to optimize their human resources and leverage technology for growth.",
-  //   linkedin: "https://www.linkedin.com/in/eden-alem-92627b23/?originalSubdomain=no"
-
-  // },
 
   {
     id: 1,
     img: Kenny,
     name: "Kenny Kaluiji",
-    position:"Chief Vision Officer",
+    position:"Founder",
     Quote: "Impact-oriented innovative business developer with domain skills in ESG analysis, impact investing, responsible innovation strategy, renewable energy, Africa opportunities",
     linkedin: "https://www.linkedin.com/in/kenny-kaluiji-902a1576/?originalSubdomain=no"
   },
@@ -126,7 +107,34 @@ export const management_info = [
     id: 2,
     img: Karen,
     name: "Karen Kana",
-    position:"Fund & Grant Lead",
+    position:"Impact Advisor",
+    Quote: "A seasoned professional in Global Development Studies, Karen specializes in project and strategic management, comprehensive research, policy analysis, and advocacy, with a strong focus on gender-inclusive entrepreneurship and social impact projects. Karen provide's consultancy in global development, guide professional growth, and streamline organizational processes for optimal performance.",
+    linkedin: "https://www.linkedin.com/in/kana-karen/"
+  },
+
+  {
+    id: 3,
+    img: jacob,
+    name: "Jacob Mwale",
+    position:"Tech Lead",
+    Quote: "A seasoned professional in Global Development Studies, Karen specializes in project and strategic management, comprehensive research, policy analysis, and advocacy, with a strong focus on gender-inclusive entrepreneurship and social impact projects. Karen provide's consultancy in global development, guide professional growth, and streamline organizational processes for optimal performance.",
+    linkedin: "https://www.linkedin.com/in/kana-karen/"
+  },
+
+  {
+    id: 4,
+    img: rodney,
+    name: "Chimwemwe Masona",
+    position:"Tech Lead",
+    Quote: "A seasoned professional in Global Development Studies, Karen specializes in project and strategic management, comprehensive research, policy analysis, and advocacy, with a strong focus on gender-inclusive entrepreneurship and social impact projects. Karen provide's consultancy in global development, guide professional growth, and streamline organizational processes for optimal performance.",
+    linkedin: "https://www.linkedin.com/in/kana-karen/"
+  },
+
+  {
+    id: 5,
+    img: albert,
+    name: "Albert Ngingwa",
+    position:"Data Lead",
     Quote: "A seasoned professional in Global Development Studies, Karen specializes in project and strategic management, comprehensive research, policy analysis, and advocacy, with a strong focus on gender-inclusive entrepreneurship and social impact projects. Karen provide's consultancy in global development, guide professional growth, and streamline organizational processes for optimal performance.",
     linkedin: "https://www.linkedin.com/in/kana-karen/"
   }

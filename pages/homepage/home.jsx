@@ -45,11 +45,10 @@ const Home = ({ title, mediaSrc, mediaType, description, buttons }) => {
           >
             <div className="flex  flex-col">
               <h1 className="text-sm sm:text-lg md:text-xl lg:text-2xl text-white text-center">
-                Work with Africa's top IT and Data Management Talent and Teams.
-              </h1>
+              Elevating African Technology Talent, Virtually and Globally...              </h1>
             </div>
 
-            <div className="gap-6 sm:gap-10 flex flex-col sm:flex-row h-10 rounded">
+            {/* <div className="gap-6 sm:gap-10 flex flex-col sm:flex-row h-10 rounded">
             <div className="flex text-white text-xl xl:text-2xl font-bold hover:text-gray-100 items-center justify-center px-5 h-10 lg:h-12 rounded background-green">
                 <Link href="/homepage/tech_signup" className="self-center">
                   Virtual Tech Village
@@ -65,11 +64,7 @@ const Home = ({ title, mediaSrc, mediaType, description, buttons }) => {
                   Company Subscription
                 </Link>
               </div>
-
-              {/* <div className="flex text-white text-xl sm:text-2xl font-bold hover:text-gray-100 items-center justify-center px-5 h-10 rounded background-green" onClick={handleSignOut}>
-                Sign out
-              </div> */}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
