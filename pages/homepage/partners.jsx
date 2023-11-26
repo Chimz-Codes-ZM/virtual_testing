@@ -23,14 +23,14 @@ const Team = () => {
 
             
             <Home title='Partners'  
-              	description="Empowering Startups with innovative technology solutions for growth"
+              	// description="Empowering Startups with innovative technology solutions for growth"
               	mediaSrc='/assets/startup.jpg'
                 mediaType='image' 
             >
                 {/* <Company /> */}
             </Home>
 
-		<div className="text-sm  sm:text-lg md:text-xl lg:text-2xl text-gray-700 p-4 pb-2"><h1>Meet our startup community</h1></div>
+		<div className="text-sm  sm:text-lg md:text-xl lg:text-2xl text-gray-700 p-4 pb-2"><h1>Meet our strategic partners</h1></div>
             <div className="">
               <Company />  
             </div>

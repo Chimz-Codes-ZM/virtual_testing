@@ -159,12 +159,12 @@ const handleAboutClick = () => {
                 </div>
               )}
 
-            {/* 
+            
             <Link href="/homepage/partners" onMouseEnter={handleTeamExit}>
               <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
                 Partners
               </li>
-            </Link> */}
+            </Link>
             {/* <Link href="/homepage/news">
               <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">News</li>
             </Link> */}

@@ -52,7 +52,7 @@ function Management() {
           
         </div>
         ))} */}
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 p-10 group">
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 p-10">
           {management_info.map((teammate) => (
             <div className=" flex-shrink-0 h-full relative overflow-hidden group">
               <div
@@ -63,18 +63,17 @@ function Management() {
                   src={teammate.img}
                   alt="img"
                   layout="fill"
-                  className="grayscale"
+                  className="grayscale group-hover:opacity-30 group-hover:filter group-hover:bg-slate-900 transition"
                 />
               </div>
 
               <h1 className="font-bold text-2xl pb-2">{teammate.name}</h1>
               <h3 className="text-xl pb-2">{teammate.position}</h3>
-              <p className="border-b-4 w-fit pb-2">Show bio</p>
 
-              <div className="absolute translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100 w-full h-full">
-              <div class="text-lg text-white p-4 sm:py-8 flex flex-col gap-2 relative w-full h-full">
-                <h3 className="text-sm font-medium uppercase tracking-widest">
-                  Strength
+              <div className="translate-y-8 absolute top-0 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100 w-full h-full">
+              <div class="text-lg text-black p-4 sm:py-8 flex flex-col gap-2 relative w-full h-full">
+                <h3 className="text-xl font-medium tracking-widest">
+                  {teammate.Quote}
                 </h3>
 
               

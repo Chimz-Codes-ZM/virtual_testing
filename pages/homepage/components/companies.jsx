@@ -28,9 +28,9 @@ const Company = () => {
                 <div className="fixed top-0 left-0 w-screen h-screen bg-black opacity-50 z-[199]" onClick={closeBio}></div>
                 <section className="rounded-xl shadow-2xl fixed top-40 max-w-xl p-4 w-full left-1/2 transform -translate-x-1/2 bg-white z-[200]">
                   <GrFormClose className="absolute right-10 text-lg cursor-pointer" onClick={closeBio} />
-                  <div className="p-8 text-center sm:p-12">
+                  <div className="p-4 sm:p-6 flex flex-col items-center">
                     <h1>{company.bio}</h1><a href={company.link} target='_blank'>
-                    <div className="mt-8  w-full rounded-full bg-teal-600 py-4 text-sm font-bold text-white shadow-xl cursor-pointer" >
+                    <div className="mt-8 self-center rounded-full bg-teal-600 py-1 px-2 w-fit text-sm font-bold text-white shadow-xl cursor-pointer" >
                        Find out more
                      
                     </div></a>

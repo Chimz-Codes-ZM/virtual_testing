@@ -38,10 +38,10 @@ import Kenny from "../../public/assets/kenny.jpg"
 import Karen from "../../public/assets/karen.jpg"
 
 import Mehafo from "../../public/assets/mehafo.jpg";
-import Arrow from "../../public/assets/arrow.jpg";
-import Savn from "../../public/assets/savn.jpeg";
-import C1 from "../../public/assets/c1.jpeg";
-import C2 from "../../public/assets/c2.jpeg";
+import Learnio from "../../public/assets/learnio.svg";
+import Terran from "../../public/assets/Terran.png";
+import Forge from "../../public/assets/Forge.png";
+import Pegasus from "../../public/assets/Pegasus.webp";
 
 import Decarb from "../../public/assets/deca-logo.png";
 import Technet from "../../public/assets/technet.svg";
@@ -78,16 +78,27 @@ export const Growth = [
 export const StartUp = [
   {
     id: 1,
-    img: Mehafo,
-    link: "https://mehafo.com",
-    bio: "MEHAFO SUSTAINABLE SOLUTIONS IS A PIONEERING COMPANY AT THE FOREFRONT OF AGRIBUSINESS DEVELOPMENT IN URBAN CENTERS AND SUSTAINABLE ADVISORY SOLUTIONS. BY PROMOTING URBAN AGRICULTURE, INTEGRATING ESG PRINCIPLES, AND FOCUSING ON RESILIENCE AND COMBATING CLIMATE CHANGE, THE COMPANY IS WORKING TOWARDS A FUTURE WHERE BUSINESSES CAN THRIVE WHILE CONTRIBUTING TO A MORE SUSTAINABLE AND RESILIENT WORLD.",
+    img: Learnio,
+    link: "https://learnio.eu",
+    bio: "Learnio provides cutting-edge digital learning programs and personal mentoring support to guarantee success as a digital freelancer.",
   },
 
   {
     id: 2,
-    img: Savn,
-    link: "/",
-    bio: "",
+    img: Forge,
+    link: "https://www.forgeimage.net/",
+    bio: "A Creative Illustration, Animation, And VFX Studio With Extensive Experience And A Flexible Approach, We Combine Compelling Storytelling Techniques With Stunning Visuals To Create Impactful Narratives That Appeal To A global audience.",
+  },
+  {
+    id: 3,
+    img: Pegasus,
+    link: "https://pegasusplatform.no/",
+    bio: "A Creative Illustration, Animation, And VFX Studio With Extensive Experience And A Flexible Approach, We Combine Compelling Storytelling Techniques With Stunning Visuals To Create Impactful Narratives That Appeal To A global audience.",
+  },{
+    id: 4,
+    img: Terran,
+    link: "https://www.terran.team/",
+    bio: "Terran Community connects responsible entities with individuals who look for opportunities to contribute",
   },
 ];
 
@@ -117,7 +128,7 @@ export const management_info = [
     img: jacob,
     name: "Jacob Mwale",
     position:"Tech Lead",
-    Quote: "A seasoned professional in Global Development Studies, Karen specializes in project and strategic management, comprehensive research, policy analysis, and advocacy, with a strong focus on gender-inclusive entrepreneurship and social impact projects. Karen provide's consultancy in global development, guide professional growth, and streamline organizational processes for optimal performance.",
+    Quote: "Jacob Mwale is backend developer specializing in web development and database management. With expertise in project management, he guides professional growth and streamlines organizational processes for optimal performance.",
     linkedin: "https://www.linkedin.com/in/kana-karen/"
   },
 
@@ -126,7 +137,7 @@ export const management_info = [
     img: rodney,
     name: "Chimwemwe Masona",
     position:"Tech Lead",
-    Quote: "A seasoned professional in Global Development Studies, Karen specializes in project and strategic management, comprehensive research, policy analysis, and advocacy, with a strong focus on gender-inclusive entrepreneurship and social impact projects. Karen provide's consultancy in global development, guide professional growth, and streamline organizational processes for optimal performance.",
+    Quote: "Chimwemwe Masona is a results-driven front-end developer and tech lead. Committed to delivering exceptional user experiences, he takes a holistic approach to development, collaborating closely with designers and stakeholders.",
     linkedin: "https://www.linkedin.com/in/kana-karen/"
   },
 
@@ -135,7 +146,7 @@ export const management_info = [
     img: albert,
     name: "Albert Ngingwa",
     position:"Data Lead",
-    Quote: "A seasoned professional in Global Development Studies, Karen specializes in project and strategic management, comprehensive research, policy analysis, and advocacy, with a strong focus on gender-inclusive entrepreneurship and social impact projects. Karen provide's consultancy in global development, guide professional growth, and streamline organizational processes for optimal performance.",
+    Quote: "Results-driven and highly skilled Data Management professional with expertise in developing and maintaining information databases, conducting both quantitative and qualitative data analysis, and implementing data management activities.",
     linkedin: "https://www.linkedin.com/in/kana-karen/"
   }
 ];
@@ -208,7 +219,7 @@ Outside of work, Salomon enjoys reading about the latest technological advanceme
   {
     id: 7,
     img: jacob,
-    project: Savn,
+    // project: Savn,
     title: "Jacob",
     lang: "English",
     services: "Platform dev",
@@ -224,7 +235,7 @@ Outside of work, Salomon enjoys reading about the latest technological advanceme
   {
     id: 8,
     img: rodney,
-    project: Savn,
+    // project: Savn,
     title: "Chimwemwe",
     lang: "English",
     services: "Platform dev",
@@ -243,7 +254,7 @@ In addition to his work as a front-end developer, Chimwemwe enjoys playing and w
   {
     id: 1,
     img: Umutesi,
-    project: Savn,
+    // project: Savn,
     title: "Liliane",
     lang: "English",
     services: "Platform dev",
@@ -259,7 +270,7 @@ In addition to his work as a front-end developer, Chimwemwe enjoys playing and w
   {
     id: 3,
     img: pascaline,
-    project: Savn,
+    // project: Savn,
     title: "Pascaline",
     lang: "English",
     services: "Platform dev",
@@ -275,7 +286,7 @@ In addition to his work as a front-end developer, Chimwemwe enjoys playing and w
   {
     id: 6,
     img: Fido,
-    project: Savn,
+    // project: Savn,
     title: "Fido",
     lang: "English",
     services: "Platform dev",
