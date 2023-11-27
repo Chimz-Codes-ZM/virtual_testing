@@ -14,13 +14,13 @@ const What_we_do = () => {
   const content2 =
     "Baobabpad ensures that all software developers who join undergo workplace training modules. This training is aimed at enhancing their skills and preparing them to meet the expectations of clients effectively. Training    can also contribute to maintaining high-quality standards in the projects delivered.";
   const content3 =
-    "Baobabpad conducts proven background checks on the software developers it onboards. This step is essential to establish trust and ensure asset security for clients. Background checks can include verifying developer's professional qualifications and work history.";
+    "Baobabpad conducts proven vetting assessment's for all professionals on the platform it onboards. This step is essential to establish trust and ensure asset security for clients. Vetting assessment's can include verifying developer's professional qualifications and work history.";
   const content4 =
     "As part of driving social impact in Africa, Baobabpad is launching a Virtual Internship Program for Girls exclusively from Africa. This program is tailored specifically for graduate girls and new women professionals in technology from Africa, emphasizing both skill development and empowerment in the technology where they are historically underrepresented. The impact goal is to allow graduate girls and new women professionals to gain practical experience in software development and other tech-related fields, working remotely on projects under the guidance of experienced mentors.";
 
   const title1 = "Business Model";
   const title2 = "Training";
-  const title3 = "Background Checks";
+  const title3 = "Vetting Assessment";
   const title4 = "Girls in Tech";
 
   return (
@@ -28,7 +28,7 @@ const What_we_do = () => {
       <div className="overflow-x-hidden">
         <Home
           title="What We Do"
-          mediaSrc="/assets/aboutB.jpg"
+          mediaSrc="/assets/what_we_do.jpg"
           mediaType="image"
         />
 

@@ -6,7 +6,7 @@ import Login_hero from "../../../public/assets/Login_hero.jpg";
 import Baobab_logo from "../../../public/logo.png";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Tech2 from "/public/tech-village/tech2.jpg";
+import Tech2 from "../../../public/assets/login_hero.webp";
 import jwt_decode from "jwt-decode";
 
 

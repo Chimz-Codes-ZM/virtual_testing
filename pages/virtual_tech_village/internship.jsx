@@ -316,6 +316,10 @@ const Virtual_internship = () => {
     router.push("/virtual_tech_village/complete_profile");
   };
 
+  const internReroute = () => {
+    router.push("/virtual_tech_village/complete_intern_profile")
+  }
+
   const companyProfileReroute = () => {
     router.push("/virtual_tech_village/complete_company_profile");
   };
@@ -503,6 +507,34 @@ const Virtual_internship = () => {
       console.error("Error:", error);
     }
   };
+
+  if (
+    memberList?.user[0].is_profile_complete === "False" &&
+    memberList?.user[0].account_type === "village talent profile"
+  ) {
+    return (
+      <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+        <Complete_Profile
+          message="Your profile is incomplete! Please complete setting up your profile."
+          alertDismiss={profileReroute}
+        />
+      </div>
+    );
+  }
+
+  if (
+    memberList?.user[0].is_profile_complete === "False" &&
+    memberList?.user[0].account_type === "Intern"
+  ) {
+    return (
+      <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+        <Complete_Profile
+          message="Your profile is incomplete! Please complete setting up your profile."
+          alertDismiss={internReroute}
+        />
+      </div>
+    );
+  }
 
   if (!memberList) {
     return (

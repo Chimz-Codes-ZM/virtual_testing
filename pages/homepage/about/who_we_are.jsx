@@ -23,7 +23,7 @@ const Who_we_are = () => {
       <div className="overflow-x-hidden">
         <Home
           title="Who We Are"
-          mediaSrc="/assets/aboutB.jpg"
+          mediaSrc="/assets/who_we_are.jpg"
           mediaType="image"
         />
 

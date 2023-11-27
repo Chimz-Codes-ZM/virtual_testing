@@ -10,7 +10,7 @@ const Homepage = () => {
     return (
         <div className='overflow-x-hidden'>
 
-            <Home title="Excellence beyond imagination." mediaType='image' mediaSrc='/assets/pricing.jpg' buttons='yes' />
+            <Home title="Virtual Technology Village" mediaType='image' mediaSrc='/assets/pricing.jpg' buttons='yes' />
 
             <TitleBox />
 
