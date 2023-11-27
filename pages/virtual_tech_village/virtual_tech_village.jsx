@@ -315,6 +315,8 @@ const Virtual_Tech_Village = () => {
     router.push("/virtual_tech_village/complete_profile");
   };
 
+
+
   const companyProfileReroute = () => {
     router.push("/virtual_tech_village/complete_company_profile");
   };
@@ -510,6 +512,21 @@ const Virtual_Tech_Village = () => {
       </div>
     );
   }
+
+  if (
+    memberList?.user[0].is_profile_complete === "False" &&
+    memberList?.user[0].account_type === "village talent profile"
+  ) {
+    return (
+      <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-sm">
+        <Complete_Profile
+          message="Your profile is incomplete! Please complete setting up your profile."
+          alertDismiss={profileReroute}
+        />
+      </div>
+    );
+  }
+
 
   const filteredData = individuals?.filter((profile) => {
     const countryFilter = filters.country
