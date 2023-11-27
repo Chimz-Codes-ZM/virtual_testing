@@ -39,7 +39,7 @@ import Karen from "../../public/assets/karen.jpg"
 
 import Mehafo from "../../public/assets/mehafo.jpg";
 import Learnio from "../../public/assets/learnio.svg";
-import Terran from "../../public/assets/Terran.png";
+import Terran from "../../public/assets/Terran_icon.png";
 import Forge from "../../public/assets/Forge.png";
 import Pegasus from "../../public/assets/Pegasus.webp";
 
@@ -93,7 +93,7 @@ export const StartUp = [
     id: 3,
     img: Pegasus,
     link: "https://pegasusplatform.no/",
-    bio: "A Creative Illustration, Animation, And VFX Studio With Extensive Experience And A Flexible Approach, We Combine Compelling Storytelling Techniques With Stunning Visuals To Create Impactful Narratives That Appeal To A global audience.",
+    bio: "Pegasus Token Services plans to build a service called Tokenization-as-a-Service where the equity can be controlled flexibly, transparently and at a very low cost through the Pegasus Platform. Pegasus Token Services proposes a solution to this problem by tokenizing the equity and distribute the assets flexibly and transparently to the talent as part of their registration process with Baobabpad",
   },{
     id: 4,
     img: Terran,

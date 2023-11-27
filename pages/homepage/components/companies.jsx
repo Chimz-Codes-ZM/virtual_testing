@@ -22,7 +22,7 @@ const Company = () => {
     <ul className='w-full bg-white float-left'>
       {StartUp.map((company) => (
         <div key={company.id}>
-          <li className="h-[204px] flex justify-center items-center float-left w-1/2 md:w-1/3 lg:w-1/4 border-[0.1px] border-gray-600 relative">
+          <li className="h-[204px] flex justify-center items-center float-left w-1/2 md:w-1/3 lg:w-1/4 border-[0.1px] border-gray-600 bg-gray-200 relative">
             {selectedCompany === company.id && (
               <>
                 <div className="fixed top-0 left-0 w-screen h-screen bg-black opacity-50 z-[199]" onClick={closeBio}></div>

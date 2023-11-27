@@ -5,10 +5,7 @@ import { AiOutlineMail } from "react-icons/ai";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { HiOutlineChevronDoubleUp } from "react-icons/hi";
-import TVillage from "../../../public/assets/story.jpg";
-import Tech from "../../../public/assets/mission.jpg";
-import Capital from "../../../public/assets/vision.jpg";
-import Values from "../../../public/assets/values.jpg";
+
 
 const Slide = ({
   title1,
@@ -19,6 +16,10 @@ const Slide = ({
   content2,
   content3,
   content4,
+  img1,
+  img2,
+  img3,
+  img4,
   page
 }) => {
   const [isHovered1, setIsHovered1] = useState(false);
@@ -50,7 +51,7 @@ const Slide = ({
         </div>
 
         <Image
-          src={TVillage}
+          src={img1}
           alt="Tech Village"
           layout="fill"
           objectFit="cover"
@@ -82,7 +83,7 @@ const Slide = ({
         </div>
 
         <Image
-          src={Tech}
+          src={img2}
           alt="Tech"
           layout="fill"
           objectFit="cover"
@@ -114,7 +115,7 @@ const Slide = ({
         </div>
 
         <Image
-          src={Capital}
+          src={img3}
           alt="capital"
           layout="fill"
           objectFit="cover"
@@ -146,7 +147,7 @@ const Slide = ({
         </div>
 
         <Image
-          src={Values}
+          src={img4}
           alt="values"
           layout="fill"
           objectFit="cover"

@@ -7,13 +7,13 @@ import { HiOutlineChevronDoubleUp } from "react-icons/hi";
 import TechVillage from "../../../public/assets/tech_village_hero.jpg";
 import Tech from "../../../public/assets/tech2.jpg";
 import Capital from "../../../public/assets/shares.jpg";
-import Girls from "../../../public/assets/black.png"
+import Girls from "../../../public/assets/black.png";
 
 const Slide = () => {
   const [isHovered1, setIsHovered1] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
   const [isHovered3, setIsHovered3] = useState(false);
-  const [isHovered4, setIsHovered4] = useState(false)
+  const [isHovered4, setIsHovered4] = useState(false);
 
   return (
     <div className="w-full h-max bg-gray-100 flex flex-col">
@@ -70,13 +70,12 @@ const Slide = () => {
             style={{ visibility: isHovered2 ? "visible" : "hidden" }}
           >
             <p className="w-full h-max ease-in-out duration-500 text-xl text-justify">
-              In Africa, digital transformation has the potential to drive
-              significant economic growth and development, as it can help
-              businesses to become more efficient, productive, and competitive.
-              By embracing digital technologies such as artificial intelligence,
-              the Internet of Things, and cloud computing, African businesses
-              can improve their operational efficiencies, reduce costs, and
-              create new revenue streams.
+              Baobabpad's business model offers full-time contracts and
+              competitive monthly salaries to top tech talent exclusively from
+              Africa. The members are incentivized with access to tokenized
+              share options, which represent 25% of Baobabpad. Tokenized share
+              options typically mean that ownership in the company is
+              represented digitally using digitized assets technology.
             </p>
           </div>
         </div>
@@ -99,9 +98,7 @@ const Slide = () => {
       >
         <div className="flex gap-4 z-20 items-center truncate w-full">
           <div className="h-10 w-1 lg:h-20 lg:w-3 background"></div>
-          <h1 className="text-lg lg:text-6xl text-white">
-            Girls in Tech
-          </h1>
+          <h1 className="text-lg lg:text-6xl text-white">Girls in Tech</h1>
         </div>
 
         <div className="w-full text-white z-20 items-end flex flex-col gap-3 px-3 lg:px-12 absolute left-0 top-28 lg:top-[200px] h-[200px]">
@@ -110,10 +107,12 @@ const Slide = () => {
             style={{ visibility: isHovered4 ? "visible" : "hidden" }}
           >
             <p className="w-full h-max text-xl ease-in-out duration-500 text-justify">
-              Baobabpad is a Virtual Technology Village, that offers a dynamic
-              and innovative platform dedicated to onboarding the top African
-              tech talent and providing business partnership for clients to
-              reach new heights in the global technology arena.{" "}
+              As part of driving social impact in Africa, Baobabpad is launching
+              a Virtual Internship Program for Girls exclusively from Africa.
+              This program is tailored specifically for graduate girls and new
+              women professionals in technology from Africa, emphasizing both
+              skill development and empowerment in the technology where they are
+              historically underrepresented.
             </p>
           </div>
         </div>

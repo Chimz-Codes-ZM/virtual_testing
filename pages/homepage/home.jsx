@@ -1,16 +1,7 @@
-import { useState, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { AiOutlineMail } from "react-icons/ai";
-import { BsFillPersonLinesFill } from "react-icons/bs";
-import { FaGithub, FaLinkedinIn } from "react-icons/fa";
-
-
 
 const Home = ({ title, mediaSrc, mediaType, description, buttons }) => {
-  const handleSignOut = () => {
 
-  }
   return (
     <div className="w-screen h-screen relative overflow-hidden text-center">
       <div className="w-full h-full">
@@ -47,24 +38,6 @@ const Home = ({ title, mediaSrc, mediaType, description, buttons }) => {
               <h1 className="text-sm sm:text-lg md:text-xl lg:text-2xl text-white text-center">
               Elevating African Technology Talent, Virtually and Globally...              </h1>
             </div>
-
-            {/* <div className="gap-6 sm:gap-10 flex flex-col sm:flex-row h-10 rounded">
-            <div className="flex text-white text-xl xl:text-2xl font-bold hover:text-gray-100 items-center justify-center px-5 h-10 lg:h-12 rounded background-green">
-                <Link href="/homepage/tech_signup" className="self-center">
-                  Virtual Tech Village
-                </Link>
-              </div>
-              <div className="flex text-white text-xl xl:text-2xl font-bold hover:text-gray-100 items-center justify-center px-5 h-10 lg:h-12 rounded background-green">
-                <Link href="/homepage/careers" className="self-center">
-                  Join Baobabpad
-                </Link>
-              </div>
-              <div className="flex text-white text-xl xl:text-2xl font-bold hover:text-gray-100 items-center justify-center px-5 h-10 lg:h-12 rounded background-green">
-                <Link href="/homepage/signup/subscription">
-                  Company Subscription
-                </Link>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>

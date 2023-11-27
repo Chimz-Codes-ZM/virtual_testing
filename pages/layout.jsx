@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import Navbar from './homepage/navbar';
 import Contact from './homepage/components/contact';
 import Footer from './homepage/components/footer';

@@ -35,21 +35,21 @@ const Navbar = () => {
     setTeamMobile(!teamMobile);
   };
 
-const handleAboutEnter = () => {
-  setAbout(true)
-}
+  const handleAboutEnter = () => {
+    setAbout(true);
+  };
 
-const handleAboutExit = () => {
-  setAbout(false)
-}
+  const handleAboutExit = () => {
+    setAbout(false);
+  };
 
-const handleAboutClick = () => {
-  setAboutMobile(!aboutMobile)
-}
+  const handleAboutClick = () => {
+    setAboutMobile(!aboutMobile);
+  };
 
   const handleClickOutsideNavbar = (event) => {
     if (navRef.current && !navRef.current.contains(event.target)) {
-      setNav(!nav);
+      setNav(false);
     }
   };
 
@@ -98,14 +98,14 @@ const handleAboutClick = () => {
           </Link>
 
           <ul className="absolute w-max flex gap-4 text-white font-bold text-xl right-32 h-full items-center">
-          <div className="relative" onMouseEnter={handleAboutEnter}>
+            <div className="relative" onMouseEnter={handleAboutEnter}>
               <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
                 About
               </li>
 
               {about && (
                 <div
-                  className="absolute end-0 z-10 mt-2 w-56 -left-20 border border-gray-100 bg-white shadow-lg"
+                  className="absolute end-0 z-10 mt-2 w-38 -left-20 border border-gray-100 bg-white shadow-lg"
                   role="menu"
                   onMouseLeave={handleAboutExit}
                 >
@@ -129,37 +129,39 @@ const handleAboutClick = () => {
                 </div>
               )}
             </div>
-              <Link href="/homepage/team/management" className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
-                Team
-              </Link>
+            <Link
+              href="/homepage/team/management"
+              className="cursor-pointer hover:border-b-8 hover:border-yellow-500"
+            >
+              Team
+            </Link>
 
-              {team && (
-                <div
-                  className="absolute end-0 z-10 mt-2 w-56 -left-20 border border-gray-100 bg-white shadow-lg"
-                  role="menu"
-                  onMouseLeave={handleTeamExit}
-                >
-                  <div className="p-2">
-                    <Link
-                      href="/homepage/team/management"
-                      className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                      role="menuitem"
-                    >
-                      Management
-                    </Link>
+            {team && (
+              <div
+                className="absolute end-0 z-10 mt-2 w-56 -left-20 border border-gray-100 bg-white shadow-lg"
+                role="menu"
+                onMouseLeave={handleTeamExit}
+              >
+                <div className="p-2">
+                  <Link
+                    href="/homepage/team/management"
+                    className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                    role="menuitem"
+                  >
+                    Management
+                  </Link>
 
-                    <Link
-                      href="/homepage/team/technical_professionals"
-                      className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                      role="menuitem"
-                    >
-                      Technical Professionals
-                    </Link>
-                  </div>
+                  <Link
+                    href="/homepage/team/technical_professionals"
+                    className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                    role="menuitem"
+                  >
+                    Technical Professionals
+                  </Link>
                 </div>
-              )}
+              </div>
+            )}
 
-            
             <Link href="/homepage/partners" onMouseEnter={handleTeamExit}>
               <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
                 Partners
@@ -174,9 +176,14 @@ const handleAboutClick = () => {
             className="absolute w-max truncate flex gap-4 text-white font-bold text-xl left-32 h-full items-center"
             onMouseEnter={handleTeamExit}
           >
-            <Link href="/homepage/careers">
+            <Link href="/homepage/tech_village" onMouseEnter={handleTeamExit}>
               <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
-                Careers
+                Tech Village
+              </li>
+            </Link>
+            <Link href="/homepage/tech_signup">
+              <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
+                Sign up
               </li>
             </Link>
             {/* <Link href="/homepage/growth">
@@ -190,11 +197,6 @@ const handleAboutClick = () => {
               </li>
             </Link> */}
 
-            <Link href="/homepage/tech_village" onMouseEnter={handleTeamExit}>
-              <li className="cursor-pointer hover:border-b-8 hover:border-yellow-500">
-                Tech Village
-              </li>
-            </Link>
             <Link href="/homepage/login">
               <li className="cursor-pointer text-blue-100 hover:text-white">
                 sign in
@@ -240,11 +242,36 @@ const handleAboutClick = () => {
                   </li>
                 </Link>
 
-                <Link href="/homepage/about">
-                  <li onClick={() => setNav(false)} className="py-4 text-sm">
+                <div className="relative">
+                  <li onClick={handleAboutClick} className="py-4 text-sm">
                     About
                   </li>
-                </Link>
+                  {aboutMobile && (
+                    <div
+                      className="absolute end-0 z-10 mt-2 left-0 max-w-3xl border border-gray-100 bg-white shadow-lg"
+                      role="menu"
+                      onClick={() => setNav(false)}
+                    >
+                      <div className="p-2">
+                        <Link
+                          href="/homepage/about/who_we_are"
+                          className="block rounded-lg px-4 py-2 text-sm hover:bg-gray-50 hover:text-gray-700"
+                          role="menuitem"
+                        >
+                          Who We Are
+                        </Link>
+
+                        <Link
+                          href="/homepage/about/what_we_do"
+                          className="block rounded-lg px-4 py-2 text-sm hover:bg-gray-50 hover:text-gray-700"
+                          role="menuitem"
+                        >
+                          What We Do
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
                 <Link href="/homepage/partners">
                   <li onClick={() => setNav(false)} className="py-4 text-sm">
                     Partners
@@ -257,53 +284,18 @@ const handleAboutClick = () => {
                 </li>
               </Link> */}
 
-                <div className="relative">
-                  <li onClick={handleTeamClick} className="py-4 text-sm">
-                    Team
-                  </li>
-
-                  {teamMobile && (
-                    <div
-                      className="absolute end-0 z-10 mt-2 left-0 max-w-3xl border border-gray-100 bg-white shadow-lg"
-                      role="menu"
-                      onClick={() => setNav(false)}
-                    >
-                      <div className="p-2">
-                        <Link
-                          href="/homepage/team/management"
-                          className="block rounded-lg px-4 py-2 text-sm hover:bg-gray-50 hover:text-gray-700"
-                          role="menuitem"
-                        >
-                          Management
-                        </Link>
-
-                        <Link
-                          href="/homepage/team/technical_professionals"
-                          className="block rounded-lg px-4 py-2 text-sm hover:bg-gray-50 hover:text-gray-700"
-                          role="menuitem"
-                        >
-                          Technical Professionals
-                        </Link>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                <Link
+                  href="/homepage/team/management"
+                  className="cursor-pointer hover:border-b-8 hover:border-yellow-500"
+                >
+                  Team
+                </Link>
 
                 <Link href="/homepage/careers">
                   <li onClick={() => setNav(false)} className="py-4 text-sm">
                     Careers
                   </li>
                 </Link>
-                {/* <Link href="/homepage/growth">
-                <li onClick={() => setNav(false)} className="py-4 text-sm">
-                  Growth
-                </li>
-              </Link>
-              <Link href="/homepage/fund">
-                <li onClick={() => setNav(false)} className="py-4 text-sm">
-                  Baobab Fund
-                </li>
-              </Link> */}
 
                 <Link href="/homepage/tech_village">
                   <li onClick={() => setNav(false)} className="py-4 text-sm">
