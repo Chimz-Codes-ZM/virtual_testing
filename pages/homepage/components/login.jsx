@@ -10,7 +10,6 @@ import Tech2 from "../../../public/assets/login_hero.webp";
 import jwt_decode from "jwt-decode";
 
 
-
 function Login() {
   const [email_, setEmail] = useState("");
   const [password_, setPassword] = useState("");

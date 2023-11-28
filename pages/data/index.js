@@ -33,9 +33,9 @@ import Fido from "../../public/assets/fido.jpeg";
 import pascaline from "../../public/assets/pasc.jpeg";
 import rodney from "../../public/assets/rodney.jpeg";
 import jacob from "../../public/assets/jacob.jpeg";
-import albert from "../../public/assets/albert.jpeg"
-import Kenny from "../../public/assets/kenny.jpg"
-import Karen from "../../public/assets/karen.jpg"
+import albert from "../../public/assets/albert.jpeg";
+import Kenny from "../../public/assets/kenny.jpg";
+import Karen from "../../public/assets/karen.jpg";
 
 import Mehafo from "../../public/assets/mehafo.jpg";
 import Learnio from "../../public/assets/learnio.svg";
@@ -47,7 +47,7 @@ import Decarb from "../../public/assets/deca-logo.png";
 import Technet from "../../public/assets/technet.svg";
 import Torparama from "../../public/assets/torp.webp";
 
-import Christina from "../../public/placeholders/christina.webp"
+import Christina from "../../public/placeholders/christina.webp";
 import Christina_2 from "../../public/placeholders/Christina_2.webp";
 import itay from "../../public/placeholders/itay.webp";
 import ronny from "../../public/placeholders/ronny.webp";
@@ -94,7 +94,8 @@ export const StartUp = [
     img: Pegasus,
     link: "https://pegasusplatform.no/",
     bio: "Pegasus Token Services provides Tokenization-as-a-Service where the equity can be controlled flexibly, transparently and at a very low cost through the Pegasus Platform. Pegasus Token Services proposes a solution to this problem by tokenizing the equity and distribute the assets flexibly and transparently to the talent as part of their registration process with Baobabpad",
-  },{
+  },
+  {
     id: 4,
     img: Terran,
     link: "https://www.terran.team/",
@@ -103,52 +104,56 @@ export const StartUp = [
 ];
 
 export const management_info = [
-
-
   {
     id: 1,
     img: Kenny,
     name: "Kenny Kaluiji",
-    position:"Founder",
-    Quote: "Impact-oriented innovative business developer with domain skills in ESG analysis, impact investing, responsible innovation strategy, renewable energy, Africa opportunities",
-    linkedin: "https://www.linkedin.com/in/kenny-kaluiji-902a1576/?originalSubdomain=no"
+    position: "Founder",
+    Quote:
+      "Impact-oriented innovative business developer with domain skills in ESG analysis, impact investing, responsible innovation strategy, renewable energy, Africa opportunities",
+    linkedin:
+      "https://www.linkedin.com/in/kenny-kaluiji-902a1576/?originalSubdomain=no",
   },
 
   {
     id: 2,
     img: Karen,
     name: "Karen Kana",
-    position:"Impact Advisor",
-    Quote: "A seasoned professional in Global Development Studies, Karen specializes in project and strategic management, comprehensive research, policy analysis, and advocacy, with a strong focus on gender-inclusive entrepreneurship and social impact projects. Karen provide's consultancy in global development, guide professional growth, and streamline organizational processes for optimal performance.",
-    linkedin: "https://www.linkedin.com/in/kana-karen/"
+    position: "Impact Advisor",
+    Quote:
+      "A seasoned professional in Global Development Studies, Karen specializes in project and strategic management, comprehensive research, policy analysis, and advocacy, with a strong focus on gender-inclusive entrepreneurship and social impact projects.",
+    linkedin: "https://www.linkedin.com/in/kana-karen/",
   },
 
   {
     id: 3,
     img: jacob,
     name: "Jacob Mwale",
-    position:"Tech Lead",
-    Quote: "Jacob Mwale is backend developer specializing in web development and database management. With expertise in project management, he guides professional growth and streamlines organizational processes for optimal performance.",
-    linkedin: "https://www.linkedin.com/in/kana-karen/"
+    position: "Tech Lead",
+    Quote:
+      "Jacob Mwale is backend developer specializing in web development and database management. With expertise in project management, he guides professional growth and streamlines organizational processes for optimal performance.",
+    linkedin: "https://www.linkedin.com/in/kana-karen/",
   },
 
   {
     id: 4,
     img: rodney,
     name: "Chimwemwe Masona",
-    position:"Tech Lead",
-    Quote: "Chimwemwe Masona is a results-driven front-end developer and tech lead. Committed to delivering exceptional user experiences, he takes a holistic approach to development, collaborating closely with designers and stakeholders.",
-    linkedin: "https://www.linkedin.com/in/kana-karen/"
+    position: "Tech Lead",
+    Quote:
+      "Chimwemwe Masona is a results-driven front-end developer and tech lead. Committed to delivering exceptional user experiences, he takes a holistic approach to development, collaborating closely with designers and stakeholders.",
+    linkedin: "https://www.linkedin.com/in/kana-karen/",
   },
 
   {
     id: 5,
     img: albert,
     name: "Albert Ngingwa",
-    position:"Data Lead",
-    Quote: "Results-driven and highly skilled Data Management professional with expertise in developing and maintaining information databases, conducting both quantitative and qualitative data analysis, and implementing data management activities.",
-    linkedin: "https://www.linkedin.com/in/kana-karen/"
-  }
+    position: "Data Lead",
+    Quote:
+      "Results-driven and highly skilled Data Management professional with expertise in developing and maintaining information databases, conducting both quantitative and qualitative data analysis, and implementing data management activities.",
+    linkedin: "https://www.linkedin.com/in/kana-karen/",
+  },
 ];
 
 export const productionTeam = [
@@ -452,7 +457,7 @@ export const countries = [
   { country: "Bangladesh" },
   { country: "Barbados" },
   { country: "Belarus" },
-  { country: "Botswana"},
+  { country: "Botswana" },
   { country: "Canada" },
   { country: "Central African Republic" },
   { country: "Chad" },
@@ -770,9 +775,8 @@ export const techPositions = [
   "Unreal Engine Developer",
   "Virtual Reality Developer",
   "Web Developer",
-  "Other"
+  "Other",
 ];
-
 
 export const years_work_experience = [
   { years: "Select a year" },
@@ -939,7 +943,7 @@ export const village_member_profiles = [
     role: "Software Engineer",
     country: "Greece",
     experience: "2 years",
-    courses: "CompTIA A+"
+    courses: "CompTIA A+",
   },
 
   {
@@ -948,8 +952,7 @@ export const village_member_profiles = [
     role: "UX Researcher",
     country: "Slovenia",
     experience: "2 years",
-    courses: "Cisco CCNA"
-
+    courses: "Cisco CCNA",
   },
   {
     imageSrc: Christina_2,
@@ -957,8 +960,7 @@ export const village_member_profiles = [
     role: "Systems Administrator",
     country: "Norway",
     experience: "2 years",
-    courses: "AWS Certified Solutions Architect"
-
+    courses: "AWS Certified Solutions Architect",
   },
   {
     imageSrc: shadreck,
@@ -966,8 +968,7 @@ export const village_member_profiles = [
     role: "Software Engineer",
     country: "Greece",
     experience: "2 years",
-    courses: "Microsoft Certified Azure Administrator"
-
+    courses: "Microsoft Certified Azure Administrator",
   },
   {
     imageSrc: itay,
@@ -975,8 +976,7 @@ export const village_member_profiles = [
     role: "UX Researcher",
     country: "Slovenia",
     experience: "2 years",
-    courses: "Certified ScrumMaster (CSM)"
-
+    courses: "Certified ScrumMaster (CSM)",
   },
   {
     imageSrc: ronny,
@@ -984,8 +984,7 @@ export const village_member_profiles = [
     role: "Systems Administrator",
     country: "Norway",
     experience: "2 years",
-    courses: "Certified Information Systems Security Professional (CISSP)"
-
+    courses: "Certified Information Systems Security Professional (CISSP)",
   },
 ];
 
@@ -994,198 +993,257 @@ export const company_member_profiles = [
     id: 1,
     name: "Google Inc",
     industry: "Tech",
-    logo: "coming soon"
+    logo: "coming soon",
   },
   {
     id: 2,
     name: "Apple Inc",
     industry: "Tech",
-    logo: "coming soon"
+    logo: "coming soon",
   },
   {
     id: 3,
     name: "Microsoft Corporation",
     industry: "Tech",
-    logo: "coming soon"
+    logo: "coming soon",
   },
   {
     id: 4,
     name: "Amazon.com Inc",
     industry: "E-commerce",
-    logo: "coming soon"
+    logo: "coming soon",
   },
   {
     id: 5,
     name: "Facebook, Inc",
     industry: "Social Media",
-    logo: "coming soon"
+    logo: "coming soon",
   },
   {
     id: 6,
     name: "Tesla, Inc",
     industry: "Automotive",
-    logo: "coming soon"
-  }
+    logo: "coming soon",
+  },
 ];
 
-
 export const languages = [
-    "Mandarin Chinese",
-    "Spanish",
-    "English",
-    "Hindi",
-    "Arabic",
-    "Bengali",
-    "Portuguese",
-    "Russian",
-    "Urdu",
-    "Indonesian",
-    "Standard German",
-    "French",
-    "Japanese",
-    "Telugu",
-    "Marathi",
-    "Vietnamese",
-    "Korean",
-    "Tamil",
-    "Italian",
-    "Turkish",
-    "Yue Chinese",
-    "Thai",
-    "Gujarati",
-    "Javanese",
-    "Western Punjabi",
-    "Wu Chinese",
-    "Malay/Indonesian",
-    "Kannada",
-    "Odia",
-    "Burmese",
-    "Hakka Chinese",
-    "Ukrainian",
-    "Bhojpuri",
-    "Tagalog",
-    "Yoruba",
-    "Maithili",
-    "Uzbek",
-    "Sundanese",
-    "Thai",
-    "Farsi",
-    "Malayalam",
-    "Igbo",
-    "Sindhi",
-    "Swahili",
-    "Romanian",
-    "Azerbaijani",
-    "Dutch",
-    "Nepali",
-    "Gan Chinese",
-    "Sinhala",
-    "Chittagonian",
-    "Khmer",
-    "Hausa",
-    "Kurdish",
-    "Malagasy",
-    "Amharic",
-    "Cebuano",
-    "Nepali",
-    "Tibetan",
-    "Chichewa",
-    "Rundi",
-    "Bambara",
-    "Bulgarian",
-    "Saraiki",
-    "Zulu",
-    "Kinyarwanda",
-    "Swedish",
-    "Yi Chinese",
-    "Finnish",
-    "Magahi",
-    "Awadhi",
-    "Gan Chinese",
-    "Hungarian",
-    "Chuang",
-    "Madurese",
-    "Greek",
-    "Akan",
-    "Kazakh",
-    "Czech",
-    "Sylheti",
-    "Quechua",
-    "Tatar",
-    "Xhosa",
-    "Slovak",
-    "Malayalam",
-    "Marwari",
-    "Haryanvi",
-    "Kurdish (Kurmanji)",
-    "Zhuang",
-    "Min Nan Chinese",
-    "Ilocano",
-    "Yoruba",
-    "Burmese",
-    "Amharic",
-    "Oromo",
-    "Igbo",
-    "Maithili"
-  ]
-
+  "Mandarin Chinese",
+  "Spanish",
+  "English",
+  "Hindi",
+  "Arabic",
+  "Bengali",
+  "Portuguese",
+  "Russian",
+  "Urdu",
+  "Indonesian",
+  "Standard German",
+  "French",
+  "Japanese",
+  "Telugu",
+  "Marathi",
+  "Vietnamese",
+  "Korean",
+  "Tamil",
+  "Italian",
+  "Turkish",
+  "Yue Chinese",
+  "Thai",
+  "Gujarati",
+  "Javanese",
+  "Western Punjabi",
+  "Wu Chinese",
+  "Malay/Indonesian",
+  "Kannada",
+  "Odia",
+  "Burmese",
+  "Hakka Chinese",
+  "Ukrainian",
+  "Bhojpuri",
+  "Tagalog",
+  "Yoruba",
+  "Maithili",
+  "Uzbek",
+  "Sundanese",
+  "Thai",
+  "Farsi",
+  "Malayalam",
+  "Igbo",
+  "Sindhi",
+  "Swahili",
+  "Romanian",
+  "Azerbaijani",
+  "Dutch",
+  "Nepali",
+  "Gan Chinese",
+  "Sinhala",
+  "Chittagonian",
+  "Khmer",
+  "Hausa",
+  "Kurdish",
+  "Malagasy",
+  "Amharic",
+  "Cebuano",
+  "Nepali",
+  "Tibetan",
+  "Chichewa",
+  "Rundi",
+  "Bambara",
+  "Bulgarian",
+  "Saraiki",
+  "Zulu",
+  "Kinyarwanda",
+  "Swedish",
+  "Yi Chinese",
+  "Finnish",
+  "Magahi",
+  "Awadhi",
+  "Gan Chinese",
+  "Hungarian",
+  "Chuang",
+  "Madurese",
+  "Greek",
+  "Akan",
+  "Kazakh",
+  "Czech",
+  "Sylheti",
+  "Quechua",
+  "Tatar",
+  "Xhosa",
+  "Slovak",
+  "Malayalam",
+  "Marwari",
+  "Haryanvi",
+  "Kurdish (Kurmanji)",
+  "Zhuang",
+  "Min Nan Chinese",
+  "Ilocano",
+  "Yoruba",
+  "Burmese",
+  "Amharic",
+  "Oromo",
+  "Igbo",
+  "Maithili",
+];
 
 export const event_grid = [
   {
     id: 1,
-    img_src: "https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    img_src:
+      "https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     title: "Virtual Hackathon",
     host: "CodeCraftersHub",
     date_time: "November 25, 2023, 8:00 PM",
-    price: "Price: $75"
+    price: "Price: $75",
   },
 
   {
     id: 2,
-    img_src: "https://plus.unsplash.com/premium_photo-1661290247940-5450aa0babaf?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    img_src:
+      "https://plus.unsplash.com/premium_photo-1661290247940-5450aa0babaf?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     title: "Webinar Series on Emerging Technologies",
     host: "TechInsightsConnect",
     date_time: "November 25, 2023, 8:00 PM",
-    price: "Price: $75"
+    price: "Price: $75",
   },
 
   {
     id: 3,
-    img_src: "https://images.unsplash.com/photo-1597484661973-ee6cd0b6482c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    img_src:
+      "https://images.unsplash.com/photo-1597484661973-ee6cd0b6482c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     title: "Tech Talk Panel Discussion",
     host: "ByteMindsForum",
     date_time: "November 25, 2023, 8:00 PM",
-    price: "Price: $75"
+    price: "Price: $75",
   },
 
   {
     id: 4,
-    img_src: "https://plus.unsplash.com/premium_photo-1680859126164-ac4fd8f56625?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    img_src:
+      "https://plus.unsplash.com/premium_photo-1680859126164-ac4fd8f56625?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     title: "Code Review Sessions",
     host: "DevCritiqueHub",
     date_time: "November 25, 2023, 8:00 PM",
-    price: "Price: $75"
+    price: "Price: $75",
   },
 
   {
     id: 5,
-    img_src: "https://images.unsplash.com/photo-1598908314766-3e3ce9bd2f48?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    img_src:
+      "https://images.unsplash.com/photo-1598908314766-3e3ce9bd2f48?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     title: "Virtual Tech Networking Event",
     host: "ConnectTechPros",
     date_time: "November 25, 2023, 8:00 PM",
-    price: "Price: $75"
+    price: "Price: $75",
   },
 
   {
     id: 6,
-    img_src: "https://plus.unsplash.com/premium_photo-1681122423210-f7639c75f338?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    img_src:
+      "https://plus.unsplash.com/premium_photo-1681122423210-f7639c75f338?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     title: "Tech Demos and Showcases",
     host: "InnovateTechExpo",
     date_time: "November 25, 2023, 8:00 PM",
-    price: "Price: $75"
-  }
+    price: "Price: $75",
+  },
+];
+
+export const applications = [
+  {
+    id: 1,
+    name: "Samson",
+  },
+  {
+    id: 2,
+    name: "Chimwemwe",
+  },
+  {
+    id: 3,
+    name: "Solomon",
+  },
+  {
+    id: 4,
+    name: "Jacob",
+  },
+  {
+    id: 5,
+    name: "Albert",
+  },
+  {
+    id: 6,
+    name: "Kenny",
+  },
+];
+
+export const approved = [
+  {
+    id: 1,
+    name: "Jacob",
+  },
+  {
+    id: 2,
+    name: "Albert",
+  },
+  {
+    id: 3,
+    name: "Kenny",
+  },
 ]
 
-
+export const denied = [
+  {
+    id: 1,
+    name: "Samson",
+  },
+  {
+    id: 2,
+    name: "Chimwemwe",
+  },
+  {
+    id: 3,
+    name: "Solomon",
+  },
+]
 
 export default () => null;

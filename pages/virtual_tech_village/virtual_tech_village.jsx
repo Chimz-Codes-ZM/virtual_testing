@@ -533,6 +533,20 @@ const Virtual_Tech_Village = () => {
 
   if (
     memberList?.user[0].is_profile_complete === "False" &&
+    memberList?.user[0].account_type === "village company profile"
+  ) {
+    return (
+      <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+        <Complete_Profile
+          message="Your profile is incomplete! Please complete setting up your profile."
+          alertDismiss={companyProfileReroute}
+        />
+      </div>
+    );
+  }
+
+  if (
+    memberList?.user[0].is_profile_complete === "False" &&
     memberList?.user[0].account_type === "Intern"
   ) {
     return (
@@ -619,7 +633,7 @@ const Virtual_Tech_Village = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5 relative py-8" ref={parent}>
+    <div className="flex flex-col gap-5 relative pb-8" ref={parent}>
       <div className="relative" ref={memberStartRef}></div>
       <div>
         {addNewJobShow && (
@@ -741,7 +755,7 @@ const Virtual_Tech_Village = () => {
         )}
       </div>
 
-      <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2 relative w-full p-4 bg-white">
+      <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2 relative w-full px-4 bg-white">
         <div className="flex flex-wrap gap-4">
           {((memberList &&
             memberList?.user[0]?.account_type === "village talent profile") ||
@@ -915,24 +929,6 @@ const Virtual_Tech_Village = () => {
             </form>
           )}
         </div>
-
-        {/* {incompleteProfile && (
-          <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-sm">
-            <Complete_Profile
-              message="Your profile is incomplete! Please complete setting up your profile."
-              alertDismiss={profileReroute}
-            />
-          </div>
-        )} */}
-
-        {incompleteCompanyProfile && (
-          <div className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm">
-            <Complete_Profile
-              message="Your profile is incomplete! Please complete setting up your profile."
-              alertDismiss={companyProfileReroute}
-            />
-          </div>
-        )}
       </div>
 
       {(memberList.user[0]?.account_type === "village talent profile" ||

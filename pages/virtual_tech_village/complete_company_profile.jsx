@@ -6,6 +6,8 @@ import Head from "next/head";
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
 
+import Success from "./components/alerts/success";
+
 import { countries } from "../data";
 
 const Complete_company_profile = () => {
@@ -16,6 +18,8 @@ const Complete_company_profile = () => {
     company_description: "",
     social_media_profiles: "",
   });
+  const [success, setSuccess] = useState(false)
+
 
   const [selectedFile, setSelectedFile] = useState(null);
   const router = useRouter();
@@ -77,6 +81,15 @@ const Complete_company_profile = () => {
     console.log({ completedProfile });
   }, [completedProfile]);
 
+  const handleFormSuccess = () => {
+    setSuccess(true)
+  }
+
+  const handleSuccessDismiss = () => {
+    router.push("/virtual_tech_village")
+    setSuccess(false)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
@@ -95,8 +108,7 @@ const Complete_company_profile = () => {
       }
     );
     if (response.ok) {
-      alert("Profile update complete!");
-      router.push("/virtual_tech_village");
+  handleFormSuccess()
     } else {
       alert("Something went wrong, please try again!");
     }
@@ -106,8 +118,17 @@ const Complete_company_profile = () => {
     <>
 
       <Layout>
-        <div className="w-full flex justify-center flex-col">
+        <div className="w-full flex justify-center flex-col relative">
           {/* Gray background */}
+
+          {success && (
+              <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+              <Success
+                message="Your profile update Complete! You may now enjoy the virtual tech village"
+                alertDismiss={handleSuccessDismiss}
+              />
+            </div>
+            )}
 
           <div className="w-full bg-gray-50 h-40 overflow-auto"></div>
 

@@ -67,12 +67,12 @@ function Management() {
                 />
               </div>
 
-              <h1 className="font-bold text-2xl pb-2">{teammate.name}</h1>
-              <h3 className="text-xl pb-2">{teammate.position}</h3>
+              <h1 className="font-bold text-lg lg:text-2xl pb-2">{teammate.name}</h1>
+              <h3 className="text-md sm:text-xl pb-2">{teammate.position}</h3>
 
               <div className="translate-y-8 absolute top-0 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100 w-full h-full">
               <div class="text-lg text-black p-4 sm:py-8 flex flex-col gap-2 relative w-full h-full">
-                <h3 className="text-xl font-medium tracking-widest">
+                <h3 className="text-sm xl:text-xl font-medium tracking-widest">
                   {teammate.Quote}
                 </h3>
 

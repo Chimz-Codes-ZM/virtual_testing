@@ -5,13 +5,17 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import jwt_decode from "jwt-decode";
+
 import { FcPicture } from "react-icons/fc";
+import Success from "./components/alerts/success";
+
 import { techPositions } from "../data";
 import { countries } from "../data";
 
 const Complete_intern_profile = () => {
     const router = useRouter();
     const [profileData, setProfileData] = useState({});
+    const [success, setSuccess] = useState(false)
   
     const [completedProfile, setCompletedProfile] = useState({
       country: "",
@@ -195,6 +199,15 @@ const Complete_intern_profile = () => {
           setProfileData(data);
         });
     }, []);
+
+    const handleFormSuccess = () => {
+      setSuccess(true)
+    }
+
+    const handleSuccessDismiss = () => {
+      router.push("/virtual_tech_village")
+      setSuccess(false)
+    }
   
     // const formInputs = [completedProfile, socialMedia, softSkills, language, workHistory, education]
     const formInputs = {
@@ -207,6 +220,7 @@ const Complete_intern_profile = () => {
     };
   
     const handleSubmit = async (e) => {
+      console.log(formInputs)
       e.preventDefault();
       const token = localStorage.getItem("token");
       const decodedToken = jwt_decode(token);
@@ -224,8 +238,10 @@ const Complete_intern_profile = () => {
         }
       );
       if (response.ok) {
-        alert("Profile update complete!");
-        router.push("/virtual_tech_village");
+        // alert("Profile update complete!");
+        // router.push("/virtual_tech_village");
+
+        handleFormSuccess()
       } else {
         alert("Something went wrong, please try again!");
       }
@@ -299,8 +315,17 @@ const Complete_intern_profile = () => {
     return (
       <>
         <Layout>
-          <div className="w-full flex justify-center flex-col pb-4">
+          <div className="w-full flex justify-center flex-col pb-4 relative">
             {/* Gray background */}
+
+            {success && (
+              <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+              <Success
+                message="Your profile update Complete! You may now enjoy the virtual tech village"
+                alertDismiss={handleSuccessDismiss}
+              />
+            </div>
+            )}
   
             <div className="w-full bg-gray-50 h-40 overflow-auto"></div>
   
@@ -815,7 +840,7 @@ const Complete_intern_profile = () => {
                               onChange={(e) =>
                                 handleSoftSkillChange(
                                   index,
-                                  "softSkill",
+                                  "softSkills",
                                   e.target.value
                                 )
                               }
