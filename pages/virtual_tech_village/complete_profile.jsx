@@ -15,16 +15,16 @@ import { countries } from "../data";
 const Complete_profile = () => {
   const router = useRouter();
   const [profileData, setProfileData] = useState({});
-  const [success, setSuccess] = useState(false)
-
+  const [success, setSuccess] = useState(false);
 
   const [completedProfile, setCompletedProfile] = useState({
     country: "",
     city: "",
+    link: "",
   });
 
   const [education, setEducation] = useState([
-    { degreeName: "", institution: "", yearStarted: "", yearFinnished: "" },
+    { degree_name: "", institution: "", year_started: "", year_finished: "" },
   ]);
 
   const handleEducationChange = (index, field, value) => {
@@ -36,7 +36,7 @@ const Complete_profile = () => {
   const handleAddEducation = () => {
     setEducation([
       ...education,
-      { degreeName: "", institution: "", yearStarted: "", yearFinished: "" },
+      { degree_name: "", institution: "", year_started: "", year_finished: "" },
     ]);
   };
 
@@ -47,7 +47,7 @@ const Complete_profile = () => {
   };
 
   const [workHistory, setWorkHistory] = useState([
-    { position: "", company: "", fromYear: "", toYear: "" },
+    { position: "", company: "", from_year: "", to_year: "" },
   ]);
 
   const handleWorkHistoryChange = (index, field, value) => {
@@ -59,7 +59,7 @@ const Complete_profile = () => {
   const handleWorkHistoryAdd = () => {
     setWorkHistory([
       ...workHistory,
-      { position: "", company: "", fromYear: "", toYear: "" },
+      { position: "", company: "", from_year: "", to_year: "" },
     ]);
   };
 
@@ -91,7 +91,7 @@ const Complete_profile = () => {
 
   // Handling Soft Skills
 
-  const [softSkills, setSoftSkills] = useState([{ softSkills: "" }]);
+  const [softSkills, setSoftSkills] = useState([{ name: "" }]);
 
   const handleSoftSkillChange = (index, field, value) => {
     const newSkill = [...softSkills];
@@ -100,7 +100,7 @@ const Complete_profile = () => {
   };
 
   const handleAddSoftSkill = () => {
-    setSoftSkills([...softSkills, { softSkills: "" }]);
+    setSoftSkills([...softSkills, { name: "" }]);
   };
 
   const handleRemoveSoftSkill = (index) => {
@@ -201,19 +201,17 @@ const Complete_profile = () => {
       });
   }, []);
 
-
   const handleFormSuccess = () => {
-    setSuccess(true)
-  }
+    setSuccess(true);
+  };
 
   const handleSuccessDismiss = () => {
-    router.push("/virtual_tech_village")
-    setSuccess(false)
-  }
+    router.push("/virtual_tech_village");
+    setSuccess(false);
+  };
   // const formInputs = [completedProfile, socialMedia, softSkills, language, workHistory, education]
   const formInputs = {
     completedProfile: completedProfile,
-    socialMediaLinks: socialMedia,
     softSkills: softSkills,
     language: language,
     workHistory: workHistory,
@@ -221,6 +219,7 @@ const Complete_profile = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log(formInputs);
     e.preventDefault();
     const token = localStorage.getItem("token");
     const decodedToken = jwt_decode(token);
@@ -243,8 +242,6 @@ const Complete_profile = () => {
     } else {
       alert("Something went wrong, please try again!");
     }
-
-    console.log(completedProfile);
   };
 
   const handleSave = async (e) => {
@@ -264,7 +261,7 @@ const Complete_profile = () => {
     if (response.ok) {
       // alert("Profile Saved!");
       // router.push("/");
-      handleFormSuccess()
+      handleFormSuccess();
     } else {
       alert("Something went wrong, please try again!");
     }
@@ -319,13 +316,13 @@ const Complete_profile = () => {
           {/* Gray background */}
 
           {success && (
-              <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+            <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
               <Success
                 message="Your profile update Complete! You may now enjoy the virtual tech village"
                 alertDismiss={handleSuccessDismiss}
               />
             </div>
-            )}
+          )}
 
           <div className="w-full bg-gray-50 h-40 overflow-auto"></div>
 
@@ -568,11 +565,11 @@ const Complete_profile = () => {
                           <input
                             type="text"
                             className="form-input border w-full rounded-md border-gray-300"
-                            value={degree.degreeName}
+                            value={degree.degree_name}
                             onChange={(e) =>
                               handleEducationChange(
                                 index,
-                                "degreeName",
+                                "degree_name",
                                 e.target.value
                               )
                             }
@@ -602,11 +599,11 @@ const Complete_profile = () => {
                           <input
                             type="text"
                             className="form-input border w-full rounded-md border-gray-300"
-                            value={degree.yearStarted}
+                            value={degree.year_started}
                             onChange={(e) =>
                               handleEducationChange(
                                 index,
-                                "yearStarted",
+                                "year_started",
                                 e.target.value
                               )
                             }
@@ -619,11 +616,11 @@ const Complete_profile = () => {
                           <input
                             type="text"
                             className="form-input border w-full rounded-md border-gray-300"
-                            value={degree.yearFinnished}
+                            value={degree.year_finished}
                             onChange={(e) =>
                               handleEducationChange(
                                 index,
-                                "yearFinnished",
+                                "year_finished",
                                 e.target.value
                               )
                             }
@@ -706,11 +703,11 @@ const Complete_profile = () => {
                           <input
                             type="text"
                             className="form-input border w-full rounded-md border-gray-300"
-                            value={work.fromYear}
+                            value={work.from_year}
                             onChange={(e) =>
                               handleWorkHistoryChange(
                                 index,
-                                "fromYear",
+                                "from_year",
                                 e.target.value
                               )
                             }
@@ -723,11 +720,11 @@ const Complete_profile = () => {
                           <input
                             type="text"
                             className="form-input border w-full rounded-md border-gray-300"
-                            value={work.toYear}
+                            value={work.to_year}
                             onChange={(e) =>
                               handleWorkHistoryChange(
                                 index,
-                                "toYear",
+                                "to_year",
                                 e.target.value
                               )
                             }
@@ -844,12 +841,12 @@ const Complete_profile = () => {
                           <input
                             type="text"
                             className="form-input border w-full rounded-md border-gray-300 px-1"
-                            value={skill.softSkills}
+                            value={skill.name}
                             placeholder="e.g., Creativity"
                             onChange={(e) =>
                               handleSoftSkillChange(
                                 index,
-                                "softSkills",
+                                "name",
                                 e.target.value
                               )
                             }
@@ -890,40 +887,25 @@ const Complete_profile = () => {
                   </div>
 
                   <div className="col-span-1 flex flex-col w-full">
-                    {socialMedia.map((media, index) => (
-                      <div key={index} className="flex mb-4 w-full">
-                        <div className="pr-4 w-full">
-                          <label
-                            htmlFor="socialMedia"
-                            className="block text-sm font-medium text-gray-600 mb-1"
-                          >
-                            Linkedin profile
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="e.g., www.linkedin.com/in/janeDoe"
-                            className="form-input border w-full rounded-md border-gray-300 px-1"
-                            value={media.socialMedia}
-                            onChange={(e) =>
-                              handleSocialMediaChange(
-                                index,
-                                "socialMedia",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
-                        {index > 0 && (
-                          <button
-                            type="button"
-                            className="text-red-500 hover:text-red-700 underline cursor-pointer"
-                            onClick={() => handleRemoveSocialMedia(index)}
-                          >
-                            Remove Social Link
-                          </button>
-                        )}
+                    <div className="flex mb-4 w-full">
+                      <div className="pr-4 w-full">
+                        <label
+                          htmlFor="link"
+                          className="block text-sm font-medium text-gray-600 mb-1"
+                        >
+                          Linkedin profile
+                        </label>
+                        <input
+                          type="text"
+                          name="link"
+                          id="link"
+                          placeholder="e.g., www.linkedin.com/in/janeDoe"
+                          className="form-input border w-full rounded-md border-gray-300 px-1"
+                          value={completedProfile.link}
+                          onChange={handleInputChange}
+                        />
                       </div>
-                    ))}
+                    </div>
                   </div>
 
                   {/* <div className=" col-span-1">

@@ -58,8 +58,6 @@ function Login() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Before token fetch");
-
     // const response = await fetch("http://127.0.0.1:8000/api/token/", {
     const response = await fetch(
       "https://baobabpad-334a8864da0e.herokuapp.com/api/token/",

@@ -23,7 +23,7 @@ const Complete_intern_profile = () => {
     });
   
     const [education, setEducation] = useState([
-      { degreeName: "", institution: "", yearStarted: "", yearFinnished: "" },
+      { degree_name: "", institution: "", year_started: "", year_finished: "" },
     ]);
   
     const handleEducationChange = (index, field, value) => {
@@ -35,7 +35,7 @@ const Complete_intern_profile = () => {
     const handleAddEducation = () => {
       setEducation([
         ...education,
-        { degreeName: "", institution: "", yearStarted: "", yearFinished: "" },
+        { degree_name: "", institution: "", year_started: "", year_finished: "" },
       ]);
     };
   
@@ -46,7 +46,7 @@ const Complete_intern_profile = () => {
     };
   
     const [workHistory, setWorkHistory] = useState([
-      { position: "", company: "", fromYear: "", toYear: "" },
+      { position: "", company: "", from_year: "", to_year: "" },
     ]);
   
     const handleWorkHistoryChange = (index, field, value) => {
@@ -58,7 +58,7 @@ const Complete_intern_profile = () => {
     const handleWorkHistoryAdd = () => {
       setWorkHistory([
         ...workHistory,
-        { position: "", company: "", fromYear: "", toYear: "" },
+        { position: "", company: "", from_year: "", to_year: "" },
       ]);
     };
   
@@ -90,7 +90,7 @@ const Complete_intern_profile = () => {
   
     // Handling Soft Skills
   
-    const [softSkills, setSoftSkills] = useState([{ softSkills: "" }]);
+    const [softSkills, setSoftSkills] = useState([{ name: "" }]);
   
     const handleSoftSkillChange = (index, field, value) => {
       const newSkill = [...softSkills];
@@ -99,7 +99,7 @@ const Complete_intern_profile = () => {
     };
   
     const handleAddSoftSkill = () => {
-      setSoftSkills([...softSkills, { softSkills: "" }]);
+      setSoftSkills([...softSkills, { name: "" }]);
     };
   
     const handleRemoveSoftSkill = (index) => {
@@ -221,32 +221,32 @@ const Complete_intern_profile = () => {
   
     const handleSubmit = async (e) => {
       console.log(formInputs)
-      e.preventDefault();
-      const token = localStorage.getItem("token");
-      const decodedToken = jwt_decode(token);
-      const user_id = decodedToken.user_id;
+      // e.preventDefault();
+      // const token = localStorage.getItem("token");
+      // const decodedToken = jwt_decode(token);
+      // const user_id = decodedToken.user_id;
   
-      const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/intern_complete_profile/${user_id}/`,
-        // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ formInputs }),
-        }
-      );
-      if (response.ok) {
-        // alert("Profile update complete!");
-        // router.push("/virtual_tech_village");
+      // const response = await fetch(
+      //   `https://baobabpad-334a8864da0e.herokuapp.com/village/intern_complete_profile/${user_id}/`,
+      //   // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({ formInputs }),
+      //   }
+      // );
+      // if (response.ok) {
+      //   // alert("Profile update complete!");
+      //   // router.push("/virtual_tech_village");
 
-        handleFormSuccess()
-      } else {
-        alert("Something went wrong, please try again!");
-      }
+      //   handleFormSuccess()
+      // } else {
+      //   alert("Something went wrong, please try again!");
+      // }
   
-      console.log(completedProfile);
+      // console.log(completedProfile);
     };
   
     const handleSave = async (e) => {
@@ -563,11 +563,11 @@ const Complete_intern_profile = () => {
                             <input
                               type="text"
                               className="form-input border w-full rounded-md border-gray-300"
-                              value={degree.degreeName}
+                              value={degree.degree_name}
                               onChange={(e) =>
                                 handleEducationChange(
                                   index,
-                                  "degreeName",
+                                  "degree_name",
                                   e.target.value
                                 )
                               }
@@ -597,11 +597,11 @@ const Complete_intern_profile = () => {
                             <input
                               type="text"
                               className="form-input border w-full rounded-md border-gray-300"
-                              value={degree.yearStarted}
+                              value={degree.year_started}
                               onChange={(e) =>
                                 handleEducationChange(
                                   index,
-                                  "yearStarted",
+                                  "year_started",
                                   e.target.value
                                 )
                               }
@@ -614,11 +614,11 @@ const Complete_intern_profile = () => {
                             <input
                               type="text"
                               className="form-input border w-full rounded-md border-gray-300"
-                              value={degree.yearFinnished}
+                              value={degree.year_finished}
                               onChange={(e) =>
                                 handleEducationChange(
                                   index,
-                                  "yearFinnished",
+                                  "year_finished",
                                   e.target.value
                                 )
                               }
@@ -698,11 +698,11 @@ const Complete_intern_profile = () => {
                             <input
                               type="text"
                               className="form-input border w-full rounded-md border-gray-300"
-                              value={work.fromYear}
+                              value={work.from_year}
                               onChange={(e) =>
                                 handleWorkHistoryChange(
                                   index,
-                                  "fromYear",
+                                  "from_year",
                                   e.target.value
                                 )
                               }
@@ -715,11 +715,11 @@ const Complete_intern_profile = () => {
                             <input
                               type="text"
                               className="form-input border w-full rounded-md border-gray-300"
-                              value={work.toYear}
+                              value={work.to_year}
                               onChange={(e) =>
                                 handleWorkHistoryChange(
                                   index,
-                                  "toYear",
+                                  "to_year",
                                   e.target.value
                                 )
                               }
@@ -828,7 +828,7 @@ const Complete_intern_profile = () => {
                         <div key={index} className="flex mb-4 flex-col sm:flex-row col-span-1">
                           <div className="pr-4">
                             <label
-                              htmlFor="soft_skills"
+                              htmlFor="name"
                               className="block text-sm font-medium text-gray-600 mb-1"
                             >
                               Soft skill
@@ -836,11 +836,11 @@ const Complete_intern_profile = () => {
                             <input
                               type="text"
                               className="form-input border w-full rounded-md border-gray-300 px-1"
-                              value={skill.softSkills}
+                              value={skill.name}
                               onChange={(e) =>
                                 handleSoftSkillChange(
                                   index,
-                                  "softSkills",
+                                  "name",
                                   e.target.value
                                 )
                               }
