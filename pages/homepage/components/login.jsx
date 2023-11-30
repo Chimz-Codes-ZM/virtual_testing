@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { login, reset_register_success } from "../../../actions/auth";
 import Image from "next/image";
 import Login_hero from "../../../public/assets/Login_hero.jpg";
 import Baobab_logo from "../../../public/logo.png";
@@ -9,8 +7,11 @@ import { useRouter } from "next/router";
 import Tech2 from "../../../public/assets/login_hero.webp";
 import jwt_decode from "jwt-decode";
 
+import { setUserData, fetchUserData } from "@/features/user/UserSlice";
+import { useDispatch } from "react-redux";
 
 function Login() {
+  const dispatch = useDispatch()
   const [email_, setEmail] = useState("");
   const [password_, setPassword] = useState("");
 
@@ -105,6 +106,10 @@ function Login() {
           responseData === `"village company profile"` ||
           responseData === `"Intern"`
         ) {
+
+          dispatch(setUserData(response.data))
+
+          dispatch(fetchUserData(decodedToken.user_id))
           router.push("/virtual_tech_village");
         }
       } else {

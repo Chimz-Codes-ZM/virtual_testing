@@ -1,9 +1,7 @@
 import React, {
   useEffect,
-  useContext,
   useState,
   useRef,
-  useLayoutEffect,
 } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -12,6 +10,7 @@ import Head from "next/head";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import axios from "axios";
 import useSWR from "swr";
+import { useSelector } from "react-redux"
 
 import jwt_decode from "jwt-decode";
 
@@ -57,45 +56,27 @@ const Layout = ({ children, sideHighlight }) => {
     router.push("/");
   };
 
-  // const fetcher = async () => {
-  //   const response = await fetch(`https://baobabpad-334a8864da0e.herokuapp.com/village/country_skills/${id}/`)
-  //   setSelectedAttributes(response.data)
-  // }
-
-  // const {data, error} = useSWR('attribute', fetcher)
-
-
-  useLayoutEffect(() => {
-    checkToken();
-
-    const token = localStorage.getItem("token");
-
-    const decodedToken = jwt_decode(token);
-    setId(decodedToken.user_id);
-    const user_id = decodedToken.user_id;
-
-    async function fetchData() {
-      try {
-        const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${user_id}/`
-        );
-        setUserData(response.data);
-        console.log("This is my signed in user data: ", response.data);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
     }
+  });
+  
 
-    fetchData();
-  }, []);
 
   useEffect(() => {
+    checkToken();
+
     document.addEventListener("mousedown", handleClickOutsideNotification);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideNotification);
     };
+
   }, []);
+
 
   const { readyState, sendJsonMessage } = useWebSocket(
     `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat_notifications/${id}/`,
@@ -247,7 +228,7 @@ const Layout = ({ children, sideHighlight }) => {
                   </Link>
                 </div>
 
-                {userData && userData[0]?.account_type === "village admin profile" && (
+                {user?.account_type === "village admin profile" && (
                   <div className="w-full flex flex-col">
                     <Link href="/virtual_tech_village/admin/insight">
                       <div
@@ -375,10 +356,10 @@ const Layout = ({ children, sideHighlight }) => {
           <Link href="/virtual_tech_village/profile/">
             <div className="w-max truncate px-4 py-2 transition-all duration-500 hover:bg-gray-100 rounded cursor-pointer flex items-center gap-1 sm:gap-2">
               <div className="w-7 h-7 rounded overflow-hidden relative">
-                {userData ? (
+                {user ? (
                   <div>
                     <Image
-                      src={userData[0]?.image}
+                      src={user?.image}
                       objectFit="cover"
                       fill
                       onLoadingComplete={(image) =>
@@ -402,16 +383,16 @@ const Layout = ({ children, sideHighlight }) => {
                 )}
               </div>
               <span className="text-sm truncate flex sm:max-w-[200px] font-bold">
-                {userData &&
-                  (userData[0]?.account_type === "village talent profile" ||
-                  userData[0]?.account_type === "village admin profile" ||
-                  userData[0]?.account_type === "community manager" ||
-                  userData[0]?.account_type === "Intern" ? (
+                {user &&
+                  (user?.account_type === "village talent profile" ||
+                  user?.account_type === "village admin profile" ||
+                  user?.account_type === "community manager" ||
+                  user?.account_type === "Intern" ? (
                     <div>
-                      {userData[0]?.first_name} {userData[0]?.last_name}
+                      {user?.first_name} {user?.last_name}
                     </div>
                   ) : (
-                    <div>{userData[0]?.company_name}</div>
+                    <div>{user?.company_name}</div>
                   ))}
               </span>
             </div>

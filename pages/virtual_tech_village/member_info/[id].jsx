@@ -51,11 +51,11 @@ const { id } = router.query;
         setLoading(false);
       });
   };
-  useLayoutEffect(() => {
+  useEffect(() => {
     fetchInfo();
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
 
     const decodedToken = jwt_decode(token);
