@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import {
-  check_auth_status,
-  request_refresh,
-  logout,
-} from "../../../actions/auth";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "/public/logo.png";
