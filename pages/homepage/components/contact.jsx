@@ -119,7 +119,7 @@ const Contact = () => {
       </div>
 
       <form
-        className=" flex relative bg-white overflow-hidden justify-between h-14 rounded-full background-green-border"
+        className=" flex flex-row relative bg-white overflow-hidden justify-between h-14 rounded-full background-green-border"
         onSubmit={handleSubmit}
       >
         <input

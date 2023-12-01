@@ -1,8 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -10,7 +6,7 @@ import Head from "next/head";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import axios from "axios";
 import useSWR from "swr";
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 
 import jwt_decode from "jwt-decode";
 
@@ -63,8 +59,6 @@ const Layout = ({ children, sideHighlight }) => {
       return null;
     }
   });
-  
-
 
   useEffect(() => {
     checkToken();
@@ -74,9 +68,7 @@ const Layout = ({ children, sideHighlight }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideNotification);
     };
-
   }, []);
-
 
   const { readyState, sendJsonMessage } = useWebSocket(
     `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat_notifications/${id}/`,
@@ -306,7 +298,7 @@ const Layout = ({ children, sideHighlight }) => {
             <div className="absolute -top-2 -right-4">
               {unreadMessageCount > 0 ? unreadMessageCount : ""}
             </div>
-            <div ref={notificationRef} >
+            <div ref={notificationRef}>
               <div className="relative">
                 {/* <div className="inline-flex items-center overflow-hidden rounded-md border bg-white"></div> */}
                 {showNotification && (
@@ -398,8 +390,10 @@ const Layout = ({ children, sideHighlight }) => {
             </div>
           </Link>
         </nav>
-        <div className="w-full h-screen overflow-y-scroll px-4">
-          <div className="w-full h-max flex flex-col gap-5 pt-16">{children}</div>
+        <div className="w-full h-screen overflow-y-scroll px-4 overflow-x-hidden">
+          <div className="w-full h-max flex flex-col gap-5 pt-16">
+            {children}
+          </div>
         </div>
       </main>
     </>

@@ -241,7 +241,6 @@ const Navbar = () => {
                     Home
                   </li>
                 </Link>
-
                 <div className="relative">
                   <li onClick={handleAboutClick} className="py-4 text-sm">
                     About
@@ -277,29 +276,19 @@ const Navbar = () => {
                     Partners
                   </li>
                 </Link>
-
                 {/* <Link href='/homepage/news'>
                 <li onClick={() => setNav(false)} className='py-4 text-sm'>
                   News
                 </li>
               </Link> */}
-
-                <Link
-                  href="/homepage/team/management"
-                  className="cursor-pointer hover:border-b-8 hover:border-yellow-500"
-                >
-                  Team
-                </Link>
-
-                <Link href="/homepage/careers">
-                  <li onClick={() => setNav(false)} className="py-4 text-sm">
-                    Careers
-                  </li>
-                </Link>
-
                 <Link href="/homepage/tech_village">
                   <li onClick={() => setNav(false)} className="py-4 text-sm">
                     Tech Village
+                  </li>
+                </Link>{" "}
+                <Link href="/homepage/tech_signup">
+                  <li onClick={() => setNav(false)} className="py-4 text-sm">
+                    Sign up
                   </li>
                 </Link>
                 <Link href="/homepage/login">
