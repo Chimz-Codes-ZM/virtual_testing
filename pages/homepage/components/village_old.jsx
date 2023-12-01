@@ -66,7 +66,7 @@ const Village_old = () => {
             and integrating the processes between software development and IT
             teams, enhancing the speed, efficiency, and quality of software
             development and deployment. All Baobabpad’s Software Development
-            Engineers are GDPR trained and certified. 
+            Engineers are GDPR trained and certified.  
           </p>
         </div>
       </li>
