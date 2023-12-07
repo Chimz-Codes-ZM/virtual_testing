@@ -380,11 +380,11 @@ const tech_signup = () => {
                       <div className="col-span-6">
                         <p className="text-sm text-gray-500">
                           By creating an account, you agree to our
-                          <a href="#" className="text-gray-700 underline mx-1">
+                          <a href="/homepage/subscription_terms" target="_blank" className="text-gray-700 underline mx-1">
                             terms and conditions
                           </a>
                           and
-                          <a href="#" className="text-gray-700 underline mx-1">
+                          <a href="/homepage/privacy" target="_blank" className="text-gray-700 underline mx-1">
                             privacy policy
                           </a>
                           .
@@ -539,14 +539,14 @@ const tech_signup = () => {
                         <p className="text-sm text-gray-500">
                           By creating an account, you agree to our{" "}
                           <span className="mx-2">
-                            <a href="#" className="text-gray-700 underline">
+                            <a href="/homepage/talent_terms" target="_blank" className="text-gray-700 underline">
                               terms and conditions
                             </a>{" "}
                           </span>
                           and{" "}
                           <span className="mx-2">
                             {" "}
-                            <a href="#" className="text-gray-700 underline">
+                            <a href="/homepage/privacy" target="_blank" className="text-gray-700 underline">
                               privacy policy
                             </a>
                           </span>
@@ -708,14 +708,14 @@ const tech_signup = () => {
                         <p className="text-sm text-gray-500">
                           By creating an account, you agree to our{" "}
                           <span className="mx-1">
-                            <a href="#" className="text-gray-700 underline">
+                            <a href="/homepage/talent_terms" target="_blank" className="text-gray-700 underline">
                               terms and conditions
                             </a>{" "}
                           </span>
                           and{" "}
                           <span className="mx-1">
                             {" "}
-                            <a href="#" className="text-gray-700 underline">
+                            <a href="/homepage/privacy" target="_blank" className="text-gray-700 underline">
                               privacy policy
                             </a>
                           </span>

@@ -121,7 +121,7 @@ function Login() {
 
 
   return (
-    <div className="flex items-center justify-center p-6 sm:p-12 md:p-16 border h-screen relative">
+    <div className="flex items-center justify-center h-screen relative">
       {loginError && (
         <div
           role="alert"
@@ -139,23 +139,23 @@ function Login() {
           </p>
         </div>
       )}
-      <div className="w-1/3 border h-full rounded-l-xl overflow-hidden hidden relative md:flex items-center justify-center">
+      <div className="w-1/2 h-full rounded-l-xl overflow-hidden hidden relative md:flex items-center justify-center">
         <Image
           src={Tech2}
-          alt="baobab tree"
+          alt="Woman smiling"
           className="h-full object-cover z-10 absolute"
         />
       </div>
 
-      <div className="w-full sm:w-1/2 md:w-1/3 h-full relative">
+      <div className="w-full sm:w-1/2 h-full relative md:px-20">
         <div className="absolute left-1/2 transform -translate-x-1/2 w-16 top-6 z-50">
           <Link href={"/"}>
-            <Image src={Baobab_logo} alt="baobab logo" />
+            <Image src={Baobab_logo} alt="Baobabpad logo" />
           </Link>
         </div>
         <form
           onSubmit={onSubmit}
-          className="flex flex-col gap-4 w-full h-full border border-l-teal-700 md:border-l-slate-50 border-r-teal-700 border-y-teal-700 p-4 py-8 rounded-l-xl md:rounded-l-none rounded-r-xl justify-center relative"
+          className="flex flex-col gap-4 w-full h-full  p-4 py-8 rounded-l-xl md:rounded-l-none rounded-r-xl justify-center relative"
         >
           <h1 className="text-center text-2xl pb-4">Login</h1>
 

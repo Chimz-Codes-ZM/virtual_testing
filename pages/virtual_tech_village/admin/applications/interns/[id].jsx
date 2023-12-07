@@ -1,26 +1,22 @@
 import React, { useEffect, useState, useLayoutEffect } from "react";
-import Layout from "../components/layouts/layout";
-
 import { useRouter } from "next/router";
 
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-import Resume_component from "../components/cv/Resume_component";
-
+import Layout from "../../../components/layouts/layout"
+import Resume_component from '@/pages/virtual_tech_village/components/cv/Resume_component'
 
 import { JellyTriangle } from "@uiball/loaders";
 
+const CV = ({member}) => {
 
+    const [info, setInfo] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [loggedIn, setLoggedIn] = useState([]);
+    const router = useRouter();
 
-const MemberInfo = ({member}) => {
-  const [info, setInfo] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [loggedIn, setLoggedIn] = useState([]);
-  const router = useRouter();
-// const csrfToken = Cookies.get('next-auth.csrf-token')
-
-const { id } = router.query;
+    const { id } = router.query;
   const [error, setError] = useState(null);
 
  
@@ -118,69 +114,70 @@ const { id } = router.query;
   }
   return (
     <>
-      <Layout sideHighlight="Tech Village">
-        <Resume_component
-          name={`${member[0]?.first_name} ${member[0].last_name}`}
-          bio={member[0]?.bio}
-          country={member[0]?.country}
-          city={member[0]?.city}
-          title={member[0]?.skills}
-          job1={member[0]?.work_experience[0]?.company}
-          position1={member[0]?.work_experience[0]?.position}
-          work_experience={member[0]?.work_experience}
-          education={member[0]?.education}
-          languages={member[0]?.languages}
-          linkedin={member[0]?.link}
-          soft_skills={member[0]?.soft_skills}
-        />
-        <div
-          className="p-1 px-2 rounded-lg border shadow-md w-fit cursor-pointer bg-black text-white fixed bottom-10 right-10"
-          onClick={handleCVDownload}
-        >
-          Download CV
-        </div>
-      </Layout>
-    </>
-  );
-};
+    <Layout sideHighlight="Tech Village">
+      <Resume_component
+        name={`${member[0]?.first_name} ${member[0].last_name}`}
+        bio={member[0]?.bio}
+        country={member[0]?.country}
+        city={member[0]?.city}
+        title={member[0]?.skills}
+        job1={member[0]?.work_experience[0]?.company}
+        position1={member[0]?.work_experience[0]?.position}
+        work_experience={member[0]?.work_experience}
+        education={member[0]?.education}
+        languages={member[0]?.languages}
+        linkedin={member[0]?.link}
+        soft_skills={member[0]?.soft_skills}
+      />
+      <div
+        className="p-1 px-2 rounded-lg border shadow-md w-fit cursor-pointer bg-black text-white fixed bottom-10 right-10"
+        onClick={handleCVDownload}
+      >
+        Download CV
+      </div>
+    </Layout>
+  </>
+  )
+}
 
-export default MemberInfo;
+export default CV
 
 export async function getStaticPaths() {
-  const response = await fetch('https://baobabpad-334a8864da0e.herokuapp.com/village/ids/');
+    const response = await fetch('https://baobabpad-334a8864da0e.herokuapp.com/village/ids/');
+    
+    if (!response.ok) {
+      console.error('Failed to fetch data');
+      return { paths: [], fallback: false };
+    }
   
-  if (!response.ok) {
-    console.error('Failed to fetch data');
-    return { paths: [], fallback: false };
-  }
-
-  const data = await response.json();
-
-  console.log(data);
-
-  const paths = data.map((person) => {
+    const data = await response.json();
+  
+    console.log(data);
+  
+    const paths = data.map((person) => {
+      return {
+        params: {
+          id: `${person.id}`,
+        }
+      };
+    });
+  
     return {
-      params: {
-        id: `${person.id}`,
-      }
+      paths: paths,
+      fallback: false
     };
-  });
-
-  return {
-    paths: paths,
-    fallback: false
-  };
-}
-
-export async function getStaticProps(context) {
-  const { params } = context;
-
-  const response = await fetch(`https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${params.id}`)
-  const data = await response.json()
-
-  return {
-    props: {
-      member: data
+  }
+  
+  export async function getStaticProps(context) {
+    const { params } = context;
+  
+    const response = await fetch(`https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${params.id}`)
+    const data = await response.json()
+  
+    return {
+      props: {
+        member: data
+      }
     }
   }
-}
+  

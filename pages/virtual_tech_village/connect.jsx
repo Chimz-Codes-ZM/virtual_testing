@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Layout from "./components/layouts/layout";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import Channels from "./components/connect/channels";
-import Conversations from "./components/connect/conversations";
+import { useSelector } from "react-redux";
 
-import useWebSocket, { ReadyState } from "react-use-websocket";
-import axios from "axios";
-import jwt_decode from "jwt-decode";
-import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+
+
+import Channels from "./components/connect/channels";
+
+import { motion} from "framer-motion";
 
 const connect = () => {
   const [userData, setUserData] = useState(null)
@@ -16,6 +16,7 @@ const connect = () => {
   const [newChannel, setNewChannel] = useState({
     channel_name: ""
   });
+  const channelRef = useRef()
 
   const router = useRouter()
 
@@ -25,11 +26,41 @@ const connect = () => {
     setAddChannel(!addChannel);
   };
 
+  const handleClickOutsideAddChannel = (event) => {
+    if (
+      channelRef.current &&
+      !channelRef.current.contains(event.target)
+    ) {
+      setAddChannel(false)
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideAddChannel);
+
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideAddChannel);
+    };
+  }, []);
+
   return (
     <>
       <Layout sideHighlight="connect">
         <div className="flex custom-height relative">
           <Channels addChannel={addChannel} setAddChannel={setAddChannel} />
+          <div className="grow h-full text-lg font-semibold md:flex flex-col justify-center items-center text-gray-600 opacity-50 gap-4 hidden">
+            <div className="relative h-40 w-40">
+              <Image
+                fill
+                objectFit="cover"
+                src="/logo.png"
+                className="rounded-full opacity-20"
+                alt="Baobabpad Logo"
+              />
+            </div>
+          <h1>Elevating African Technology Talent, Virtually and Globally... </h1>
+          </div>
         </div>
 
         {addChannel && (
@@ -37,6 +68,7 @@ const connect = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            
             className="fixed inset-0 flex items-center justify-center z-[999] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
           >
             <div>
@@ -45,6 +77,7 @@ const connect = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
+                ref={channelRef}
               >
                 <div className="p-6 bg-white border z-50 rounded flex flex-col gap-2">
                   <div className="flex flex-col gap-4">

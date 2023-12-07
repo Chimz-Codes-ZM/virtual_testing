@@ -1,6 +1,5 @@
 import React, { useState, useReducer } from "react";
-import Image from "next/image";
-import Layout from "../../components/layouts/layout";
+import Layout from "../../../components/layouts/layout";
 import Link from "next/link";
 
 import { applications, approved, denied } from "@/pages/data";
@@ -44,6 +43,8 @@ const Index = () => {
       ...prevChecked,
       [applicantId]: !prevChecked[applicantId],
     }));
+
+    setDeniedApplicants((prev) => ({ ...prev, [applicantId]: false }));
   };
 
   const handleDeniedChange = (applicantId) => {
@@ -51,6 +52,8 @@ const Index = () => {
       ...prev,
       [applicantId]: !prev[applicantId],
     }));
+
+    setChecked((prevChecked) => ({ ...prevChecked, [applicantId]: false }));
   };
 
   const handleSubmit = () => {
@@ -68,7 +71,7 @@ const Index = () => {
           >
             Submit
           </div>
-          <p className="text-gray-800">Talent applications to join Baobabpad</p>
+          <p className="text-gray-800">Intern applications to join Baobabpad</p>
 
           <div className="flex items-center">
             <span
@@ -118,9 +121,12 @@ const Index = () => {
               {applications.map((applicant) => (
                 <div
                   key={applicant.id}
-                  className="w-full flex border-b py-2 border-gray-600 hover:bg-slate-50 transition delay-75"
+                  className="w-full flex border-b py-2 border-gray-600 transition hover:bg-slate-50"
                 >
-                  <Link className="text-md text-gray-800 flex flex-grow"  href={`/virtual_tech_village//admin/applications/${applicant.id}`}>
+                  <Link
+                    className="text-md text-gray-800 flex flex-grow"
+                    href={`/virtual_tech_village//admin/applications/interns/${applicant.id}`}
+                  >
                     {applicant.name}
                   </Link>
                   <span className="text-md text-gray-800 w-20 flex justify-center items-center">
@@ -128,10 +134,7 @@ const Index = () => {
                       type="checkbox"
                       className="w-4 h-4 border-2 border-green-600 rounded"
                       checked={checked[applicant.id] || false}
-                      onChange={() => {
-                       
-                        handleApprovedChange(applicant.id);
-                      }}
+                      onChange={() => handleApprovedChange(applicant.id)}
                     />
                   </span>
                   <span className="text-md text-red-600 w-20 flex justify-center items-center">
@@ -139,10 +142,7 @@ const Index = () => {
                       type="checkbox"
                       className="w-4 h-4 border-2 border-green-600 rounded"
                       checked={deniedApplicants[applicant.id] || false}
-                      onChange={() => {
-                       
-                        handleDeniedChange(applicant.id);
-                      }}
+                      onChange={() => handleDeniedChange(applicant.id)}
                     />
                   </span>
                 </div>

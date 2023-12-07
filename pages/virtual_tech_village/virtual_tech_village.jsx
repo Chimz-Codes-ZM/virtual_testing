@@ -13,6 +13,7 @@ import jwt_decode from "jwt-decode";
 import Complete_Profile from "../virtual_tech_village/components/alerts/completeProfile";
 import MemberProfile from "./components/profiles/MemberProfile";
 import ExpandedProfileModal from "./components/profiles/ExpandedProfileModal";
+import JobAdded from "./components/alerts/jobAdded";
 import New_job from "./components/forms/new_job";
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -132,6 +133,7 @@ const Virtual_Tech_Village = () => {
   const expandedCompanyRef = useRef(null);
   const memberStartRef = useRef(null);
   const newJobRef = useRef(null);
+  const [success, setSuccess] = useState(false);
 
   const [talentPages, setTalentPages] = useState([]);
   const [user, setUser] = useState(null);
@@ -316,10 +318,8 @@ const Virtual_Tech_Village = () => {
   };
 
   const internReroute = () => {
-    router.push("/virtual_tech_village/complete_intern_profile")
-  }
-
-
+    router.push("/virtual_tech_village/complete_intern_profile");
+  };
 
   const companyProfileReroute = () => {
     router.push("/virtual_tech_village/complete_company_profile");
@@ -422,6 +422,14 @@ const Virtual_Tech_Village = () => {
     imageRef.current = e.target.files[0];
   };
 
+  const handleJobAlert = () => {
+    setSuccess(true);
+  };
+
+  const handleJobDismiss = () => {
+    setSuccess(false);
+  };
+
   const handleNewJobSubmit = (e) => {
     e.preventDefault();
 
@@ -442,7 +450,7 @@ const Virtual_Tech_Village = () => {
         }
       );
       if (response.ok) {
-        alert("New job added successfully");
+        handleJobAlert();
         setAddNewJobShow(false);
         setNewJob({
           position: "",
@@ -559,7 +567,6 @@ const Virtual_Tech_Village = () => {
     );
   }
 
-
   const filteredData = individuals?.filter((profile) => {
     const countryFilter = filters.country
       ? profile.country === filters.country
@@ -634,6 +641,14 @@ const Virtual_Tech_Village = () => {
 
   return (
     <div className="flex flex-col gap-5 relative pb-8" ref={parent}>
+      {success && (
+        <div className="rounded fixed bottom-10 sm:right-10 z-[999] max-w-[450px]">
+          <JobAdded
+            message="New job added successfully"
+            alertDismiss={handleJobDismiss}
+          />
+        </div>
+      )}
       <div className="relative" ref={memberStartRef}></div>
       <div>
         {addNewJobShow && (

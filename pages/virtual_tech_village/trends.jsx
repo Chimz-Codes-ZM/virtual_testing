@@ -4,16 +4,16 @@ import Head from "next/head";
 import Layout from "./components/layouts/layout";
 import SharepadLayout from "./components/layouts/sharepadLayout";
 import SidePanel from "./components/events/SidePanel";
+import { trends } from "../data";
 
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { useSelector } from "react-redux";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { BsFillCalendar2EventFill } from "react-icons/bs";
 
-import { event_grid } from "../data";
-
-const Events = () => {
+const sharepad = () => {
   const newEventRef = useRef();
   const selectedEventRef = useRef();
   const [newEvent, setNewEvent] = useState({
@@ -31,6 +31,14 @@ const Events = () => {
   const [success, setSuccess] = useState(false);
 
   const [events, setEvents] = useState([]);
+
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
+    }
+  });
 
   const handleAddEvent = () => {
     setAddEvent(true);
@@ -129,31 +137,30 @@ const Events = () => {
 
   // AXIOS REQUEST
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
 
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
+  //   const decodedToken = jwt_decode(token);
+  //   const id = decodedToken.user_id;
 
-    async function fetchData() {
-      try {
-        const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/events/${id}/`
-        );
-        console.log("This is the events ===>", response.data);
-        setEvents(response.data);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    }
+  //   async function fetchData() {
+  //     try {
+  //       const response = await axios.get(
+  //         `https://baobabpad-334a8864da0e.herokuapp.com/village/events/${id}/`
+  //       );
+  //       console.log("This is the events ===>", response.data);
+  //       setEvents(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching data: ", error);
+  //     }
+  //   }
 
-    fetchData();
-  }, []);
-
+  //   fetchData();
+  // }, []);
   return (
     <>
       <Layout sideHighlight="sharepad">
-        <SharepadLayout title="events">
+        <SharepadLayout title="trends">
           <section className="w-full relative">
             {success && (
               <div className="rounded fixed bottom-10 sm:right-10 z-[999] max-w-[450px]">
@@ -207,11 +214,11 @@ const Events = () => {
                       <div className="p-6 bg-white border z-[50] rounded flex flex-col gap-2">
                         <div className="flex flex-col gap-4">
                           <h1 className="text-2xl font-semibold">
-                            Create a New Community Event
+                            Create a New Community Post
                           </h1>
                           <p className="text-lg font-normal text-gray-500">
-                            Fill out the details below to create a new event for
-                            the community
+                            Fill out the details below to create a new post for
+                            the community to read about
                           </p>
                         </div>
 
@@ -224,7 +231,7 @@ const Events = () => {
                               htmlFor="event_name"
                               className="text-sm font-medium"
                             >
-                              Event Name
+                              Post Title
                             </label>
                             <input
                               type="text"
@@ -240,7 +247,7 @@ const Events = () => {
                               htmlFor="host"
                               className="text-sm font-medium"
                             >
-                              Hosted By:
+                              Source:
                             </label>
                             <input
                               type="text"
@@ -248,7 +255,7 @@ const Events = () => {
                               value={newEvent.host}
                               className="border rounded px-1"
                               onChange={handleEventChange}
-                              placeholder="e.g., Baobabpad"
+                              placeholder="e.g., TechCrunch"
                             />
                           </div>
 
@@ -257,10 +264,10 @@ const Events = () => {
                               htmlFor="date_time"
                               className="text-sm font-medium"
                             >
-                              Date and time
+                              Date posted
                             </label>
                             <input
-                              type="datetime-local"
+                              type="date"
                               name="date_time"
                               value={newEvent.date_time}
                               className="border rounded px-1"
@@ -275,18 +282,17 @@ const Events = () => {
                                 htmlFor="description"
                                 className="block text-sm font-medium text-gray-700"
                               >
-                                Description
+                                Link to post
                               </label>
 
-                              <textarea
-                                id="OrderNotes"
+                              <input
+                                type="text"
                                 className="mt-2 w-full px-2 rounded-lg border-gray-200 align-top shadow-sm sm:text-sm"
-                                rows="4"
-                                placeholder="Enter the event description..."
+                                placeholder="Enter the link to the post..."
                                 name="description"
                                 value={newEvent.description}
                                 onChange={handleEventChange}
-                              ></textarea>
+                              />
                             </div>
                           </div>
 
@@ -300,18 +306,18 @@ const Events = () => {
                             <input
                               accept="image/*"
                               id="image"
-                              type="file"
+                              type="text"
                               name="image"
                               value={image}
                               className="border rounded px-1"
                               onChange={handleChange}
-                              placeholder="e.g., www.glassdoor.com/job-123"
+                              placeholder="link to the cover image"
                             />
                           </div>
 
                           <div className="">
                             <button className="bg-gray-900 text-white w-full rounded-md p-1 shadow hover:bg-gray-800 transition delay-100">
-                              Add New Event
+                              Add New Post
                             </button>
                           </div>
                         </form>
@@ -326,7 +332,7 @@ const Events = () => {
                 alt="Header Image"
                 className="object-cover w-full h-full"
                 height="500"
-                src="https://images.unsplash.com/photo-1616531770192-6eaea74c2456?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 style={{
                   aspectRatio: "1200/500",
                   objectFit: "cover",
@@ -334,48 +340,47 @@ const Events = () => {
               />
               <div className="absolute inset-0 bg-black opacity-25"></div>
               <div className="text-white font-bold text-6xl absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <h1>Events</h1>
+                <h1>Trends</h1>
               </div>
             </div>
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:p-6 ">
-              {events.map((item, index) => (
-                <div
-                  className="border shadow p-2 flex flex-col gap-3 transform hover:scale-105 transition-transform cursor-pointer"
-                  onClick={() => handleSelectEvent(item)}
-                  key={index}
+              {trends.map((article) => (
+                <a
+                  target="_blank"
+                  href={article.link}
+                  className="p-2 flex flex-col gap-3 transform hover:scale-105 transition-transform cursor-pointer"
+                  key={article.id}
                 >
                   <div>
                     <img
-                      alt={item.event_name}
-                      className="object-cover w-full h-60 rounded-md"
+                      alt={article.title}
+                      className="object-cover w-full h-60"
                       height="200"
-                      src={item.image}
+                      src={article.img}
                       style={{
                         aspectRatio: "300/200",
                         objectFit: "cover",
                       }}
                     />
-                    <h1 className="text-lg font-semibold">{item.event_name}</h1>
-                    <p className="font-medium text-xs md:text-sm text-gray-700">
-                      Hosted by {item.host}
-                    </p>
+                    <h1 className="text-lg font-semibold">{article.title}</h1>
                   </div>
-                  <div>
-                    <p className="text-red-700">
-                      Date & Time: {item.data_time}
-                    </p>
-                    <p className="font-semibold">$75</p>
+                  <div className="flex justify-between text-gray-700 text-xs">
+                    <p>{article.source}</p>{" "}
+                    <p className="">Date: {article.date}</p>
                   </div>
-                </div>
+                </a>
               ))}
             </section>
-
-            <div
-              className="fixed bottom-5 right-10 rounded p-2 bg-white text-2xl border cursor-pointer transition transform hover:scale-105"
-              onClick={handleAddEvent}
-            >
-              <BsFillCalendar2EventFill />
-            </div>
+            {user && user.account_type === "village admin profile" ? (
+              <div
+                className="fixed bottom-5 right-10 rounded p-2 bg-white text-2xl border cursor-pointer transition transform hover:scale-105"
+                onClick={handleAddEvent}
+              >
+                <BsFillCalendar2EventFill />
+              </div>
+            ) : (
+              ""
+            )}
           </section>
         </SharepadLayout>
       </Layout>
@@ -383,4 +388,4 @@ const Events = () => {
   );
 };
 
-export default Events;
+export default sharepad;

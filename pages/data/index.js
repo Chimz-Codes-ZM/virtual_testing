@@ -1191,59 +1191,170 @@ export const event_grid = [
 
 export const applications = [
   {
-    id: 1,
+    id: 107,
     name: "Samson",
   },
   {
-    id: 2,
+    id: 102,
     name: "Chimwemwe",
   },
   {
-    id: 3,
+    id: 103,
     name: "Solomon",
   },
   {
-    id: 4,
+    id: 104,
     name: "Jacob",
   },
   {
-    id: 5,
+    id: 105,
     name: "Albert",
   },
   {
-    id: 6,
+    id: 106,
     name: "Kenny",
   },
 ];
 
 export const approved = [
   {
-    id: 1,
+    id: 104,
     name: "Jacob",
   },
   {
-    id: 2,
+    id: 105,
     name: "Albert",
   },
   {
-    id: 3,
+    id: 106,
     name: "Kenny",
   },
-]
+];
 
 export const denied = [
   {
-    id: 1,
+    id: 107,
     name: "Samson",
   },
   {
-    id: 2,
+    id: 102,
     name: "Chimwemwe",
   },
   {
-    id: 3,
+    id: 103,
     name: "Solomon",
   },
-]
+];
 
+export const trends = [
+  {
+    id: 1,
+    img: "https://techcrunch.com/wp-content/uploads/2023/11/972EDAAB-FAF9-4DD0-B0D2-A5DBAD213213.jpeg?w=730&crop=1",
+    date: "November 15, 2023",
+    title: "Why Norrsken founder Niklas Adalberth is betting on Africa",
+    link: "https://techcrunch.com/2023/11/15/why-norrsken-founder-niklas-adalberth-is-betting-on-africa/",
+    source: "TechCrunch"
+
+  },
+  {
+    id: 2,
+    img: "https://techcrunch.com/wp-content/uploads/2023/11/3-min.png?w=730&crop=1",
+    date: "November 30, 2023",
+    title: "Salesforce Ventures and Female Founders Fund back Kenyan climate-tech Amini in $4M seed round",
+    link: "https://techcrunch.com/2023/11/30/salesforce-ventures-and-female-founders-fund-back-kenyan-climate-tech-amini-in-4m-seed-round/",
+    source: "TechCrunch"
+
+  },
+  {
+    id: 3,
+    img: "https://techcrunch.com/wp-content/uploads/2022/08/Jihan-Abass.-e1659423730694.jpg?w=730&crop=1",
+    date: "August 2, 2022",
+    title: "Kenyan insurtech Lami raises $3.7M seed extension led by Harlem Capital",
+    link: "https://techcrunch.com/2022/08/02/kenyan-insurtech-lami-raises-3-7m-seed-extension-led-by-harlem-capital/",
+    source: "TechCrunch"
+
+  },
+  {
+    id: 4,
+    img: "https://techcrunch.com/wp-content/uploads/2023/11/IMG-2463-min.jpg?w=730&crop=1",
+    date: "November 24, 2023",
+    title: "Saviu Ventures’ second fund reaches €12 million first close to back Francophone Africa startups",
+    link: "https://techcrunch.com/2023/11/24/saviu-second-fund/",
+    source: "TechCrunch"
+
+  },
+  {
+    id: 5,
+    img: "https://techcrunch.com/wp-content/uploads/2023/11/B1D80FDE-47E4-469A-BC2A-D6AF17132829.jpeg?w=730&crop=1",
+    date: "November 13, 2023",
+    title: "Shekel Mobility, a B2B marketplace for auto dealers in Africa, raises $7M led by Ventures Platform and MaC VC",
+    link: "https://techcrunch.com/2023/11/13/shekel-mobility-a-b2b-marketplace-for-auto-dealers-in-africa-raises-7m-led-by-ventures-platform-and-mac-vc/",
+    source: "TechCrunch"
+
+  },
+  {
+    id: 6,
+    img: "https://techcrunch.com/wp-content/uploads/2021/12/45B7318.jpg?w=730&crop=1",
+    date: "November 3, 2023",
+    title: "Norrsken22’s debut fund closes at $205M to back growth-stage startups in Africa",
+    link: "https://techcrunch.com/2023/11/02/norrsken22s-debut-fund-closes-at-205m-to-back-growth-stage-startups-in-africa/",
+    source: "TechCrunch"
+
+  },
+  {
+    id: 7,
+    img: "https://techcrunch.com/wp-content/uploads/2023/10/Sukhiba.jpeg?w=730&crop=1",
+    date: "October 25, 2023",
+    title: "Sukhiba eyes expansion to power WhatsApp conversational commerce in Africa",
+    link: "https://techcrunch.com/2023/10/25/sukhiba-eyes-africa-growth/",
+    source: "TechCrunch"
+
+  },
+  {
+    id: 8,
+    img: "https://techcrunch.com/wp-content/uploads/2023/07/GettyImages-942480316.jpg?w=1390&crop=1",
+    date: "October 17, 2023",
+    title: "LeapFrog’s new fund to double down on financial and healthcare sectors in Africa and Asia",
+    link: "https://techcrunch.com/2023/10/17/leapfrog-new-1b-fund/",
+    source: "TechCrunch"
+
+  },
+  {
+    id: 9,
+    img: "https://techcrunch.com/wp-content/uploads/2023/10/545C3940-5903-4132-A537-173B77DD0E3F.jpeg?w=1390&crop=1",
+    date: "October 24, 2023",
+    title: "New solar mini-grids in Africa to be powered by Husk Power Systems’ $103M Series D",
+    link: "https://techcrunch.com/2023/10/24/new-solar-mini-grids-in-africa-to-be-powered-by-husk-power-systems-103m-series-d/",
+    source: "TechCrunch"
+
+  },
+  {
+    id: 10,
+    img: "https://techpoint.africa/wp-content/uploads/2023/12/WhatsApp-Image-2023-12-05-at-12.39.52-909x682.jpeg",
+    date: "December 5, 2023",
+    title: "Call of Duty: Mobile launches dedicated Nigerian server ",
+    link: "https://techpoint.africa/2023/12/05/call-of-duty-mobile-nigerian-server/",
+    source: "Techpoint Africa"
+
+  },
+  {
+    id: 11,
+    img: "https://techpoint.africa/wp-content/uploads/2023/07/possessed-photography-znCLdh5-Srk-unsplash-931x682.webp",
+    date: "December 5, 2023",
+    title: "South Africa wants to be a global EV player ",
+    link: "https://techpoint.africa/2023/12/05/techpoint-digest-728/",
+    source: "Techpoint Africa"
+
+  },
+  {
+    id: 12,
+    img: "https://techpoint.africa/wp-content/uploads/2022/11/Pivo-Team-min-978x682.jpg",
+    date: "December 5, 2023",
+    title: "Nigerian fintech startup Pivo shuts down 1 year after announcing a $2 million round",
+    link: "https://techpoint.africa/2023/12/05/pivo-has-shut-down/",
+    source: "Techpoint Africa"
+
+  },
+  
+]
 export default () => null;

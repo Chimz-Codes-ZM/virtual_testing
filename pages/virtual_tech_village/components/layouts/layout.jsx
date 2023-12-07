@@ -71,13 +71,13 @@ const Layout = ({ children, sideHighlight }) => {
   }, []);
 
   const { readyState, sendJsonMessage } = useWebSocket(
-    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat_notifications/${id}/`,
+    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat_notifications/${user.user_id}/`,
     {
       onOpen: () => {
-        // console.log("Connected to Notifications!");
+        console.log("Connected to Notifications!");
       },
       onClose: () => {
-        // console.log("Disconnected from Notifications!");
+        console.log("Disconnected from Notifications!");
       },
       onMessage: (e) => {
         const data = JSON.parse(e.data);
@@ -187,7 +187,7 @@ const Layout = ({ children, sideHighlight }) => {
                 </div>
 
                 <div className="w-full flex flex-col">
-                  <Link href="/virtual_tech_village/sharepad">
+                  <Link href="/virtual_tech_village/trends">
                     <div
                       className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
 											${
