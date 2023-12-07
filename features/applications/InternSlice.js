@@ -5,7 +5,7 @@ const initialState = {
     approved: {},
     denies: {}
 }
-
+ 
 const InternSlice = createSlice({
     name: 'interns_applications',
     initialState
