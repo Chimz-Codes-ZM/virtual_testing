@@ -171,7 +171,7 @@ export async function getStaticPaths() {
     fallback: false
   };
 }
-
+ 
 export async function getStaticProps(context) {
   const { params } = context;
 
