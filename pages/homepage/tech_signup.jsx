@@ -37,6 +37,42 @@ const tech_signup = () => {
   });
   const router = useRouter();
 
+  const [successfulSignup, setSuccessfulSignup] = useState(false);
+  const [errorSignup, setErrorSignup] = useState(false);
+  const [emailExists, setEmailExists] = useState(false);
+  const [isRattling, setIsRattling] = useState(false);
+  const handleSuccess = () => {
+    setSuccessfulSignup(true);
+  };
+
+  const handleError = () => {
+    setErrorSignup(true);
+    setIsRattling(true);
+
+    setTimeout(() => {
+      setIsRattling(false);
+    }, 1000);
+  };
+
+  const hanldeEmailExists = () => {
+    setEmailExists(true);
+    setIsRattling(true);
+
+    setTimeout(() => {
+      setIsRattling(false);
+    }, 1000);
+  };
+
+  const handleReroute = () => {
+    router.push("/homepage/tech_village_confirmation");
+  };
+
+  const rerouteTimer = () => {
+    setTimeout(() => {
+      handleReroute();
+    }, 3000);
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? (checked ? "true" : "false") : value;
@@ -161,12 +197,12 @@ const tech_signup = () => {
           confirm_password: "",
           marketing_opt_in: "false",
         });
-        alert("sign up successful!");
-        router.push("/homepage/tech_village_confirmation");
+        handleSuccess();
+        rerouteTimer();
       } else if (response.status === 403) {
-        alert("please make sure that the two passwords match!");
+        handleError();
       } else if (response.status === 409) {
-        alert("A user with that email already exists!");
+        hanldeEmailExists();
       }
     });
   };
@@ -194,28 +230,113 @@ const tech_signup = () => {
           marketing_opt_in: "false",
           accountType: "Company",
         });
-        alert("sign up successful!");
-        router.push("/homepage/tech_village_confirmation");
+        handleSuccess();
+        rerouteTimer();
       } else if (response.status === 403) {
-        alert("please make sure that the two passwords match!");
+        handleError();
       } else if (response.status === 409) {
-        alert("A user with that email already exists!");
+        hanldeEmailExists();
       }
     });
-    console.log(companyValues);
   };
 
   return (
     <div className="bg-gray-900">
       <Layout>
-        <div className="lg:pt-32">
+        <div className="lg:pt-32 relative">
+          <div
+            role="alert"
+            className={`rounded-xl border border-gray-100 bg-white p-4 fixed bottom-10 sm:left-10 transform transition-transform duration-300 ease-in-out ${
+              successfulSignup ? "translate-x-0" : "-translate-x-[500px]"
+            }`}
+          >
+            <div className="flex items-start gap-4">
+              <span className="text-green-600">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </span>
+
+              <div className="flex-1">
+                <strong className="block font-medium text-gray-900">
+                  {" "}
+                  Signup Successful{" "}
+                </strong>
+
+                <p className="mt-1 text-sm text-gray-700">
+                  Your signup was successful.
+                </p>
+              </div>
+
+              <button
+                className="text-gray-500 transition hover:text-gray-600"
+                onClick={handleReroute}
+              >
+                <span className="sr-only">Dismiss popup</span>
+
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div
+            role="alert"
+            className={`rounded border-s-4 border-red-500 bg-red-50 p-4 fixed bottom-10 sm:left-10 transition-transform transform duration-300 ${
+              errorSignup ? "translate-x-0" : "-translate-x-[500px]"
+            }`}
+          >
+            <strong className="block font-medium text-red-800">
+              Something went wrong
+            </strong>
+            <p className="mt-2 text-sm text-red-700">
+              Please make sure that the two passwords match!
+            </p>
+          </div>
+
+          <div
+            role="alert"
+            className={`rounded border-s-4 border-red-500 bg-red-50 p-4 fixed bottom-10 sm:left-10 transition-transform transform duration-300 ${
+              emailExists ? "translate-x-0" : "-translate-x-[500px]"
+            }`}
+          >
+            <strong className="block font-medium text-red-800">
+              Something went wrong
+            </strong>
+            <p className="mt-2 text-sm text-red-700">
+              An account with that email already exists!
+            </p>
+          </div>
+
           <section className="bg-white">
             <div className="lg:grid lg:grid-cols-8  ">
               <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-8 lg:px-16 lg:py-12 xl:col-span-8 ">
                 <div className="max-w-2xl lg:max-w-3xl">
                   <div className="relative -mt-16 block lg:hidden">
                     <a
-                      className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-blue-600 sm:h-20 sm:w-20"
+                      className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-teal-600 sm:h-20 sm:w-20"
                       href="/"
                     >
                       <span className="sr-only">Home</span>
@@ -340,24 +461,22 @@ const tech_signup = () => {
                         </div>
 
                         <div className="mt-4">
-                        <label
-                          htmlFor="PasswordConfirmation"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Password Confirmation
-                        </label>
+                          <label
+                            htmlFor="PasswordConfirmation"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Password Confirmation
+                          </label>
 
-                        <input
-                          type="password"
-                          id="CompanyPasswordConfirmation"
-                          name="confirm_password"
-                          onChange={handleCompanyChange}
-                          className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
-                        />
+                          <input
+                            type="password"
+                            id="CompanyPasswordConfirmation"
+                            name="confirm_password"
+                            onChange={handleCompanyChange}
+                            className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
+                          />
+                        </div>
                       </div>
-                      </div>
-
-                      
 
                       <div className="col-span-6">
                         <label htmlFor="MarketingAccept" className="flex gap-4">
@@ -380,11 +499,19 @@ const tech_signup = () => {
                       <div className="col-span-6">
                         <p className="text-sm text-gray-500">
                           By creating an account, you agree to our
-                          <a href="/homepage/subscription_terms" target="_blank" className="text-gray-700 underline mx-1">
+                          <a
+                            href="/homepage/subscription_terms"
+                            target="_blank"
+                            className="text-gray-700 underline mx-1"
+                          >
                             terms and conditions
                           </a>
                           and
-                          <a href="/homepage/privacy" target="_blank" className="text-gray-700 underline mx-1">
+                          <a
+                            href="/homepage/privacy"
+                            target="_blank"
+                            className="text-gray-700 underline mx-1"
+                          >
                             privacy policy
                           </a>
                           .
@@ -392,13 +519,16 @@ const tech_signup = () => {
                       </div>
 
                       <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                        <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
+                        <button className="inline-block shrink-0 rounded-md border border-teal-600 bg-teal-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-teal-600 focus:outline-none focus:ring active:text-teal-500">
                           Create an account
                         </button>
 
                         <p className="mt-4 text-sm text-gray-500 sm:mt-0">
                           Already have an account?
-                          <Link href="/homepage/login" className="text-gray-700 underline mx-1">
+                          <Link
+                            href="/homepage/login"
+                            className="text-gray-700 underline mx-1"
+                          >
                             Log in
                           </Link>
                           .
@@ -539,14 +669,22 @@ const tech_signup = () => {
                         <p className="text-sm text-gray-500">
                           By creating an account, you agree to our{" "}
                           <span className="mx-2">
-                            <a href="/homepage/talent_terms" target="_blank" className="text-gray-700 underline">
+                            <a
+                              href="/homepage/talent_terms"
+                              target="_blank"
+                              className="text-gray-700 underline"
+                            >
                               terms and conditions
                             </a>{" "}
                           </span>
                           and{" "}
                           <span className="mx-2">
                             {" "}
-                            <a href="/homepage/privacy" target="_blank" className="text-gray-700 underline">
+                            <a
+                              href="/homepage/privacy"
+                              target="_blank"
+                              className="text-gray-700 underline"
+                            >
                               privacy policy
                             </a>
                           </span>
@@ -556,7 +694,7 @@ const tech_signup = () => {
 
                       <div className="col-span-4 sm:flex sm:items-center sm:gap-4">
                         <button
-                          className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+                          className="inline-block shrink-0 rounded-md border border-teal-600 bg-teal-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-teal-600 focus:outline-none focus:ring active:text-teal-500"
                           disabled={!validateForm() || buttonClicked}
                         >
                           Create an account
@@ -708,14 +846,22 @@ const tech_signup = () => {
                         <p className="text-sm text-gray-500">
                           By creating an account, you agree to our{" "}
                           <span className="mx-1">
-                            <a href="/homepage/talent_terms" target="_blank" className="text-gray-700 underline">
+                            <a
+                              href="/homepage/talent_terms"
+                              target="_blank"
+                              className="text-gray-700 underline"
+                            >
                               terms and conditions
                             </a>{" "}
                           </span>
                           and{" "}
                           <span className="mx-1">
                             {" "}
-                            <a href="/homepage/privacy" target="_blank" className="text-gray-700 underline">
+                            <a
+                              href="/homepage/privacy"
+                              target="_blank"
+                              className="text-gray-700 underline"
+                            >
                               privacy policy
                             </a>
                           </span>
@@ -725,20 +871,22 @@ const tech_signup = () => {
 
                       <div className="col-span-4 sm:flex sm:items-center sm:gap-4">
                         <button
-                          className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+                          className="inline-block shrink-0 rounded-md border border-teal-600 bg-teal-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-teal-600 focus:outline-none focus:ring active:text-teal-500"
                           disabled={!validateForm() || buttonClicked}
                         >
                           Create an account
                         </button>
 
                         <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-                          Already have an account? <span className="mx-1"><Link
-                            href="/homepage/login"
-                            className="text-gray-700 underline"
-                          >
-                            Log in
-                          </Link></span>
-                          
+                          Already have an account?{" "}
+                          <span className="mx-1">
+                            <Link
+                              href="/homepage/login"
+                              className="text-gray-700 underline"
+                            >
+                              Log in
+                            </Link>
+                          </span>
                           .
                         </p>
                       </div>

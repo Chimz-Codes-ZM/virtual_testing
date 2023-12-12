@@ -8,7 +8,6 @@ import jwt_decode from "jwt-decode";
 
 import Resume_component from "../components/cv/Resume_component";
 
-
 import { JellyTriangle } from "@uiball/loaders";
 
 
@@ -147,11 +146,11 @@ const { id } = router.query;
 export default MemberInfo;
 
 export async function getStaticPaths() {
-  const response = await fetch('https://baobabpad-334a8864da0e.herokuapp.com/village/ids/');
+  const response = await fetch('https://baobabpad-334a8864da0e.herokuapp.com/village/talent_ids/');
   
   if (!response.ok) {
     console.error('Failed to fetch data');
-    return { paths: [], fallback: false };
+    return { paths: [], fallback: true };
   }
 
   const data = await response.json();
@@ -168,7 +167,7 @@ export async function getStaticPaths() {
 
   return {
     paths: paths,
-    fallback: false
+    fallback: true
   };
 }
  

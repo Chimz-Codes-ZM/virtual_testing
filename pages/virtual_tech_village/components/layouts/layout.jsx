@@ -287,7 +287,7 @@ const Layout = ({ children, sideHighlight }) => {
             </div>
           </div>
         </nav>
-        <nav className="fixed bg-white top-0 left-0 w-full h-16 px-14 gap-4 flex justify-end items-center z-[99] bg-opacity-25 backdrop-blur border-none">
+        <nav className="fixed bg-slate-200 top-0 left-0 w-full h-12 px-14 gap-4 flex justify-end items-center z-[99] bg-opacity-25 backdrop-blur border-none">
           <div className="relative flex flex-col justify-center items-center">
             <AiOutlineBell
               className={`text-lg cursor-pointer ${
@@ -391,7 +391,7 @@ const Layout = ({ children, sideHighlight }) => {
           </Link>
         </nav>
         <div className="w-full h-screen overflow-y-scroll px-4 overflow-x-hidden">
-          <div className="w-full h-max flex flex-col gap-5 pt-16">
+          <div className="w-full h-full flex flex-col gap-5">
             {children}
           </div>
         </div>

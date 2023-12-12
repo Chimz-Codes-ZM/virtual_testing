@@ -47,7 +47,7 @@ const connect = () => {
   return (
     <>
       <Layout sideHighlight="connect">
-        <div className="flex custom-height relative">
+        <div className="flex h-screen relative">
           <Channels addChannel={addChannel} setAddChannel={setAddChannel} />
           <div className="grow h-full text-lg font-semibold md:flex flex-col justify-center items-center text-gray-600 opacity-50 gap-4 hidden">
             <div className="relative h-40 w-40">

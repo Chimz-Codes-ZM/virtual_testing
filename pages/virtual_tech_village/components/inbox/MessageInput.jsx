@@ -2,8 +2,6 @@ import React, {
   useState,
   useEffect,
   useRef,
-  useContext,
-  useCallback,
 } from "react";
 import { AiOutlineSend, AiOutlinePaperClip } from "react-icons/ai";
 import useWebSocket, { ReadyState } from "react-use-websocket";

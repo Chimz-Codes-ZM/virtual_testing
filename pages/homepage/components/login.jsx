@@ -7,17 +7,20 @@ import { useRouter } from "next/router";
 import Tech2 from "../../../public/assets/login_hero.webp";
 import jwt_decode from "jwt-decode";
 
+import { MdEmail } from "react-icons/md";
+import { TbPasswordFingerprint } from "react-icons/tb";
+
 import { setUserData, fetchUserData } from "@/features/user/UserSlice";
 import { useDispatch } from "react-redux";
 
 function Login() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [email_, setEmail] = useState("");
   const [password_, setPassword] = useState("");
 
   const [isRattling, setIsRattling] = useState(false);
 
-  const [loginError, setLoginError] = useState(null);
+  const [loginError, setLoginError] = useState(false);
   const handleLoginError = () => {
     setLoginError(true);
     setIsRattling(true);
@@ -53,7 +56,6 @@ function Login() {
   const onChange = (e) => {
     setLoginError(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(formData);
   };
 
   const onSubmit = async (e) => {
@@ -95,21 +97,18 @@ function Login() {
       );
 
       if (response.ok) {
-        // console.log(response.text());
-
         const responseData = await response.text();
 
-       if (
+        if (
           responseData === `"village profile"` ||
           responseData === `"village admin profile"` ||
-          responseData === `"community manager"`||
+          responseData === `"community manager"` ||
           responseData === `"village company profile"` ||
           responseData === `"Intern"`
         ) {
+          dispatch(setUserData(response.data));
 
-          dispatch(setUserData(response.data))
-
-          dispatch(fetchUserData(decodedToken.user_id))
+          dispatch(fetchUserData(decodedToken.user_id));
           router.push("/virtual_tech_village");
         }
       } else {
@@ -118,20 +117,17 @@ function Login() {
     }
   };
 
-
-
   return (
     <div className="flex items-center justify-center h-screen relative">
       {loginError && (
         <div
           role="alert"
-          className={`rounded border-s-4 border-red-500 bg-red-50 p-4 fixed bottom-10 sm:left-10 z-50 max-w-[450px] ${
+          className={`rounded border-s-4 border-red-500 bg-red-50 p-4 fixed bottom-10 sm:left-10 z-50 max-w-[450px] transform transition-transform duration-300 delay-150 ${
             isRattling ? "animate-rattle" : ""
-          }`}
+          } ${loginError ? "translate-x-0" : "-translate-x-full"}`}
         >
           <strong className="block font-medium text-red-800">
-            {" "}
-            Something went wrong{" "}
+            Something went wrong
           </strong>
 
           <p className="mt-2 text-sm text-red-700">
@@ -139,6 +135,7 @@ function Login() {
           </p>
         </div>
       )}
+
       <div className="w-1/2 h-full rounded-l-xl overflow-hidden hidden relative md:flex items-center justify-center">
         <Image
           src={Tech2}
@@ -159,7 +156,7 @@ function Login() {
         >
           <h1 className="text-center text-2xl pb-4">Login</h1>
 
-          <div className="relative">
+          {/* <div className="relative border-none">
             <input
               id="username"
               type="email"
@@ -180,11 +177,34 @@ function Login() {
                   : "-top-0 text-sm"
               } transition-all duration-300`}
             >
+            <MdEmail />
+              Email
+            </label>
+          </div> */}
+
+          <div class="relative">
+            <span class="absolute start-0 bottom-3 text-gray-500 dark:text-gray-400">
+              <MdEmail />
+            </span>
+            <input
+              type="text"
+              id="username"
+              class="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-teal-600 focus:outline-none focus:ring-0 focus:border-teal-600 peer"
+              placeholder=" "
+              onChange={onChange}
+              value={username}
+              required
+              name="username"
+            />
+            <label
+              for="username"
+              class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-teal-700 peer-focus:dark:text-teal-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+            >
               Email
             </label>
           </div>
 
-          <div className="relative">
+          {/* <div className="relative">
             <input
               type="password"
               id="password"
@@ -205,6 +225,28 @@ function Login() {
                   ? "text-teal-700 text-xs -top-3"
                   : "-top-0 text-sm"
               } transition-all duration-300`}
+            >
+              Password
+            </label>
+          </div> */}
+
+          <div class="relative">
+            <span class="absolute start-0 bottom-3 text-gray-500 dark:text-gray-400">
+            <TbPasswordFingerprint />
+            </span>
+            <input
+               type="password"
+               id="password"
+              class="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              name="password"
+              onChange={onChange}
+              value={password}
+              required
+            />
+            <label
+              for="floating-phone-number"
+              class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >
               Password
             </label>

@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useLayoutEffect } from "react";
 import { useRouter } from "next/router";
 
-import Layout from "../../components/layouts/layout"
-import Resume_component from "../../components/cv/Resume_component";
-
-import { JellyTriangle } from "@uiball/loaders";
-
-
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+
+import Layout from "../../../components/layouts/layout"
+import Resume_component from '@/pages/virtual_tech_village/components/cv/Resume_component'
+
+import { JellyTriangle } from "@uiball/loaders";
 
 const CV = ({member}) => {
 

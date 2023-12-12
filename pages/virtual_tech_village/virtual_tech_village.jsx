@@ -11,6 +11,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 import Complete_Profile from "../virtual_tech_village/components/alerts/completeProfile";
+import Unapproved from "./components/alerts/unapproved";
 import MemberProfile from "./components/profiles/MemberProfile";
 import ExpandedProfileModal from "./components/profiles/ExpandedProfileModal";
 import JobAdded from "./components/alerts/jobAdded";
@@ -325,6 +326,11 @@ const Virtual_Tech_Village = () => {
     router.push("/virtual_tech_village/complete_company_profile");
   };
 
+  const unapprovedProfile = () => {
+    router.push("/")
+    localStorage.removeItem("token")
+  }
+
   const handlePageFetch = (number) => {
     setMemberList(null);
 
@@ -567,6 +573,48 @@ const Virtual_Tech_Village = () => {
     );
   }
 
+  if (
+    memberList?.user[0].is_approved === "False" &&
+    memberList?.user[0].account_type === "Intern"
+  ) {
+    return (
+      <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+        <Unapproved
+          message="Please note that your access to the platform is pending approval. Our team is working diligently to process your profile. You'll receive an email once it's approved."
+          alertDismiss={unapprovedProfile}
+        />
+      </div>
+    );
+  }
+
+  if (
+    memberList?.user[0].is_approved === "False" &&
+    memberList?.user[0].account_type === "village talent profile"
+  ) {
+    return (
+      <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+        <Unapproved
+          message="Please note that your access to the platform is pending approval. Our team is working diligently to process your profile. You'll receive an email once it's approved."
+          alertDismiss={unapprovedProfile}
+        />
+      </div>
+    );
+  }
+
+  if (
+    memberList?.user[0].is_approved === "False" &&
+    memberList?.user[0].account_type === "village company profile"
+  ) {
+    return (
+      <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+        <Unapproved
+          message="Please note that your access to the platform is pending approval. Our team is working diligently to process your profile. You'll receive an email once it's approved."
+          alertDismiss={unapprovedProfile}
+        />
+      </div>
+    );
+  }
+
   const filteredData = individuals?.filter((profile) => {
     const countryFilter = filters.country
       ? profile.country === filters.country
@@ -770,7 +818,7 @@ const Virtual_Tech_Village = () => {
         )}
       </div>
 
-      <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2 relative w-full px-4 bg-white">
+      <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2 relative w-full p-4 bg-white">
         <div className="flex flex-wrap gap-4">
           {((memberList &&
             memberList?.user[0]?.account_type === "village talent profile") ||
@@ -1012,8 +1060,8 @@ const Virtual_Tech_Village = () => {
           )}
           {memberShow && (
             <div className="flex w-full justify-center items-center gap-2">
-              {talentPages.map((pageNumber) => (
-                <div className="flex gap-2" key={pageNumber}>
+              {talentPages.map((pageNumber, index) => (
+                <div className="flex gap-2" key={index}>
                   <button
                     onClick={() => handlePageFetch(pageNumber)}
                     className={`inline-block rounded-full border border-black p-3 transition-colors delay-75 ${

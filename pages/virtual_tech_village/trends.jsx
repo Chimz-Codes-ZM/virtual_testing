@@ -327,7 +327,7 @@ const sharepad = () => {
                 </motion.div>
               )}
             </div>
-            <div className="relative h-[500px] overflow-hidden rounded-lg">
+            <div className="relative h-[250px] lg:h-[500px] overflow-hidden rounded-lg">
               <img
                 alt="Header Image"
                 className="object-cover w-full h-full"
@@ -343,7 +343,7 @@ const sharepad = () => {
                 <h1>Trends</h1>
               </div>
             </div>
-            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:p-6 ">
+            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-1 py-2 md:p-6 ">
               {trends.map((article) => (
                 <a
                   target="_blank"

@@ -618,7 +618,7 @@ const Virtual_internship = () => {
 
   return (
     <Layout sideHighlight="virtual internship">
-    <div className="flex flex-col gap-5 relative py-8" ref={parent}>
+    <div className="flex flex-col gap-5 relative pb-8" ref={parent}>
       <div className="relative" ref={memberStartRef}></div>
       <div>
         {addNewJobShow && (

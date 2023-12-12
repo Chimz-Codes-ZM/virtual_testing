@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const SharepadLayout = ({ children, title }) => {
   return (
-    <div className="w-full flex flex-col xl:flex-row gap-5">
+    <div className="w-full lg:h-screen overflow-y-hidden flex flex-col xl:flex-row gap-5 pt-12">
       <div className="w-30 gap-3 flex flex-col flex-shrink-0">
         <div className="w-full flex flex-col gap-2">
           {/* <h1 className="text-green-600">Virtual Tech Village</h1> */}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Profile_layout from "./Profile_layout";
+import Profile_layout from "./layouts/Profile_layout";
 import Layout from "./layouts/layout";
 import { FcPicture } from "react-icons/fc";
 import Link from "next/link";

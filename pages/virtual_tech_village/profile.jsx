@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./components/layouts/layout";
-import Profile_layout from "./components/Profile_layout";
+import Profile_layout from "./components/layouts/Profile_layout";
 import Resume_component from "./components/cv/Resume_component";
 import Company_profile from "./components/view_profiles/company_profile";
 import axios from "axios";

@@ -1,0 +1,16 @@
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import userReducer from "../features/user/UserSlice"
+import thunk from "redux-thunk";
+import internsReducer from "../features/applications/InternSlice"
+import talentReducer from "../features/applications/TalentSlice"
+
+const store = configureStore({
+  reducer: {
+    user: userReducer,
+    internApplications: internsReducer,
+    talentApplications: talentReducer
+  },
+  middleware: [thunk, ...getDefaultMiddleware()]
+});
+
+export default store;
