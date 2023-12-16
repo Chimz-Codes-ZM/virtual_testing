@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-
+import Skeleton from "../../admin/components/skeleton";
 import { BsPinAngle } from "react-icons/bs";
 
 import jwt_decode from "jwt-decode";
@@ -42,8 +42,10 @@ const MessageList = ({ selectedConversation, onConversationClick }) => {
   };
 
   return (
-    <div className="px-2 md:w-72 max-w-72 relative h-full">
-      <div>
+    <div className="h-full flex flex-col items-center pt-2 border-r w-full md:w-72 md:max-w-72">
+            <div className="pb-4 font-semibold text-lg text-teal-700">Conversations</div>
+
+      <div className="w-full">
         {conversations?.length > 0 ? (
           conversations.map((convo) => (
             <div>
@@ -72,7 +74,7 @@ const MessageList = ({ selectedConversation, onConversationClick }) => {
             </div>
           ))
         ) : (
-          <p>No conversations available.</p>
+          <Skeleton />
         )}
       </div>
 

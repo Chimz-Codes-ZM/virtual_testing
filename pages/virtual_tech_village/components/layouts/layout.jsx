@@ -2,11 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import Head from "next/head";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import axios from "axios";
-import useSWR from "swr";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { resetUser } from "@/features/user/UserSlice";
 
 import jwt_decode from "jwt-decode";
 
@@ -31,6 +29,12 @@ const Layout = ({ children, sideHighlight }) => {
   const router = useRouter();
   const notificationRef = useRef();
 
+  const dispatch = useDispatch()
+
+  const removeUser = () => {
+    dispatch(resetUser())
+  }
+
   const handleClickOutsideNotification = (event) => {
     if (
       notificationRef.current &&
@@ -50,7 +54,12 @@ const Layout = ({ children, sideHighlight }) => {
   const logoutHandler = () => {
     localStorage.removeItem("token");
     router.push("/");
+    setTimeout(() => {
+      removeUser()
+    }, 2000)
   };
+
+
 
   const user = useSelector((state) => {
     if (state.user?.userData && state.user.userData.length > 0) {
@@ -390,8 +399,8 @@ const Layout = ({ children, sideHighlight }) => {
             </div>
           </Link>
         </nav>
-        <div className="w-full h-screen overflow-y-scroll px-4 overflow-x-hidden">
-          <div className="w-full h-full flex flex-col gap-5">
+        <div className="w-full h-screen overflow-y-scroll px-4 overflow-x-hidden scrollbar">
+          <div className="w-full h-full flex flex-col gap-5 scrollbar">
             {children}
           </div>
         </div>

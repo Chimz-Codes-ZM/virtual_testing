@@ -1,17 +1,18 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import Layout from "../../components/layouts/layout";
-import Head from "next/head";
 import Inbox from "../../components/inbox/inbox";
+import Image from "next/image";
 import MessageInput from "../../components/inbox/MessageInput";
 import { useRouter } from "next/router";
 import { JellyTriangle } from "@uiball/loaders";
 import jwt_decode from "jwt-decode";
 import MessageList from "../../components/inbox/MessageList";
-import ConversationList from "../../components/inbox/conversationList";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Toolbar from "../../components/inbox/Toolbar";
 import { AiOutlineSend } from "react-icons/ai";
 import axios from "axios";
+
+import { useSelector } from "react-redux";
 
 const Index = () => {
   const [info, setInfo] = useState(null);
@@ -45,14 +46,19 @@ const Index = () => {
 
   // WEBSOCKET CONNECTION
 
+  const email = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0].email
+    } else {
+      return null
+    }
+  })
+
   const uniqueRoom = `_${id}`;
   const userId =
     userData && userData.length > 0 ? `${userData[0].user_id}` : "";
 
-
-
   useEffect(() => {
-
     const token = localStorage.getItem("token");
 
     const decodedToken = jwt_decode(token);
@@ -95,7 +101,7 @@ const Index = () => {
         switch (data.type) {
           case "chat_message_echo":
             setMessageHistory((prev) => [...prev, data.message]);
-            console.log("This is the recently sent message: ", data.message)
+            console.log("This is the recently sent message: ", data.message);
             break;
 
           case "last_50_messages":
@@ -170,13 +176,15 @@ const Index = () => {
     fetchInfo();
   }, [id]);
 
+  
+
   useEffect(() => {
     router.events.on("routeChangeComplete", () => {});
   }, [router]);
 
   useEffect(() => {
     scrollToBottom();
-    console.log(info);
+    console.log(messageHistory);
   }, [messageHistory]);
 
   const connectionStatus = {
@@ -226,14 +234,36 @@ const Index = () => {
                             key={index}
                             className="flex flex-col gap-2 w-full"
                           >
-                            {message.from_user?.email === userData[0].email && (
+                            {message.from_user?.email === email && (
                               <div className="self-end  p-1 px-3 rounded-lg bg-slate-800 text-white">
                                 {message.content}
                               </div>
                             )}
-                            {message.from_user?.email !== userData[0].email && (
-                              <div className="p-1 px-3 rounded-lg bg-white text-gray-800 shadow justify-start self-start">
-                                {message.content}
+                            {message.from_user?.email !== email && (
+                              <div>
+                                <div className="flex items-start gap-2.5">
+                                  <Image
+                                    className="w-8 h-8 rounded-full"
+                                    src="/docs/images/people/profile-picture-3.jpg"
+                                    alt="Jese image"
+                                  />
+                                  <div className="flex flex-col w-full max-w-[320px] leading-1.5">
+                                    <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                                      <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                                        Bonnie Green
+                                      </span>
+                                      <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                                        11:46
+                                      </span>
+                                    </div>
+                                    <p className="text-sm font-normal py-2 text-gray-900 dark:text-white">
+                                      {message.content}
+                                    </p>
+                                    <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                                      Delivered
+                                    </span>
+                                  </div>
+                                </div>
                               </div>
                             )}
                           </div>

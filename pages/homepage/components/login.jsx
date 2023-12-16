@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import Login_hero from "../../../public/assets/Login_hero.jpg";
+import { signIn, getSession, getProviders, useSession } from "next-auth/react";
 import Baobab_logo from "../../../public/logo.png";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Tech2 from "../../../public/assets/login_hero.webp";
-import jwt_decode from "jwt-decode";
 
 import { MdEmail } from "react-icons/md";
 import { TbPasswordFingerprint } from "react-icons/tb";
+import jwt_decode from "jwt-decode";
+import axios from "axios";
 
 import { setUserData, fetchUserData } from "@/features/user/UserSlice";
 import { useDispatch } from "react-redux";
 
 function Login() {
   const dispatch = useDispatch();
-  const [email_, setEmail] = useState("");
-  const [password_, setPassword] = useState("");
+  const router = useRouter();
 
   const [isRattling, setIsRattling] = useState(false);
 
@@ -30,26 +30,35 @@ function Login() {
     }, 1000);
   };
 
-  const handleFocus = (e) => {
-    setFocusedInput(e.target.name);
-  };
-
-  const handleBlur = (e) => {
-    if (!e.target.value) {
-      setFocusedInput("");
-    }
-  };
-
-  const [focusedInput, setFocusedInput] = useState("");
-
-  //redux login state
-
-  const router = useRouter();
-
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+
+  const authenticatedUser = async () => {
+    try {
+      const session = getSession();
+      const decodedToken = jwt_decode(session.accessToken);
+      const id = decodedToken.user_id;
+
+      const response = await axios.post(
+        `https://baobabpad-334a8864da0e.herokuapp.com/api/user_type/${id}/`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        dispatch(setUserData(response.data));
+
+        dispatch(fetchUserData(decodedToken.user_id));
+      }
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
 
   const { username, password } = formData;
 
@@ -61,59 +70,17 @@ function Login() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    // const response = await fetch("http://127.0.0.1:8000/api/token/", {
-    const response = await fetch(
-      "https://baobabpad-334a8864da0e.herokuapp.com/api/token/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: formData.username,
-          password: formData.password,
-        }),
-      }
-    );
+    try {
+      await signIn("credentials", {
+        callbackUrl: "/virtual_tech_village",
+        email: formData.username,
+        password: formData.password,
+      });
 
-    const data = await response.json();
-
-    if (response.ok) {
-      localStorage.setItem("token", data.access);
-
-      const token = data.access;
-      const decodedToken = jwt_decode(token);
-      const id = decodedToken.user_id;
-
-      // const response = await fetch(`http://127.0.0.1:8000/api/user_type/${id}/`, {
-      const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/api/user_type/${id}/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.ok) {
-        const responseData = await response.text();
-
-        if (
-          responseData === `"village profile"` ||
-          responseData === `"village admin profile"` ||
-          responseData === `"community manager"` ||
-          responseData === `"village company profile"` ||
-          responseData === `"Intern"`
-        ) {
-          dispatch(setUserData(response.data));
-
-          dispatch(fetchUserData(decodedToken.user_id));
-          router.push("/virtual_tech_village");
-        }
-      } else {
-        handleLoginError();
-      }
+     authenticatedUser()
+    } catch (error) {
+      console.error(error);
+      setLoginError(true);
     }
   };
 
@@ -156,40 +123,14 @@ function Login() {
         >
           <h1 className="text-center text-2xl pb-4">Login</h1>
 
-          {/* <div className="relative border-none">
-            <input
-              id="username"
-              type="email"
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              className="w-full border-b py-1 transition-colors focus:border-b-2 focus:border-teal-700 focus:outline-none peer"
-              name="username"
-              // placeholder='Username*'
-              onChange={onChange}
-              value={username}
-              required
-            />
-            <label
-              htmlFor="username"
-              className={`absolute left-0 cursor-text ${
-                username || focusedInput === "username"
-                  ? "text-teal-700 text-xs -top-3"
-                  : "-top-0 text-sm"
-              } transition-all duration-300`}
-            >
-            <MdEmail />
-              Email
-            </label>
-          </div> */}
-
-          <div class="relative">
-            <span class="absolute start-0 bottom-3 text-gray-500 dark:text-gray-400">
+          <div className="relative">
+            <span className="absolute start-0 bottom-3 text-gray-500 dark:text-gray-400">
               <MdEmail />
             </span>
             <input
               type="text"
               id="username"
-              class="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-teal-600 focus:outline-none focus:ring-0 focus:border-teal-600 peer"
+              className="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-teal-600 focus:outline-none focus:ring-0 focus:border-teal-600 peer"
               placeholder=" "
               onChange={onChange}
               value={username}
@@ -197,47 +138,21 @@ function Login() {
               name="username"
             />
             <label
-              for="username"
-              class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-teal-700 peer-focus:dark:text-teal-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+              htmlFor="username"
+              className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-teal-700 peer-focus:dark:text-teal-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >
               Email
             </label>
           </div>
 
-          {/* <div className="relative">
+          <div className="relative">
+            <span className="absolute start-0 bottom-3 text-gray-500 dark:text-gray-400">
+              <TbPasswordFingerprint />
+            </span>
             <input
               type="password"
               id="password"
-              // onChange={(e) => setPassword(e.target.value)}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              className="w-full border-b py-1 transition-colors focus:border-b-2 focus:border-teal-700 focus:outline-none peer"
-              // placeholder='Password'
-              name="password"
-              onChange={onChange}
-              value={password}
-              required
-            />
-            <label
-              htmlFor="password"
-              className={`absolute left-0 cursor-text ${
-                password || focusedInput === "password"
-                  ? "text-teal-700 text-xs -top-3"
-                  : "-top-0 text-sm"
-              } transition-all duration-300`}
-            >
-              Password
-            </label>
-          </div> */}
-
-          <div class="relative">
-            <span class="absolute start-0 bottom-3 text-gray-500 dark:text-gray-400">
-            <TbPasswordFingerprint />
-            </span>
-            <input
-               type="password"
-               id="password"
-              class="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              className="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               name="password"
               onChange={onChange}
@@ -245,8 +160,8 @@ function Login() {
               required
             />
             <label
-              for="floating-phone-number"
-              class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+              htmlFor="floating-phone-number"
+              className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
             >
               Password
             </label>

@@ -29,6 +29,8 @@ const userSlice = createSlice({
       state.userData = action.payload;
       state.isAuthenticated = true;
     },
+
+    resetUser: () => initialState
   },
 
   extraReducers: (builder) => {
@@ -39,5 +41,5 @@ const userSlice = createSlice({
   }
 });
 
-export const { setUserData } = userSlice.actions;
+export const { setUserData, resetUser } = userSlice.actions;
 export default userSlice.reducer;

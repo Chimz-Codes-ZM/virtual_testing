@@ -21,6 +21,7 @@ const Complete_profile = () => {
     country: "",
     city: "",
     link: "",
+    experience: ""
   });
 
   const [education, setEducation] = useState([
@@ -47,7 +48,7 @@ const Complete_profile = () => {
   };
 
   const [workHistory, setWorkHistory] = useState([
-    { position: "", company: "", from_year: "", to_year: "" },
+    { position: "", company: "", from_year: "", to_year: "", summary: "" },
   ]);
 
   const handleWorkHistoryChange = (index, field, value) => {
@@ -59,7 +60,7 @@ const Complete_profile = () => {
   const handleWorkHistoryAdd = () => {
     setWorkHistory([
       ...workHistory,
-      { position: "", company: "", from_year: "", to_year: "" },
+      { position: "", company: "", from_year: "", to_year: "", summary: "" },
     ]);
   };
 
@@ -169,15 +170,19 @@ const Complete_profile = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
-    setCompletedProfile({
-      ...completedProfile,
+  
+    setCompletedProfile((prevProfile) => ({
+      ...prevProfile,
       [name]: value,
+    }));
+  
+    // Now log the updated state using a callback
+    setCompletedProfile((updatedProfile) => {
+      console.log(updatedProfile);
+      return updatedProfile;
     });
-
-    console.log(completedProfile);
   };
-
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
     const decodedToken = jwt_decode(token);
@@ -439,7 +444,7 @@ const Complete_profile = () => {
               <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 ">
                   <label
-                    htmlFor="experience"
+                    htmlFor="country"
                     className="font-semibold sm:text-xl col-span-1 pb-1"
                   >
                     Country:
@@ -489,7 +494,7 @@ const Complete_profile = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 ">
                   <div className="col-span-1">
                     <label
-                      htmlFor="experience"
+                      htmlFor="Language"
                       className="font-semibold sm:text-xl"
                     >
                       Language{"('s)"}
@@ -730,6 +735,28 @@ const Complete_profile = () => {
                             }
                           />
                         </div>
+<div className=""></div>
+
+                        <div className="col-span-6 pr-4">
+                          <label className="block text-sm font-medium text-gray-600 mb-1">
+                            Job summary
+                          </label>
+                          <textarea
+                            name="summary"
+                            id="summary"
+                            rows="4"
+                            className="mt-2 w-full rounded-lg border p-1 border-gray-200 align-top shadow-sm sm:text-sm"
+
+                            value={work.summary}
+                            onChange={(e) =>
+                              handleWorkHistoryChange(
+                                index,
+                                "summary",
+                                e.target.value
+                              )
+                            }
+                          ></textarea>
+                        </div>
                         {index > 0 && (
                           <button
                             type="button"
@@ -753,7 +780,7 @@ const Complete_profile = () => {
 
                 <div className="sm:grid grid-cols-1 sm:grid-cols-3 flex flex-col w-full sm:px-10 pt-4 pb-4 ">
                   <label
-                    htmlFor="experience"
+                    htmlFor="position"
                     className="font-semibold sm:text-xl col-span-1"
                   >
                     Position:
@@ -784,17 +811,22 @@ const Complete_profile = () => {
                     Experience:
                   </label>
                   <div className="flex col-span-2 md:col-span-1">
-                    <input
-                      type="text"
-                      placeholder={
-                        profileData.experience
-                          ? profileData.experience
-                          : "e.g., 5 years"
-                      }
-                      className="border rounded p-1 w-full"
+  
+
+                    <select
                       name="experience"
+                      id="experience"
+                      required
                       onChange={handleInputChange}
-                    ></input>
+                      value={completedProfile.experience}
+                      className="border rounded p-1 w-full"
+                    >
+                      <option value="Junior" selected>Junior {"0 - 2 years"}</option>
+                      <option value="Mid level">
+                        Mid level {"3 - 5 years"}
+                      </option>
+                      <option value="Senior">Senior {"5+ years"}</option>
+                    </select>
                   </div>
                 </div>
 
