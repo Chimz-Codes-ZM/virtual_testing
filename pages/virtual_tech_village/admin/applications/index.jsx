@@ -96,31 +96,31 @@ const Index = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // const sendData = async () => {
-    //   setLoading(true);
-    //   const response = await fetch(
-    //     `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_approval/${user.user_id}/`,
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(sentData),
-    //     }
-    //   );
-    //   if (response.ok) {
-    //     console.log("Successful submission");
-    //     setLoading(false);
-    //     fetchData();
-    //   }
+    const sendData = async () => {
+      setLoading(true);
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_approval/${user.user_id}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(sentData),
+        }
+      );
+      if (response.ok) {
+        console.log("Successful submission");
+        setLoading(false);
+        fetchData();
+      }
 
-    //   if (response.status === 400) {
-    //     console.log("Error:", response.status);
-    //     setLoading(false);
-    //   }
-    // };
+      if (response.status === 400) {
+        console.log("Error:", response.status);
+        setLoading(false);
+      }
+    };
 
-    // sendData();
+    sendData();
 
     console.log(formattedData);
     dispatch(resetState());

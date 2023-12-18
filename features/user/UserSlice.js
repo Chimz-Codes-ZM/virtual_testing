@@ -36,6 +36,7 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchUserData.fulfilled, (state, action) => {
         state.userData = action.payload;
+        state.isAuthenticated = true;
         console.log("This is my userData fetched from redux toolkit")
     })
   }

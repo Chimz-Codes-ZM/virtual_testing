@@ -5,6 +5,7 @@ import Layout from "./components/layouts/layout";
 import SharepadLayout from "./components/layouts/sharepadLayout";
 import SidePanel from "./components/events/SidePanel";
 import { trends } from "../data";
+import JobAdded from "./components/alerts/jobAdded";
 
 import axios from "axios";
 import jwt_decode from "jwt-decode";
@@ -16,12 +17,12 @@ import { BsFillCalendar2EventFill } from "react-icons/bs";
 const sharepad = () => {
   const newEventRef = useRef();
   const selectedEventRef = useRef();
-  const [newEvent, setNewEvent] = useState({
-    event_name: "",
-    date_time: "",
-    host: "",
-    description: "",
-    image: null,
+  const [newPost, setNewPost] = useState({
+    title: "",
+    source: "",
+    date: "",
+    link: "",
+    image: "",
   });
 
   const [image, setImage] = useState(null);
@@ -30,7 +31,7 @@ const sharepad = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const [events, setEvents] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   const user = useSelector((state) => {
     if (state.user?.userData && state.user.userData.length > 0) {
@@ -47,8 +48,8 @@ const sharepad = () => {
   const handleEventChange = (e) => {
     const { name, value } = e.target;
 
-    setNewEvent({
-      ...newEvent,
+    setNewPost({
+      ...newPost,
       [name]: value,
     });
   };
@@ -72,29 +73,28 @@ const sharepad = () => {
   const handleEventSubmit = (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
 
-    for (const key of Object.keys(newEvent)) {
-      formData.append(key, newEvent[key]);
-    }
 
-    formData.append("image", imageRef.current);
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/events/109/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/trends/${user.user_id}/`,
         {
           method: "POST",
-          body: formData,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newPost),
         }
       );
       if (response.ok) {
         handleEventAlert();
         setAddEvent(false);
-        setNewEvent({
-          event_name: "",
-          date_time: "",
-          host: "",
-          description: "",
+        setNewPost({
+          title: "",
+          source: "",
+          date: "",
+          link: "",
+          image: ""
         });
       }
 
@@ -104,7 +104,6 @@ const sharepad = () => {
     };
 
     sendData();
-    console.log(formData);
   };
 
   const handleClickOutsideNewEvent = (event) => {
@@ -165,7 +164,7 @@ const sharepad = () => {
             {success && (
               <div className="rounded fixed bottom-10 sm:right-10 z-[999] max-w-[450px]">
                 <JobAdded
-                  message="New event added successfully"
+                  message="New post added successfully"
                   alertDismiss={handleEventDismiss}
                 />
               </div>
@@ -203,13 +202,7 @@ const sharepad = () => {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                     >
-                      {/* <New_Event
-                        onSubmit={handleEventSubmit}
-                        onChange={handleEventChange}
-                        imageChange={handleChange}
-                        value={newEvent}
-                        imageValue={image}
-                      /> */}
+            
 
                       <div className="p-6 bg-white border z-[50] rounded flex flex-col gap-2">
                         <div className="flex flex-col gap-4">
@@ -235,8 +228,8 @@ const sharepad = () => {
                             </label>
                             <input
                               type="text"
-                              name="event_name"
-                              value={newEvent.event_name}
+                              name="title"
+                              value={newPost.title}
                               className="border rounded px-1"
                               onChange={handleEventChange}
                             />
@@ -251,8 +244,8 @@ const sharepad = () => {
                             </label>
                             <input
                               type="text"
-                              name="host"
-                              value={newEvent.host}
+                              name="source"
+                              value={newPost.source}
                               className="border rounded px-1"
                               onChange={handleEventChange}
                               placeholder="e.g., TechCrunch"
@@ -268,8 +261,8 @@ const sharepad = () => {
                             </label>
                             <input
                               type="date"
-                              name="date_time"
-                              value={newEvent.date_time}
+                              name="date"
+                              value={newPost.date}
                               className="border rounded px-1"
                               onChange={handleEventChange}
                               placeholder="e.g., On-site"
@@ -289,8 +282,8 @@ const sharepad = () => {
                                 type="text"
                                 className="mt-2 w-full px-2 rounded-lg border-gray-200 align-top shadow-sm sm:text-sm"
                                 placeholder="Enter the link to the post..."
-                                name="description"
-                                value={newEvent.description}
+                                name="link"
+                                value={newPost.link}
                                 onChange={handleEventChange}
                               />
                             </div>
@@ -301,16 +294,16 @@ const sharepad = () => {
                               htmlFor="image"
                               className="text-sm font-medium"
                             >
-                              Cover Image
+                              Link to cover image
                             </label>
                             <input
-                              accept="image/*"
+                              
                               id="image"
                               type="text"
                               name="image"
-                              value={image}
+                              value={newPost.image}
                               className="border rounded px-1"
-                              onChange={handleChange}
+                              onChange={handleEventChange}
                               placeholder="link to the cover image"
                             />
                           </div>

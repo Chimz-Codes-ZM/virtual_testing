@@ -5,8 +5,7 @@ import { useRouter } from "next/router";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useSelector, useDispatch } from "react-redux";
 import { resetUser } from "@/features/user/UserSlice";
-
-import jwt_decode from "jwt-decode";
+import { signOut } from "next-auth/react";
 
 import Logo from "/public/logo.png";
 import { IoPeopleCircleOutline } from "react-icons/io5";
@@ -29,11 +28,11 @@ const Layout = ({ children, sideHighlight }) => {
   const router = useRouter();
   const notificationRef = useRef();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const removeUser = () => {
-    dispatch(resetUser())
-  }
+    dispatch(resetUser());
+  };
 
   const handleClickOutsideNotification = (event) => {
     if (
@@ -44,22 +43,13 @@ const Layout = ({ children, sideHighlight }) => {
     }
   };
 
-  function checkToken() {
-    if (!localStorage.getItem("token")) {
-      router.push("../homepage/login");
-      return;
-    }
-  }
 
   const logoutHandler = () => {
-    localStorage.removeItem("token");
-    router.push("/");
-    setTimeout(() => {
-      removeUser()
-    }, 2000)
+    signOut();
+    
+      dispatch(resetUser())
+  
   };
-
-
 
   const user = useSelector((state) => {
     if (state.user?.userData && state.user.userData.length > 0) {
@@ -70,7 +60,7 @@ const Layout = ({ children, sideHighlight }) => {
   });
 
   useEffect(() => {
-    checkToken();
+    // checkToken();
 
     document.addEventListener("mousedown", handleClickOutsideNotification);
 

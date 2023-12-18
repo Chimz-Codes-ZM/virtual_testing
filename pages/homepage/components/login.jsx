@@ -37,28 +37,20 @@ function Login() {
 
   const authenticatedUser = async () => {
     try {
-      const session = getSession();
-      const decodedToken = jwt_decode(session.accessToken);
-      const id = decodedToken.user_id;
-
-      const response = await axios.post(
-        `https://baobabpad-334a8864da0e.herokuapp.com/api/user_type/${id}/`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.ok) {
-        dispatch(setUserData(response.data));
-
-        dispatch(fetchUserData(decodedToken.user_id));
+      const session = await getSession();
+  
+      if (session && session.accessToken) {
+        const decodedToken = jwt_decode(session.accessToken);
+        const id = decodedToken.user_id;
+  
+        dispatch(setUserData(id));
+        await dispatch(fetchUserData(decodedToken.user_id));
       }
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
   };
+  
 
   const { username, password } = formData;
 
@@ -77,7 +69,7 @@ function Login() {
         password: formData.password,
       });
 
-     authenticatedUser()
+      await authenticatedUser()
     } catch (error) {
       console.error(error);
       setLoginError(true);
