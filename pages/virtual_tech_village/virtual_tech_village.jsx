@@ -877,7 +877,7 @@ const Virtual_Tech_Village = () => {
                 <select
                   name="country"
                   id="country"
-                  className="border-gray-900 bg-white border-2 h-7 rounded px-1 w-full"
+                  className="border-gray-900 bg-white border-2 rounded px-1 w-full"
                   onChange={(e) => handleInputChange(e)}
                   value={filters.country}
                 >
@@ -898,7 +898,7 @@ const Virtual_Tech_Village = () => {
                 <input
                   type="text"
                   placeholder="Search by name"
-                  className="border-gray-900 border-2 h-7 rounded px-1 w-full focus:outline-none"
+                  className="border-gray-900 border-2 rounded px-1 w-full focus:outline-none"
                   onChange={(e) => handleInputChange(e)}
                   name="name"
                   id="name"
@@ -910,7 +910,7 @@ const Virtual_Tech_Village = () => {
                 <select
                   name="skill"
                   id="skills"
-                  className="border-gray-900 border-2 h-7 bg-white rounded px-1 w-full"
+                  className="border-gray-900 border-2 bg-white rounded px-1 w-full"
                   onChange={(e) => handleInputChange(e)}
                   value={filters.skill}
                 >

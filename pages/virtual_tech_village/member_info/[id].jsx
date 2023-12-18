@@ -133,7 +133,7 @@ const { id } = router.query;
           soft_skills={member[0]?.soft_skills}
         />
         <div
-          className="p-1 px-2 rounded-lg border shadow-md w-fit cursor-pointer bg-black text-white fixed bottom-10 right-10"
+          className="p-1 px-1 rounded-lg border shadow-md w-fit cursor-pointer bg-black text-white fixed bottom-10 right-10"
           onClick={handleCVDownload}
         >
           Download CV
