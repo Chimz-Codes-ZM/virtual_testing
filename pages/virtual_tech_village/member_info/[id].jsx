@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useLayoutEffect } from "react";
 import Layout from "../components/layouts/layout";
+import { saveAs } from 'file-saver';
 
 import { useRouter } from "next/router";
 
@@ -53,11 +54,12 @@ const { id } = router.query;
     fetchInfo();
   }, []);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
+  const decodedToken = jwt_decode(token);
+  
+  useEffect(() => {
+
 
     async function fetchData() {
       try {
@@ -75,39 +77,27 @@ const { id } = router.query;
   }, []);
  
 
-  const handleCVDownload = (e) => {
-    // console.log(csrfToken)
+  const handleCVDownload = async (e) => {
     e.preventDefault();
-    const sendData = async () => {
-      const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/download_cv/${id}/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },  
-          credentials: 'include',
-          body: JSON.stringify({ profile_id: id }),
-        }
+  
+    try {
+      const response = await axios.get(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${decodedToken.user_id}/`,
+        { responseType: 'arraybuffer' }
       );
-      if (response.ok) {
-        const blob = await response.blob();
-
-        
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = 'zamanis.pdf';
-        link.click();
+  
+      if (response.status === 200) {
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        saveAs(blob, 'downloaded-file.txt');
+        console.log('CV Downloaded successfully');
+      } else {
+        console.error('Error:', response.status);
       }
-
-      if (response.status === 400) {
-        console.log("Error:", response.status);
-      }
-    };
-
-    sendData();
+    } catch (error) {
+      console.error('Error downloading CV:', error);
+    }
   };
-
+  
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center ">
@@ -132,12 +122,12 @@ const { id } = router.query;
           linkedin={member[0]?.link}
           soft_skills={member[0]?.soft_skills}
         />
-        <div
+        <a href={`https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${decodedToken.user_id}/`}
           className="p-1 px-1 rounded-lg border shadow-md w-fit cursor-pointer bg-black text-white fixed bottom-10 right-10"
-          onClick={handleCVDownload}
+          target="_blank"
         >
           Download CV
-        </div>
+        </a>
       </Layout>
     </>
   );

@@ -8,7 +8,7 @@ const SharepadLayout = ({ children, title }) => {
         <div className="w-full flex flex-col gap-2">
           {/* <h1 className="text-green-600">Virtual Tech Village</h1> */}
           <div className="w-full flex flex-col gap-2 pl-2">
-            <Link href="/virtual_tech_village/sharepad">
+            <Link href="/virtual_tech_village/trends">
               <h1
                 className={
                   title === "trends"

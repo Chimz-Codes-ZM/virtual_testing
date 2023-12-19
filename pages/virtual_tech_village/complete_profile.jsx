@@ -936,10 +936,10 @@ const Complete_profile = () => {
             </div>
 
             <div>
-              {/* <form onSubmit={handlePdfSubmit }>
+              <form onSubmit={handlePdfSubmit }>
                 <input type="file" accept=".pdf" onChange={handleFileChange} />
                 <button type="submit">Upload PDF</button>
-              </form> */}
+              </form>
             </div>
           </div>
         </div>

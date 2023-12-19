@@ -103,31 +103,8 @@ const Resume_component = ({
                     {/* <!-- Job Title 1 --> */}
                     <h4 class="mb-4 pt-2 font-semibold">{job.position}</h4>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Integer a imperdiet urna. Praesent eu posuere magna, in
-                      suscipit quam. Here is an example of an
-                      <a
-                        href="https://resumewind.com/"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        external link
-                      </a>
-                      .
+                      {job.summary}
                     </p>
-                    <p>
-                      Mauris ullamcorper neque in ultrices mollis. Sed justo
-                      eros, mollis sed odio id, finibus gravida enim. Aenean
-                      pharetra ante elit, sit amet accumsan felis suscipit
-                      vitae. Vestibulum ante ipsum primis.
-                    </p>
-                    <ul>
-                      <li>
-                        Cras in erat bibendum, rhoncus nisl ac, luctus tortor
-                      </li>
-                      <li>Vivamus volutpat nunc non quam dapibus</li>
-                      <li>Nulla molestie odio odio, ut congue dui</li>
-                    </ul>
                   </div>
                 </div>
               ))}
