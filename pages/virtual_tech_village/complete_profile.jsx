@@ -3,7 +3,6 @@ import Layout from "./components/layouts/layout";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
 import jwt_decode from "jwt-decode";
 
 import Success from "./components/alerts/success";
@@ -11,11 +10,20 @@ import Success from "./components/alerts/success";
 import { FcPicture } from "react-icons/fc";
 import { techPositions } from "../data";
 import { countries } from "../data";
+import { useSelector } from "react-redux";
 
 const Complete_profile = () => {
   const router = useRouter();
   const [profileData, setProfileData] = useState({});
   const [success, setSuccess] = useState(false);
+
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
+    }
+  });
 
   const [completedProfile, setCompletedProfile] = useState({
     country: "",
@@ -135,9 +143,6 @@ const Complete_profile = () => {
 
   const handleImageSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const decodedToken = jwt_decode(token);
-    const user_id = decodedToken.user_id;
 
     const imageData = new FormData();
     const file = e.target.files[0];
@@ -152,7 +157,7 @@ const Complete_profile = () => {
     imageData.append("file", file);
 
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user_id}/`,
+      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "PUT",
@@ -184,12 +189,8 @@ const Complete_profile = () => {
   };
   
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const decodedToken = jwt_decode(token);
-    const user_id = decodedToken.user_id;
-
     const profileData = fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user_id}/`,
+      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "GET",
@@ -214,7 +215,6 @@ const Complete_profile = () => {
     router.push("/virtual_tech_village");
     setSuccess(false);
   };
-  // const formInputs = [completedProfile, socialMedia, softSkills, language, workHistory, education]
   const formInputs = {
     completedProfile: completedProfile,
     softSkills: softSkills,
@@ -226,12 +226,9 @@ const Complete_profile = () => {
   const handleSubmit = async (e) => {
     console.log(formInputs);
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const decodedToken = jwt_decode(token);
-    const user_id = decodedToken.user_id;
-
+    
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user_id}/`,
+      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "POST",
@@ -256,7 +253,7 @@ const Complete_profile = () => {
     const user_id = decodedToken.user_id;
 
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user_id}/`,
+      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "POST",
@@ -297,7 +294,7 @@ const Complete_profile = () => {
 
     try {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${user_id}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${user.user_id}/`,
         {
           method: "POST",
           body: formData,
@@ -663,7 +660,7 @@ const Complete_profile = () => {
                   </div>
                   <div className="col-span-1 sm:col-span-5 w-full mx-auto p-6 px-2 bg-white">
                     {workHistory.map((work, index) => (
-                      <div
+                      <> <div
                         key={index}
                         className="flex mb-4 flex-col sm:flex-row"
                       >
@@ -735,9 +732,19 @@ const Complete_profile = () => {
                             }
                           />
                         </div>
-<div className=""></div>
 
-                        <div className="col-span-6 pr-4">
+                       
+                        {index > 0 && (
+                          <button
+                            type="button"
+                            className="text-red-500 hover:text-red-700 underline cursor-pointer"
+                            onClick={() => handleWorkHistoryRemove(index)}
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </div>
+                      <div className="col-span-6 pr-4">
                           <label className="block text-sm font-medium text-gray-600 mb-1">
                             Job summary
                           </label>
@@ -745,7 +752,7 @@ const Complete_profile = () => {
                             name="summary"
                             id="summary"
                             rows="4"
-                            className="mt-2 w-full rounded-lg border p-1 border-gray-200 align-top shadow-sm sm:text-sm"
+                            className="my-2 w-full rounded-lg border p-1 max-w-3xl border-gray-200 align-top shadow-sm sm:text-sm"
 
                             value={work.summary}
                             onChange={(e) =>
@@ -757,16 +764,9 @@ const Complete_profile = () => {
                             }
                           ></textarea>
                         </div>
-                        {index > 0 && (
-                          <button
-                            type="button"
-                            className="text-red-500 hover:text-red-700 underline cursor-pointer"
-                            onClick={() => handleWorkHistoryRemove(index)}
-                          >
-                            Remove
-                          </button>
-                        )}
-                      </div>
+                      </>
+                     
+                      
                     ))}
                     <button
                       type="button"

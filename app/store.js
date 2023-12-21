@@ -12,8 +12,6 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  serialize: (data) => JSON.stringify(data, null, 2),
-  deserialize: (data) => JSON.parse(data),
 };
 
 const reducer = combineReducers({
@@ -27,9 +25,7 @@ const persistedReducer = persistReducer(persistConfig, reducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: [thunk, ...getDefaultMiddleware({
-    serializableCheck: false
-  })]
+  middleware: [thunk]
 });
 
 export default store;

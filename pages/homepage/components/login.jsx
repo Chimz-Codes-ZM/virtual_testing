@@ -8,16 +8,8 @@ import Tech2 from "../../../public/assets/login_hero.webp";
 
 import { MdEmail } from "react-icons/md";
 import { TbPasswordFingerprint } from "react-icons/tb";
-import jwt_decode from "jwt-decode";
-import axios from "axios";
-
-import { setUserData, fetchUserData } from "@/features/user/UserSlice";
-import { useDispatch } from "react-redux";
 
 function Login() {
-  const dispatch = useDispatch();
-  const router = useRouter();
-
   const [isRattling, setIsRattling] = useState(false);
 
   const [loginError, setLoginError] = useState(false);
@@ -35,23 +27,6 @@ function Login() {
     password: "",
   });
 
-  const authenticatedUser = async () => {
-    try {
-      const session = await getSession();
-  
-      if (session && session.accessToken) {
-        const decodedToken = jwt_decode(session.accessToken);
-        const id = decodedToken.user_id;
-  
-        dispatch(setUserData(id));
-        await dispatch(fetchUserData(decodedToken.user_id));
-      }
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    }
-  };
-  
-
   const { username, password } = formData;
 
   const onChange = (e) => {
@@ -68,8 +43,6 @@ function Login() {
         email: formData.username,
         password: formData.password,
       });
-
-      await authenticatedUser()
     } catch (error) {
       console.error(error);
       setLoginError(true);
