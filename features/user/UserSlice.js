@@ -34,13 +34,14 @@ const userSlice = createSlice({
       state.isAuthenticated = true;
     },
 
-    resetUser: () => initialState
+    resetUser: () => initialState,
+
+    setUserId: (state, action) => {
+      state.user_id = action.payload;
+      console.log('This is my users id', action.payload)
+    },
   }, 
 
-  setUserId: (state, action) => {
-    state.user_id = action.payload;
-    console.log('This is my users id', action.payload)
-  },
 
   extraReducers: (builder) => {
     builder.addCase(fetchUserData.fulfilled, (state, action) => {

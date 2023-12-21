@@ -235,26 +235,26 @@ const Virtual_Tech_Village = () => {
 
   const { data: session } = useSession();
 
-  const authenticatedUser = () => {
-    try {
-      console.log("Session:", session);
+  // const authenticatedUser = () => {
+  //   try {
+  //     console.log("Session:", session);
   
-      if (session && session.access) {
-        const decodedToken = jwt_decode(session.access);
-        const id = decodedToken.user_id;
-        console.log(id);
-        login(id)
-        country_skills(id)
-        country_industries(id)
-        // dispatch(setUserId(id));
-        dispatch(fetchUserData(id));
+  //     if (session && session.access) {
+  //       const decodedToken = jwt_decode(session.access);
+  //       const id = decodedToken.user_id;
+  //       console.log(id);
+  //       login(id)
+  //       country_skills(id)
+  //       country_industries(id)
+  //       // dispatch(setUserId(id));
+  //       dispatch(fetchUserData(id));
   
-        setCurrentSessionId(id);
-      }
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    }
-  };
+  //       setCurrentSessionId(id);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data: ", error);
+  //   }
+  // };
   
 
   const scrollToTop = () => {
@@ -262,14 +262,29 @@ const Virtual_Tech_Village = () => {
   };
 
   useEffect(() => {
-    checkProfileComplete();
+    if(selectedCompanyAttributes) {
+       checkProfileComplete();
     scrollToTop();
+    }
+   
   }, [selectedCompanyAttributes]);
 
 
-  useEffect(() => {
-    authenticatedUser();
-  }, []);
+
+    useEffect(() => {
+      if (session && session.access) {
+        const decodedToken = jwt_decode(session.access);
+        const id = decodedToken.user_id;
+        console.log(id);
+        login(id);
+        country_skills(id);
+        country_industries(id);
+        dispatch(setUserId(id));
+        dispatch(fetchUserData(id));
+        setCurrentSessionId(id);
+      }
+    }, [session]);
+    
 
   const { companies, individuals } = memberList || {
     companies: [],
