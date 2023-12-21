@@ -217,7 +217,7 @@ const Virtual_internship = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/country_skills/${id}/`
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/intern_country_skills/${id}/`
         );
         setSelectedAttributes(response.data);
         // console.log(response.data);
@@ -832,7 +832,7 @@ const Virtual_internship = () => {
                 <select
                   name="skill"
                   id="skills"
-                  className="border-gray-900 border-2 bg-white rounded px-1 w-full"
+                  className="border-gray-900 border- bg-white rounded px-1 w-full"
                   onChange={(e) => handleInputChange(e)}
                   value={filters.skill}
                 >

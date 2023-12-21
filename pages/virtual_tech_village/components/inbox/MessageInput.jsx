@@ -74,7 +74,7 @@ const MessageInput = ({ roomName, userId }) => {
               style={{ cursor: "pointer" }}
               onClick={() => handleOpenMenu()}
             >
-              {/* {connectionStatus} */}
+              {connectionStatus}
               < AiOutlinePaperClip />
             </button>
           </div>

@@ -3,7 +3,6 @@ import Layout from "./components/layouts/layout";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
 import jwt_decode from "jwt-decode";
 
 import Success from "./components/alerts/success";
@@ -11,16 +10,26 @@ import Success from "./components/alerts/success";
 import { FcPicture } from "react-icons/fc";
 import { techPositions } from "../data";
 import { countries } from "../data";
+import { useSelector } from "react-redux";
 
 const Complete_profile = () => {
   const router = useRouter();
   const [profileData, setProfileData] = useState({});
   const [success, setSuccess] = useState(false);
 
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
+    }
+  });
+
   const [completedProfile, setCompletedProfile] = useState({
     country: "",
     city: "",
     link: "",
+    experience: ""
   });
 
   const [education, setEducation] = useState([
@@ -47,7 +56,7 @@ const Complete_profile = () => {
   };
 
   const [workHistory, setWorkHistory] = useState([
-    { position: "", company: "", from_year: "", to_year: "" },
+    { position: "", company: "", from_year: "", to_year: "", summary: "" },
   ]);
 
   const handleWorkHistoryChange = (index, field, value) => {
@@ -59,7 +68,7 @@ const Complete_profile = () => {
   const handleWorkHistoryAdd = () => {
     setWorkHistory([
       ...workHistory,
-      { position: "", company: "", from_year: "", to_year: "" },
+      { position: "", company: "", from_year: "", to_year: "", summary: "" },
     ]);
   };
 
@@ -134,9 +143,6 @@ const Complete_profile = () => {
 
   const handleImageSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const decodedToken = jwt_decode(token);
-    const user_id = decodedToken.user_id;
 
     const imageData = new FormData();
     const file = e.target.files[0];
@@ -151,7 +157,7 @@ const Complete_profile = () => {
     imageData.append("file", file);
 
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user_id}/`,
+      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "PUT",
@@ -169,22 +175,22 @@ const Complete_profile = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
-    setCompletedProfile({
-      ...completedProfile,
+  
+    setCompletedProfile((prevProfile) => ({
+      ...prevProfile,
       [name]: value,
+    }));
+  
+    // Now log the updated state using a callback
+    setCompletedProfile((updatedProfile) => {
+      console.log(updatedProfile);
+      return updatedProfile;
     });
-
-    console.log(completedProfile);
   };
-
+  
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const decodedToken = jwt_decode(token);
-    const user_id = decodedToken.user_id;
-
     const profileData = fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user_id}/`,
+      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "GET",
@@ -209,7 +215,6 @@ const Complete_profile = () => {
     router.push("/virtual_tech_village");
     setSuccess(false);
   };
-  // const formInputs = [completedProfile, socialMedia, softSkills, language, workHistory, education]
   const formInputs = {
     completedProfile: completedProfile,
     softSkills: softSkills,
@@ -221,12 +226,9 @@ const Complete_profile = () => {
   const handleSubmit = async (e) => {
     console.log(formInputs);
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const decodedToken = jwt_decode(token);
-    const user_id = decodedToken.user_id;
-
+    
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user_id}/`,
+      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "POST",
@@ -251,7 +253,7 @@ const Complete_profile = () => {
     const user_id = decodedToken.user_id;
 
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user_id}/`,
+      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "POST",
@@ -292,7 +294,7 @@ const Complete_profile = () => {
 
     try {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${user_id}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${user.user_id}/`,
         {
           method: "POST",
           body: formData,
@@ -439,7 +441,7 @@ const Complete_profile = () => {
               <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 ">
                   <label
-                    htmlFor="experience"
+                    htmlFor="country"
                     className="font-semibold sm:text-xl col-span-1 pb-1"
                   >
                     Country:
@@ -489,7 +491,7 @@ const Complete_profile = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 ">
                   <div className="col-span-1">
                     <label
-                      htmlFor="experience"
+                      htmlFor="Language"
                       className="font-semibold sm:text-xl"
                     >
                       Language{"('s)"}
@@ -658,7 +660,7 @@ const Complete_profile = () => {
                   </div>
                   <div className="col-span-1 sm:col-span-5 w-full mx-auto p-6 px-2 bg-white">
                     {workHistory.map((work, index) => (
-                      <div
+                      <> <div
                         key={index}
                         className="flex mb-4 flex-col sm:flex-row"
                       >
@@ -730,6 +732,8 @@ const Complete_profile = () => {
                             }
                           />
                         </div>
+
+                       
                         {index > 0 && (
                           <button
                             type="button"
@@ -740,6 +744,29 @@ const Complete_profile = () => {
                           </button>
                         )}
                       </div>
+                      <div className="col-span-6 pr-4">
+                          <label className="block text-sm font-medium text-gray-600 mb-1">
+                            Job summary
+                          </label>
+                          <textarea
+                            name="summary"
+                            id="summary"
+                            rows="4"
+                            className="my-2 w-full rounded-lg border p-1 max-w-3xl border-gray-200 align-top shadow-sm sm:text-sm"
+
+                            value={work.summary}
+                            onChange={(e) =>
+                              handleWorkHistoryChange(
+                                index,
+                                "summary",
+                                e.target.value
+                              )
+                            }
+                          ></textarea>
+                        </div>
+                      </>
+                     
+                      
                     ))}
                     <button
                       type="button"
@@ -753,7 +780,7 @@ const Complete_profile = () => {
 
                 <div className="sm:grid grid-cols-1 sm:grid-cols-3 flex flex-col w-full sm:px-10 pt-4 pb-4 ">
                   <label
-                    htmlFor="experience"
+                    htmlFor="position"
                     className="font-semibold sm:text-xl col-span-1"
                   >
                     Position:
@@ -784,17 +811,22 @@ const Complete_profile = () => {
                     Experience:
                   </label>
                   <div className="flex col-span-2 md:col-span-1">
-                    <input
-                      type="text"
-                      placeholder={
-                        profileData.experience
-                          ? profileData.experience
-                          : "e.g., 5 years"
-                      }
-                      className="border rounded p-1 w-full"
+  
+
+                    <select
                       name="experience"
+                      id="experience"
+                      required
                       onChange={handleInputChange}
-                    ></input>
+                      value={completedProfile.experience}
+                      className="border rounded p-1 w-full"
+                    >
+                      <option value="Junior" selected>Junior {"0 - 2 years"}</option>
+                      <option value="Mid level">
+                        Mid level {"3 - 5 years"}
+                      </option>
+                      <option value="Senior">Senior {"5+ years"}</option>
+                    </select>
                   </div>
                 </div>
 

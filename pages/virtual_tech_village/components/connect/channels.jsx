@@ -4,6 +4,7 @@ import Christina_2 from "/public/placeholders/Christina_2.webp";
 import axios from "axios";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import Skeleton from "../../admin/components/skeleton";
 
 import { MdGroupRemove } from "react-icons/md";
 
@@ -28,8 +29,7 @@ const Channels = ({ addChannel, setAddChannel }) => {
         const response = await axios.get(
           `https://baobabpad-334a8864da0e.herokuapp.com/village/channel_list/${user.user_id}/`
         );
-        setConversations(response.data);
-        console.log(response.data);
+        setConversations(response.data)
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -44,7 +44,7 @@ const Channels = ({ addChannel, setAddChannel }) => {
 
       <div className="flex flex-col w-full h-full justify-between">
         <div>
-          {conversations.map((channel, index) => (
+{conversations.length > 0 ? (conversations.map((channel, index) => (
             <Link
               href={`/virtual_tech_village/connect_channel/${channel.channel_name}`}
               key={index}
@@ -67,7 +67,8 @@ const Channels = ({ addChannel, setAddChannel }) => {
                 <div className=" text-gray-500 font-light text-sm">+23</div>
               </div>
             </Link>
-          ))}
+          ))) : (<Skeleton />)}
+          
         </div>
 
         {user && user.account_type === "village admin profile" ? (

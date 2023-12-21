@@ -14,6 +14,7 @@ import {
   toggleApproved,
   toggleDenied,
   resetState,
+  setAccountType,
 } from "@/features/applications/TalentSlice";
 import Skeleton from "../components/skeleton";
 
@@ -23,9 +24,25 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const state = useSelector((state) => state.talentApplications);
 
-  const sentData = [
-    { approved: state.approvedApplicants },
-    { denied: state.deniedApplicants },
+  const formattedData = [
+    {
+      approved: Object.keys(state.approvedApplicants).reduce((result, id) => {
+        result[id] = {
+          [id]: true,
+          account_type: state.approvedApplicants[id].account_type || null, // Use null instead of undefined
+        };
+        return result;
+      }, {}),
+    },
+    {
+      denied: Object.keys(state.deniedApplicants).reduce((result, id) => {
+        result[id] = {
+          [id]: true,
+          account_type: state.deniedApplicants[id].account_type || null,
+        };
+        return result;
+      }, {}),
+    },
   ];
 
   const user = useSelector((state) => {
@@ -54,6 +71,10 @@ const Index = () => {
 
   const handleDeniedChange = (applicantId) => {
     dispatch(toggleDenied({ applicantId }));
+  };
+
+  const handleAccountTypeChange = (applicantId, accountType) => {
+    dispatch(setAccountType({ applicantId, accountType }));
   };
 
   async function fetchData() {
@@ -101,7 +122,8 @@ const Index = () => {
 
     sendData();
 
-    console.log(sentData);
+    console.log(formattedData);
+    dispatch(resetState());
   };
 
   if (!info) {
@@ -151,7 +173,7 @@ const Index = () => {
       <Layout sideHighlight="Insight">
         <div className="w-full h-full relative flex flex-col gap-5 mt-16 overflow-x-hidden">
           <div
-            className="fixed bottom-16 right-16 bg-black text-white rounded-sm text-xl px-2 p-1 cursor-pointer"
+            className="fixed bottom-16 right-16 bg-gray-900 text-white rounded text-xl px-2 p-1 cursor-pointer transform transition hover:scale-105"
             onClick={handleSubmit}
           >
             Submit
@@ -204,6 +226,9 @@ const Index = () => {
                 </span>
                 <span className="text-sm font-bold text-gray-800 w-20">
                   Deny
+                </span>{" "}
+                <span className="text-sm font-bold text-gray-800 w-32">
+                  Account Type
                 </span>
               </div>
 
@@ -214,7 +239,7 @@ const Index = () => {
                 >
                   <Link
                     className="text-md text-gray-800 flex flex-grow gap-2"
-                    href={`/virtual_tech_village//admin/applications/${applicant.user_id}`}
+                    href={`/virtual_tech_village/admin/applications/${applicant.user_id}`}
                   >
                     <div className="relative w-6 h-6 rounded">
                       <Image
@@ -246,6 +271,32 @@ const Index = () => {
                       }
                       onChange={() => handleDeniedChange(applicant.user_id)}
                     />
+                  </span>{" "}
+                  <span className="text-md text-gray-800 flex w-32 gap-2 justify-center items-center">
+                    <select
+                      type="checkbox"
+                      className="border-2 rounded"
+                      name="account_type"
+                      id="account_type"
+                      value={
+                        state.approvedApplicants[applicant.user_id]
+                          ?.account_type || ""
+                      }
+                      onChange={(e) =>
+                        handleAccountTypeChange(
+                          applicant.user_id,
+                          e.target.value
+                        )
+                      }
+                    >
+                      <option value="" disabled>
+                        Account
+                      </option>
+                      <option selected value="talent">
+                        Talent
+                      </option>
+                      <option value="intern">Intern</option>
+                    </select>
                   </span>
                 </div>
               ))}

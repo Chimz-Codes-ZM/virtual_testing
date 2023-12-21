@@ -1,6 +1,8 @@
 import React from 'react'
+import { IoIosAlert } from "react-icons/io";
 
-const Unapproved = () => {
+
+const Unapproved = (props) => {
     return (
         <div className="z-[99] max-w-[500px]">
           <div

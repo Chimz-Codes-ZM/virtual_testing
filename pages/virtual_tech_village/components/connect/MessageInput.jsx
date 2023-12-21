@@ -78,7 +78,6 @@ import React, {
                 value={messageText}
                 onChange={(e) => setMessageText(e.target.value)}
               ></textarea>
-              {/* {connectionStatus} */}
               <button
                 className="absolute top-8 right-2 bg-gray-400 text-white p-1 rounded-full"
                 style={{ cursor: "pointer" }}

@@ -351,9 +351,9 @@ const Toolbar = ({
 
   return (
     <div className="absolute z-[2] sm:px-10 p-1 left-10 right-10 top-3 shadow border rounded bg-white">
-      <div className="relative w-full">
+      <div className="relative w-full h-8">
         <div className="flex gap-3">
-          <div className="h-8 w-8 rounded-full relative overflow-hidden">
+          {/* <div className="h-8 w-8 rounded-full relative overflow-hidden">
             <Image
               src={avatar}
               objectFit="cover"
@@ -362,9 +362,9 @@ const Toolbar = ({
               className=" transition-opacity opacity-0 duration-[1.2s]"
               alt="user"
             />
-          </div>
+          </div> */}
           <div className="flex items-center">
-            <h1 className=" text-sm ">{names}</h1>
+            <h1 className=" text-sm ">#{names}</h1>
           </div>
         </div>
         <div className=" absolute right-3 inset-y-0  rounded cursor-pointer">

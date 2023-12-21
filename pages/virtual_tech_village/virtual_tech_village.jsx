@@ -1,21 +1,22 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useContext,
-  useLayoutEffect,
-} from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { useSession, getSession } from "next-auth/react";
+import { useSelector, dispatch, useDispatch } from "react-redux";
+import {
+  resetUser,
+  fetchUserData,
+  setUserData,
+  setUserId,
+} from "@/features/user/UserSlice";
 
 import Complete_Profile from "../virtual_tech_village/components/alerts/completeProfile";
 import Unapproved from "./components/alerts/unapproved";
 import MemberProfile from "./components/profiles/MemberProfile";
 import ExpandedProfileModal from "./components/profiles/ExpandedProfileModal";
 import JobAdded from "./components/alerts/jobAdded";
-import New_job from "./components/forms/new_job";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { JellyTriangle } from "@uiball/loaders";
@@ -119,6 +120,8 @@ const ExpandedCompanyModal = ({
 };
 
 const Virtual_Tech_Village = () => {
+  const router = useRouter();
+
   const [memberShow, setMemberShow] = useState(true);
   const [companyShow, setCompanyShow] = useState(false);
   const [addNewJobShow, setAddNewJobShow] = useState(false);
@@ -137,7 +140,6 @@ const Virtual_Tech_Village = () => {
   const [success, setSuccess] = useState(false);
 
   const [talentPages, setTalentPages] = useState([]);
-  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [memberList, setMemberList] = useState(null);
   const [activePage, setActivePage] = useState(1);
@@ -154,20 +156,24 @@ const Virtual_Tech_Village = () => {
     company_name: "",
     company_industry: "",
   });
-  const [id, setId] = useState("");
+  const [currentSessionId, setCurrentSessionId] = useState(null);
 
-  const router = useRouter();
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
+    }
+  });
 
-  const login = () => {
-    const token = localStorage.getItem("token");
+  // const user_id = useSelector((state) => {
+  //   return state.user.user_id;
+  // });
 
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
+  const dispatch = useDispatch();
 
-    setUser(decodedToken);
-    setId(id);
-    // console.log(decodedToken);
-
+  const login = (id) => {
+    console.log("Login function called");
     const fetchData = async () => {
       const response = await fetch(
         `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${id}/`,
@@ -181,7 +187,7 @@ const Virtual_Tech_Village = () => {
       );
 
       const data = await response.json();
-
+      console.log("MEMBERLIST DATA:",data);
       const pages = Array.from(
         { length: data.talent_total_pages },
         (_, index) => index + 1
@@ -189,55 +195,30 @@ const Virtual_Tech_Village = () => {
 
       setTalentPages(pages);
       setMemberList(data);
-      const accountType = data.user[0]?.account_type || "";
-
-      // setCompanyShow(accountType === "village company profile");
-      // setMemberShow(accountType !== "village company profile");
     };
 
     fetchData();
 
     setIsLoading(false);
   };
-  const scrollToTop = () => {
-    memberStartRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
-  useEffect(() => {
-    checkProfileComplete();
-    scrollToTop();
-    console.log(selectedAttributes);
-    console.log(selectedCompanyAttributes);
-  }, [selectedCompanyAttributes]);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
-
+  const country_skills = (id) => {
     async function fetchData() {
       try {
         const response = await axios.get(
           `https://baobabpad-334a8864da0e.herokuapp.com/village/country_skills/${id}/`
         );
         setSelectedAttributes(response.data);
-        // console.log(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     }
 
     fetchData();
-  }, []);
+  }
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
-    // setLoggedInId(id);
-
+  const country_industries = (id) => {
     async function fetchData() {
       try {
         const response = await axios.get(
@@ -250,11 +231,45 @@ const Virtual_Tech_Village = () => {
     }
 
     fetchData();
-  }, []);
+  }
+
+  const { data: session } = useSession();
+
+  const authenticatedUser = () => {
+    try {
+      console.log("Session:", session);
+  
+      if (session && session.access) {
+        const decodedToken = jwt_decode(session.access);
+        const id = decodedToken.user_id;
+        console.log(id);
+        login(id)
+        country_skills(id)
+        country_industries(id)
+        // dispatch(setUserId(id));
+        dispatch(fetchUserData(id));
+  
+        setCurrentSessionId(id);
+      }
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+  
+
+  const scrollToTop = () => {
+    memberStartRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
-    console.log(memberList);
-  }, [memberList]);
+    checkProfileComplete();
+    scrollToTop();
+  }, [selectedCompanyAttributes]);
+
+
+  useEffect(() => {
+    authenticatedUser();
+  }, []);
 
   const { companies, individuals } = memberList || {
     companies: [],
@@ -327,20 +342,15 @@ const Virtual_Tech_Village = () => {
   };
 
   const unapprovedProfile = () => {
-    router.push("/")
-    localStorage.removeItem("token")
-  }
+    router.push("/");
+  };
 
   const handlePageFetch = (number) => {
     setMemberList(null);
 
-    const token = localStorage.getItem("token");
-
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
     const fetchData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${id}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${currentSessionId}/`,
         {
           method: "POST",
           headers: {
@@ -374,8 +384,6 @@ const Virtual_Tech_Village = () => {
     document.addEventListener("mousedown", handleClickOutsideProfile);
     document.addEventListener("mousedown", handleClickOutsideCompany);
     document.addEventListener("mousedown", handleClickOutsideNewJob);
-
-    login();
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideProfile);
@@ -449,7 +457,7 @@ const Virtual_Tech_Village = () => {
 
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/job_listings/${id}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/job_listings/${currentSessionId}/`,
         {
           method: "POST",
           body: formData,
@@ -485,13 +493,9 @@ const Virtual_Tech_Village = () => {
       [name]: value,
     }));
 
-    const token = localStorage.getItem("token");
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
-
     try {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${id}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${currentSessionId}/`,
         {
           method: "POST",
           headers: {
@@ -575,6 +579,7 @@ const Virtual_Tech_Village = () => {
 
   if (
     memberList?.user[0].is_approved === "False" &&
+    memberList?.user[0].is_profile_complete === "True" &&
     memberList?.user[0].account_type === "Intern"
   ) {
     return (
@@ -589,6 +594,7 @@ const Virtual_Tech_Village = () => {
 
   if (
     memberList?.user[0].is_approved === "False" &&
+    memberList?.user[0].is_profile_complete === "True" &&
     memberList?.user[0].account_type === "village talent profile"
   ) {
     return (
@@ -603,6 +609,7 @@ const Virtual_Tech_Village = () => {
 
   if (
     memberList?.user[0].is_approved === "False" &&
+    memberList?.user[0].is_profile_complete === "True" &&
     memberList?.user[0].account_type === "village company profile"
   ) {
     return (
@@ -918,8 +925,8 @@ const Virtual_Tech_Village = () => {
                     Skills
                   </option>
                   <option value="">All</option>
-                  {selectedAttributes?.skills?.map((skill, index) => (
-                    <option value={skill.skill} key={index}>
+                  {selectedAttributes?.skills?.map((skill) => (
+                    <option value={skill.skill} key={skill.skill}>
                       {skill.skill}
                     </option>
                   ))}
@@ -1093,9 +1100,9 @@ const Virtual_Tech_Village = () => {
                 No company profiles match your filter criteria.
               </p>
             ) : (
-              visibleCompanyData.map((company, index) => (
+              visibleCompanyData.map((company) => (
                 <CompanyProfile
-                  key={index}
+                  key={company.user_id}
                   company_name={company.company_name}
                   image={company.image}
                   industry={company.industry}
