@@ -225,6 +225,7 @@ const Virtual_Tech_Village = () => {
           `https://baobabpad-334a8864da0e.herokuapp.com/village/country_industries/${id}/`
         );
         setSelectedCompanyAttributes(response.data);
+        console.log("COUNTRY INDUSTRIES",response.data)
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -233,6 +234,8 @@ const Virtual_Tech_Village = () => {
     fetchData();
   }
 
+  const key = "_key"
+
   const { data: session } = useSession();
 
   // const authenticatedUser = () => {
@@ -240,14 +243,14 @@ const Virtual_Tech_Village = () => {
   //     console.log("Session:", session);
   
   //     if (session && session.access) {
-  //       const decodedToken = jwt_decode(session.access);
-  //       const id = decodedToken.user_id;
-  //       console.log(id);
-  //       login(id)
-  //       country_skills(id)
-  //       country_industries(id)
-  //       // dispatch(setUserId(id));
-  //       dispatch(fetchUserData(id));
+        // const decodedToken = jwt_decode(session.access);
+        // const id = decodedToken.user_id;
+        // console.log(id);
+        // login(id)
+        // country_skills(id)
+        // country_industries(id)
+        // // dispatch(setUserId(id));
+        // dispatch(fetchUserData(id));
   
   //       setCurrentSessionId(id);
   //     }
@@ -255,6 +258,19 @@ const Virtual_Tech_Village = () => {
   //     console.error("Error fetching data: ", error);
   //   }
   // };
+
+  const authenticatedUser = () => {
+    if(currentSessionId) {
+      const decodedToken = jwt_decode(session.access);
+      const id = decodedToken.user_id;
+      console.log(id);
+      login(id)
+      country_skills(id)
+      country_industries(id)
+      dispatch(setUserId(id));
+      dispatch(fetchUserData(id));
+    }
+  }
   
 
   const scrollToTop = () => {
@@ -274,16 +290,11 @@ const Virtual_Tech_Village = () => {
     useEffect(() => {
       if (session && session.access) {
         const decodedToken = jwt_decode(session.access);
-        const id = decodedToken.user_id;
-        console.log(id);
-        login(id);
-        country_skills(id);
-        country_industries(id);
-        dispatch(setUserId(id));
-        dispatch(fetchUserData(id));
+      const id = decodedToken.user_id;
         setCurrentSessionId(id);
       }
-    }, [session]);
+      authenticatedUser()
+    }, [currentSessionId]);
     
 
   const { companies, individuals } = memberList || {
@@ -909,7 +920,7 @@ const Virtual_Tech_Village = () => {
                   <option value="">All</option>
 
                   {selectedAttributes?.countries?.map((country, index) => (
-                    <option value={country.country} key={index}>
+                    <option value={country.country} key={index + key}>
                       {country.country}
                     </option>
                   ))}
@@ -969,8 +980,8 @@ const Virtual_Tech_Village = () => {
                   <option value="">All</option>
 
                   {selectedCompanyAttributes?.countries?.map(
-                    (country, index) => (
-                      <option value={country.country} key={index}>
+                    (country) => (
+                      <option value={country.country} key={country.country}>
                         {country.country}
                       </option>
                     )
@@ -1003,8 +1014,8 @@ const Virtual_Tech_Village = () => {
                   </option>
                   <option value="">All industries</option>
                   {selectedCompanyAttributes?.industries?.map(
-                    (industry, index) => (
-                      <option value={industry.industry} key={index}>
+                    (industry) => (
+                      <option value={industry.industry} key={industry.industry}>
                         {industry.industry}
                       </option>
                     )
@@ -1034,9 +1045,9 @@ const Virtual_Tech_Village = () => {
                   <JellyTriangle size={40} color="#231F20" />
                 </div>
               ) : (
-                visibleData.map((profile, index) => (
+                visibleData.map((profile) => (
                   <MemberProfile
-                    key={index}
+                    key={profile.user_id}
                     image={profile.image}
                     name={`${profile.first_name} ${profile.last_name}`}
                     skills={profile.skills}
@@ -1082,8 +1093,8 @@ const Virtual_Tech_Village = () => {
           )}
           {memberShow && (
             <div className="flex w-full justify-center items-center gap-2">
-              {talentPages.map((pageNumber, index) => (
-                <div className="flex gap-2" key={index}>
+              {talentPages.map((pageNumber) => (
+                <div className="flex gap-2" key={pageNumber + key}>
                   <button
                     onClick={() => handlePageFetch(pageNumber)}
                     className={`inline-block rounded-full border border-black p-3 transition-colors delay-75 ${

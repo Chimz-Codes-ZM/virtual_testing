@@ -133,9 +133,7 @@ const Complete_intern_profile = () => {
   
     const handleImageSubmit = async (e) => {
       e.preventDefault();
-      const token = localStorage.getItem("token");
-      const decodedToken = jwt_decode(token);
-      const user_id = decodedToken.user_id;
+      
   
       const imageData = new FormData();
       const file = e.target.files[0];
@@ -221,32 +219,32 @@ const Complete_intern_profile = () => {
   
     const handleSubmit = async (e) => {
       console.log(formInputs)
-      // e.preventDefault();
-      // const token = localStorage.getItem("token");
-      // const decodedToken = jwt_decode(token);
-      // const user_id = decodedToken.user_id;
+      e.preventDefault();
+      const token = localStorage.getItem("token");
+      const decodedToken = jwt_decode(token);
+      const user_id = decodedToken.user_id;
   
-      // const response = await fetch(
-      //   `https://baobabpad-334a8864da0e.herokuapp.com/village/intern_complete_profile/${user_id}/`,
-      //   // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({ formInputs }),
-      //   }
-      // );
-      // if (response.ok) {
-      //   // alert("Profile update complete!");
-      //   // router.push("/virtual_tech_village");
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/intern_complete_profile/${user_id}/`,
+        // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ formInputs }),
+        }
+      );
+      if (response.ok) {
+        // alert("Profile update complete!");
+        // router.push("/virtual_tech_village");
 
-      //   handleFormSuccess()
-      // } else {
-      //   alert("Something went wrong, please try again!");
-      // }
+        handleFormSuccess()
+      } else {
+        alert("Something went wrong, please try again!");
+      }
   
-      // console.log(completedProfile);
+      console.log(completedProfile);
     };
   
     const handleSave = async (e) => {
