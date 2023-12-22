@@ -275,7 +275,7 @@ const Virtual_Tech_Village = () => {
 
   useEffect(() => {
     authenticatedUser();
-  }, []);
+  }, [session]);
     
 
   const { companies, individuals } = memberList || {
