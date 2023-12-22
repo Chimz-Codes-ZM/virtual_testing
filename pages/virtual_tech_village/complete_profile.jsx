@@ -248,9 +248,6 @@ const Complete_profile = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const decodedToken = jwt_decode(token);
-    const user_id = decodedToken.user_id;
 
     const response = await fetch(
       `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
@@ -283,11 +280,7 @@ const Complete_profile = () => {
   };
 
   const handlePdfSubmit = async (e) => {
-    e.preventDefault();
-
-    const token = localStorage.getItem("token");
-    const decodedToken = jwt_decode(token);
-    const user_id = decodedToken.user_id;
+    e.preventDefault(); 
 
     const formData = new FormData();
     formData.append("pdfFile", file);
@@ -658,12 +651,16 @@ const Complete_profile = () => {
                       Work experience
                     </label>
                   </div>
-                  <div className="col-span-1 sm:col-span-5 w-full mx-auto p-6 px-2 bg-white">
+                  <div className="col-span-1 sm:col-span-5 w-full mx-auto p-6 px-2 bg-white relative">
                     {workHistory.map((work, index) => (
-                      <> <div
+                      <> 
+                      
+                      
+                      <div
                         key={index}
-                        className="flex mb-4 flex-col sm:flex-row"
+                        className="flex mb-4 flex-col sm:flex-row relative"
                       >
+                        <span className="absolute top-0 -left-10 border-b-2">#{index + 1}</span>
                         <div className="w-full sm:w-1/4 pr-4">
                           <label className="block text-sm font-medium text-gray-600 mb-1">
                             Position held:
@@ -970,7 +967,7 @@ const Complete_profile = () => {
             <div>
               <form onSubmit={handlePdfSubmit }>
                 <input type="file" accept=".pdf" onChange={handleFileChange} />
-                <button type="submit">Upload PDF</button>
+                <button type="submit" className="rounded px-2 p-1 border shadow">Upload PDF</button>
               </form>
             </div>
           </div>
