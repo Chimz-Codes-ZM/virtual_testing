@@ -4,7 +4,11 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useSelector, useDispatch } from "react-redux";
-import { resetUser, fetchUserData, setUserData } from "@/features/user/UserSlice";
+import {
+  resetUser,
+  fetchUserData,
+  setUserData,
+} from "@/features/user/UserSlice";
 import { signOut, useSession, getSession } from "next-auth/react";
 import jwt_decode from "jwt-decode";
 
@@ -26,11 +30,10 @@ const Layout = ({ children, sideHighlight }) => {
   const [unreadMessageCount, setUnreadMessageCount] = useState(null);
   const [notificationContent, setNotificationContent] = useState(null);
   const [showNotification, setShowNotification] = useState(false);
-  const [decodedToken, setDecodedToken] = useState(null)
-  const [id, setId] = useState("")
+  const [decodedToken, setDecodedToken] = useState(null);
+  const [id, setId] = useState("");
   const router = useRouter();
   const notificationRef = useRef();
-  
 
   const dispatch = useDispatch();
 
@@ -40,27 +43,22 @@ const Layout = ({ children, sideHighlight }) => {
     } else {
       return null;
     }
-  }); 
+  });
 
- 
-
-  const { data: session } = useSession()
 
   const user_id = () => {
-    if (session && session.access) {
-      const decodedToken = jwt_decode(session.access);
-      const id = decodedToken.user_id;
-      setId(id)
+    if (user) {
+      setId(user.user_id);
     }
-  } 
-  
-  if (!session) {
-    return (
-      <div className="flex h-screen items-center justify-center ">
-        <JellyTriangle size={40} color="#231F20" />
-      </div>
-    );
-  }
+  };
+
+  // if (!session) {
+  //   return (
+  //     <div className="flex h-screen items-center justify-center ">
+  //       <JellyTriangle size={40} color="#231F20" />
+  //     </div>
+  //   );
+  // }
 
   const handleClickOutsideNotification = (event) => {
     if (
@@ -72,26 +70,22 @@ const Layout = ({ children, sideHighlight }) => {
   };
 
   const logoutHandler = () => {
-    signOut({ callbackUrl: '/homepage/login' })
-    
-      dispatch(resetUser())
-  
+    signOut({ callbackUrl: "/homepage/login" });
+
+    dispatch(resetUser());
   };
 
   useEffect(() => {
-    user_id()
-  }, [session])
+    user_id();
+  }, [user]);
 
-  
   useEffect(() => {
-
     document.addEventListener("mousedown", handleClickOutsideNotification);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideNotification);
     };
   }, []);
-
 
   const { readyState, sendJsonMessage } = useWebSocket(
     `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat_notifications/${id}/`,

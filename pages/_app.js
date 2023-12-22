@@ -14,26 +14,11 @@ export default function App({
     <SessionProvider  session={session}>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-        {Component.auth ? (
-        <Auth>
+      
           <Component {...pageProps} />
-        </Auth>
-      ) : (
-        <Component {...pageProps} />
-      )}
+      
         </PersistGate>
       </Provider>
     </SessionProvider>
   );
-}
-
-
-function Auth({ children }) {
-  const { status } = useSession({ required: true })
-
-  if (status === "loading") {
-    return <div>Loading...</div>
-  }
-
-  return children
 }
