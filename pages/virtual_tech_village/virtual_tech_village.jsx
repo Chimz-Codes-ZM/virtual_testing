@@ -287,14 +287,14 @@ const Virtual_Tech_Village = () => {
 
 
 
-    useEffect(() => {
-      if (session && session.access) {
-        const decodedToken = jwt_decode(session.access);
-      const id = decodedToken.user_id;
-        setCurrentSessionId(id);
-      }
-      authenticatedUser()
-    }, [currentSessionId]);
+    // useEffect(() => {
+    //   if (session && session.access) {
+    //     const decodedToken = jwt_decode(session.access);
+    //   const id = decodedToken.user_id;
+    //     setCurrentSessionId(id);
+    //   }
+    //   authenticatedUser()
+    // }, [currentSessionId]);
     
 
   const { companies, individuals } = memberList || {
