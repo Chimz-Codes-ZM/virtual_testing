@@ -238,40 +238,27 @@ const Virtual_Tech_Village = () => {
 
   const { data: session } = useSession();
 
-  // const authenticatedUser = () => {
-  //   try {
-  //     console.log("Session:", session);
-  
-  //     if (session && session.access) {
-        // const decodedToken = jwt_decode(session.access);
-        // const id = decodedToken.user_id;
-        // console.log(id);
-        // login(id)
-        // country_skills(id)
-        // country_industries(id)
-        // // dispatch(setUserId(id));
-        // dispatch(fetchUserData(id));
-  
-  //       setCurrentSessionId(id);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data: ", error);
-  //   }
-  // };
-
   const authenticatedUser = () => {
-    if(currentSessionId) {
-      const decodedToken = jwt_decode(session.access);
-      const id = decodedToken.user_id;
-      console.log(id);
-      login(id)
-      country_skills(id)
-      country_industries(id)
-      dispatch(setUserId(id));
-      dispatch(fetchUserData(id));
-    }
-  }
+    try {
+      console.log("Session:", session);
   
+      if (session && session.access) {
+        const decodedToken = jwt_decode(session.access);
+        const id = decodedToken.user_id;
+        console.log(id);
+        login(id)
+        country_skills(id)
+        country_industries(id)
+        dispatch(setUserId(id));
+        dispatch(fetchUserData(id));
+  
+        setCurrentSessionId(id);
+      }
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
 
   const scrollToTop = () => {
     memberStartRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -286,15 +273,9 @@ const Virtual_Tech_Village = () => {
   }, [selectedCompanyAttributes]);
 
 
-
-    useEffect(() => {
-      if (session && session.access) {
-        const decodedToken = jwt_decode(session.access);
-      const id = decodedToken.user_id;
-        setCurrentSessionId(id);
-      }
-      authenticatedUser()
-    }, [currentSessionId]);
+  useEffect(() => {
+    authenticatedUser();
+  }, []);
     
 
   const { companies, individuals } = memberList || {
