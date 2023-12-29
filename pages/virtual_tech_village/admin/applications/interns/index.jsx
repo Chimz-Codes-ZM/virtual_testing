@@ -57,7 +57,7 @@ const Index = () => {
   async function fetchData() {
     try {
       const response = await axios.get(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/intern_approval/${user.user_id}/`
+        `https://baobabpad.online/village/intern_approval/${user.user_id}/`
       );
       setInfo(response.data);
       console.log("Intern data: ", response.data);
@@ -77,7 +77,7 @@ const Index = () => {
       setLoading(true);
 
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/intern_approval/${user.user_id}/`,
+        `https://baobabpad.online/village/intern_approval/${user.user_id}/`,
         {
           method: "POST",
           headers: {

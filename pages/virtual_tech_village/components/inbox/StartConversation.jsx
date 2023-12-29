@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
+import { useSelector } from "react-redux";
 
 const StartConversation = () => {
   const [userData, setUserData] = useState([]);
   const [loggedInId, setLoggedInId] = useState("");
   const router = useRouter();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
+    }
+  });
 
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
-    setLoggedInId(id);
+  useEffect(() => {
+
+    setLoggedInId(user.user_id);
 
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/chat_list/${id}/`
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/chat_list/${user.user_id}/`
         );
         setUserData(response.data);
         console.log(response.data)

@@ -225,7 +225,6 @@ const Virtual_Tech_Village = () => {
           `https://baobabpad-334a8864da0e.herokuapp.com/village/country_industries/${id}/`
         );
         setSelectedCompanyAttributes(response.data);
-        console.log("COUNTRY INDUSTRIES",response.data)
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -233,8 +232,6 @@ const Virtual_Tech_Village = () => {
 
     fetchData();
   }
-
-  const key = "_key"
 
   const { data: session } = useSession();
 
@@ -249,7 +246,7 @@ const Virtual_Tech_Village = () => {
         login(id)
         country_skills(id)
         country_industries(id)
-        dispatch(setUserId(id));
+        // dispatch(setUserId(id));
         dispatch(fetchUserData(id));
   
         setCurrentSessionId(id);
@@ -258,25 +255,21 @@ const Virtual_Tech_Village = () => {
       console.error("Error fetching data: ", error);
     }
   };
-
+  
 
   const scrollToTop = () => {
     memberStartRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
-    if(selectedCompanyAttributes) {
-       checkProfileComplete();
+    checkProfileComplete();
     scrollToTop();
-    }
-   
   }, [selectedCompanyAttributes]);
 
 
   useEffect(() => {
     authenticatedUser();
-  }, [session]);
-    
+  }, []);
 
   const { companies, individuals } = memberList || {
     companies: [],
@@ -901,7 +894,7 @@ const Virtual_Tech_Village = () => {
                   <option value="">All</option>
 
                   {selectedAttributes?.countries?.map((country, index) => (
-                    <option value={country.country} key={index + key}>
+                    <option value={country.country} key={index}>
                       {country.country}
                     </option>
                   ))}
@@ -961,8 +954,8 @@ const Virtual_Tech_Village = () => {
                   <option value="">All</option>
 
                   {selectedCompanyAttributes?.countries?.map(
-                    (country) => (
-                      <option value={country.country} key={country.country}>
+                    (country, index) => (
+                      <option value={country.country} key={index}>
                         {country.country}
                       </option>
                     )
@@ -995,8 +988,8 @@ const Virtual_Tech_Village = () => {
                   </option>
                   <option value="">All industries</option>
                   {selectedCompanyAttributes?.industries?.map(
-                    (industry) => (
-                      <option value={industry.industry} key={industry.industry}>
+                    (industry, index) => (
+                      <option value={industry.industry} key={index}>
                         {industry.industry}
                       </option>
                     )
@@ -1026,9 +1019,9 @@ const Virtual_Tech_Village = () => {
                   <JellyTriangle size={40} color="#231F20" />
                 </div>
               ) : (
-                visibleData.map((profile) => (
+                visibleData.map((profile, index) => (
                   <MemberProfile
-                    key={profile.user_id}
+                    key={index}
                     image={profile.image}
                     name={`${profile.first_name} ${profile.last_name}`}
                     skills={profile.skills}
@@ -1074,8 +1067,8 @@ const Virtual_Tech_Village = () => {
           )}
           {memberShow && (
             <div className="flex w-full justify-center items-center gap-2">
-              {talentPages.map((pageNumber) => (
-                <div className="flex gap-2" key={pageNumber + key}>
+              {talentPages.map((pageNumber, index) => (
+                <div className="flex gap-2" key={index}>
                   <button
                     onClick={() => handlePageFetch(pageNumber)}
                     className={`inline-block rounded-full border border-black p-3 transition-colors delay-75 ${

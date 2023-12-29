@@ -3,8 +3,10 @@ import Image from "next/image";
 import Baobab_logo from "../../public/logo.png";
 import Password_hero from "../../public/assets/password_hero.jpg";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 function index() {
+  const router = useRouter()
   const [values, setValues] = useState({
     email: "",
   });
@@ -41,7 +43,7 @@ function index() {
     })
       .then(() => {
         alert('Check your email for Password reset instructions!')
-        window.location.reload();
+        router.push("/homepage/password_reset")
       });
   };
 

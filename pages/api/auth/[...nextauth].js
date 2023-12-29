@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 
 const BACKEND_ACCESS_TOKEN_LIFETIME = 45 * 60; // 45 minutes
 const BACKEND_REFRESH_TOKEN_LIFETIME = 6 * 24 * 60 * 60; // 6 days
@@ -66,7 +65,6 @@ export const authOptions = {
           account.provider === "credentials" ? user : account.meta;
         token.user = backendResponse.user;
         token.access = backendResponse.access;
-        token.user_id = jwt_decode(backendResponse.access)
         token.refresh = backendResponse.refresh;
         token.ref = getCurrentEpochTime() + BACKEND_ACCESS_TOKEN_LIFETIME;
         return token;
@@ -81,16 +79,7 @@ export const authOptions = {
 
   pages: {
     signIn: "/homepage/login",
-  },
-
-  redirect: async () => {
-    return "/";
-  },
-
-  events: {
-    signOut: async ({ url, token }) => {
-      return "?redirect=/";
-    },
+    error: '/homepage/login',
   },
 };
 //

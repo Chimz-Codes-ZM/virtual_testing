@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import Layout from "./components/layouts/layout";
 import { FcPicture } from "react-icons/fc";
 import Link from "next/link";
-import Head from "next/head";
-import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 import Success from "./components/alerts/success";
 
@@ -24,14 +23,14 @@ const Complete_company_profile = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const router = useRouter();
 
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
+    }
+  });
 
-    setCompletedProfile((previousValues) => ({
-      ...previousValues,
-      [name]: value,
-    }));
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,9 +43,6 @@ const Complete_company_profile = () => {
 
   const handleImageSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const decodedToken = jwt_decode(token);
-    const user_id = decodedToken.user_id;
 
     const imageData = new FormData();
     const file = e.target.files[0];
@@ -61,7 +57,7 @@ const Complete_company_profile = () => {
     imageData.append("file", file);
 
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user_id}/`,
+      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "PUT",
@@ -77,10 +73,6 @@ const Complete_company_profile = () => {
       });
   };
 
-  useEffect(() => {
-    console.log({ completedProfile });
-  }, [completedProfile]);
-
   const handleFormSuccess = () => {
     setSuccess(true)
   }
@@ -92,26 +84,24 @@ const Complete_company_profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-    const decodedToken = jwt_decode(token);
-    const user_id = decodedToken.user_id;
 
-    const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user_id}/`,
-      // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ completedProfile }),
-      }
-    );
-    if (response.ok) {
-  handleFormSuccess()
-    } else {
-      alert("Something went wrong, please try again!");
-    }
+console.log(completedProfile)
+    // const response = await fetch(
+    //   `https://baobabpad.online/village/complete_profile/${user.user_id}/`,
+    //   // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ completedProfile }),
+    //   }
+    // );
+  //   if (response.ok) {
+  // handleFormSuccess()
+  //   } else {
+  //     alert("Something went wrong, please try again!");
+  //   }
   };
 
   return (
@@ -190,12 +180,11 @@ const Complete_company_profile = () => {
                     <p>Start by setting your company logo here</p>
                   </div>
 
-                  <div className="flex flex-col items-center col-span-1">
+                  <div className="flex flex-col items-center col-span-2 md:col-span-1">
                     <label
                       htmlFor="profilePictureInput"
                       className="border-2 border-dashed px-4 border-gray-400 overflow-hidden rounded-lg cursor-pointer"
                     >
-                      {/* Render the image here if available */}
 
                       {selectedFile ? (
                         <img
@@ -272,7 +261,7 @@ const Complete_company_profile = () => {
                   >
                     Company website:
                   </label>
-                  <div className="flex col-span-1">
+                  <div className="flex col-span-2 md:col-span-1">
                     <input
                       type="text"
                       className="border rounded-r p-1 w-full"

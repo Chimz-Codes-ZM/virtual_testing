@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Skeleton from "../../admin/components/skeleton";
 import { BsPinAngle } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
 
 import jwt_decode from "jwt-decode";
 import StartConversation from "./StartConversation";
@@ -15,16 +16,21 @@ const MessageList = ({ selectedConversation, onConversationClick }) => {
 
   const [conversations, setConversations] = useState(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
+    }
+  });
 
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
+  useEffect(() => {
+
 
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${id}/`
+          `hhttps://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${user.user_id}/`
         );
         setConversations(response.data);
         console.log(response.data);

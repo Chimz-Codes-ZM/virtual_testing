@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./components/layouts/layout";
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import jwt_decode from "jwt-decode";
 
 import Success from "./components/alerts/success";
 
@@ -16,6 +14,7 @@ const Complete_profile = () => {
   const router = useRouter();
   const [profileData, setProfileData] = useState({});
   const [success, setSuccess] = useState(false);
+  const [cvSubmitted, setCvSubmitted] = useState(false)
 
   const user = useSelector((state) => {
     if (state.user?.userData && state.user.userData.length > 0) {
@@ -29,7 +28,7 @@ const Complete_profile = () => {
     country: "",
     city: "",
     link: "",
-    experience: ""
+    experience: "",
   });
 
   const [education, setEducation] = useState([
@@ -175,19 +174,19 @@ const Complete_profile = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-  
+
     setCompletedProfile((prevProfile) => ({
       ...prevProfile,
       [name]: value,
     }));
-  
+
     // Now log the updated state using a callback
     setCompletedProfile((updatedProfile) => {
       console.log(updatedProfile);
       return updatedProfile;
     });
   };
-  
+
   useEffect(() => {
     const profileData = fetch(
       `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
@@ -226,25 +225,31 @@ const Complete_profile = () => {
   const handleSubmit = async (e) => {
     console.log(formInputs);
     e.preventDefault();
-    
-    const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
-      // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ formInputs }),
+
+    if (cvSubmitted === true) {
+      const response = await fetch(
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ formInputs }),
+        }
+      );
+  
+      if (response.ok) {
+        alert("Profile update complete!");
+        router.push("/virtual_tech_village");
+      } else {
+        alert("Something went wrong, please try again!");
       }
-    );
-    if (response.ok) {
-      alert("Profile update complete!");
-      router.push("/virtual_tech_village");
     } else {
-      alert("Something went wrong, please try again!");
+      
+      alert("Please upload your CV before submitting your application!");
     }
   };
+  
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -280,14 +285,15 @@ const Complete_profile = () => {
   };
 
   const handlePdfSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
+    setCvSubmitted(true)
 
     const formData = new FormData();
     formData.append("pdfFile", file);
 
     try {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${user.user_id}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com*/village/talent_resume/${user.user_id}/`,
         {
           method: "POST",
           body: formData,
@@ -295,9 +301,10 @@ const Complete_profile = () => {
       );
 
       if (response.ok) {
-        console.log("PDF uploaded successfully");
+        alert("CV Uploaded successfully! Please complete the rest of your profile")
+        setFile(null)
       } else {
-        console.error("Failed to upload PDF");
+        alert("Something went wrong. Please try again")
       }
     } catch (error) {
       console.error("Error uploading PDF", error);
@@ -430,6 +437,25 @@ const Complete_profile = () => {
                     </label>
                   </div>
                 </div>
+              </form>
+              <form onSubmit={handlePdfSubmit}>
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 pb-4 border-b-2">
+                  <div className="flex flex-col gap-3 col-span-1 pb-4">
+                    <h2 className="font-semibold text-xl">CV</h2>
+                    <p>Continue by uploading your CV here</p>
+                  </div>
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileChange}
+                  />
+                  <button
+                    type="submit"
+                    className={`rounded border-2 px-2 p-1 shadow w-fit h-fit ${file ? "animate-pulse" : ""}`}
+                  >
+                    Upload CV
+                  </button>
+                </div>{" "}
               </form>
               <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 ">
@@ -653,95 +679,94 @@ const Complete_profile = () => {
                   </div>
                   <div className="col-span-1 sm:col-span-5 w-full mx-auto p-6 px-2 bg-white relative">
                     {workHistory.map((work, index) => (
-                      <> 
-                      
-                      
-                      <div
-                        key={index}
-                        className="flex mb-4 flex-col sm:flex-row relative"
-                      >
-                        <span className="absolute top-0 -left-10 border-b-2">#{index + 1}</span>
-                        <div className="w-full sm:w-1/4 pr-4">
-                          <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Position held:
-                          </label>
-                          <input
-                            type="text"
-                            className="form-input border w-full rounded-md border-gray-300"
-                            value={work.position}
-                            onChange={(e) =>
-                              handleWorkHistoryChange(
-                                index,
-                                "position",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
-                        <div className="w-full sm:w-1/4 pr-4">
-                          <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Company name:
-                          </label>
-                          <input
-                            type="text"
-                            className="form-input border w-full rounded-md border-gray-300"
-                            value={work.company}
-                            onChange={(e) =>
-                              handleWorkHistoryChange(
-                                index,
-                                "company",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
-                        <div className="sm:w-1/6 pr-4">
-                          <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Year Started:
-                          </label>
-                          <input
-                            type="text"
-                            className="form-input border w-full rounded-md border-gray-300"
-                            value={work.from_year}
-                            onChange={(e) =>
-                              handleWorkHistoryChange(
-                                index,
-                                "from_year",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
-                        <div className="sm:w-1/6 pr-4">
-                          <label className="block text-sm font-medium text-gray-600 mb-1">
-                            Year Finished:
-                          </label>
-                          <input
-                            type="text"
-                            className="form-input border w-full rounded-md border-gray-300"
-                            value={work.to_year}
-                            onChange={(e) =>
-                              handleWorkHistoryChange(
-                                index,
-                                "to_year",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
+                      <>
+                        <div
+                          key={index}
+                          className="flex mb-4 flex-col sm:flex-row relative"
+                        >
+                          <span className="absolute top-0 -left-10 border-b-2">
+                            #{index + 1}
+                          </span>
+                          <div className="w-full sm:w-1/4 pr-4">
+                            <label className="block text-sm font-medium text-gray-600 mb-1">
+                              Position held:
+                            </label>
+                            <input
+                              type="text"
+                              className="form-input border w-full rounded-md border-gray-300"
+                              value={work.position}
+                              onChange={(e) =>
+                                handleWorkHistoryChange(
+                                  index,
+                                  "position",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                          <div className="w-full sm:w-1/4 pr-4">
+                            <label className="block text-sm font-medium text-gray-600 mb-1">
+                              Company name:
+                            </label>
+                            <input
+                              type="text"
+                              className="form-input border w-full rounded-md border-gray-300"
+                              value={work.company}
+                              onChange={(e) =>
+                                handleWorkHistoryChange(
+                                  index,
+                                  "company",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                          <div className="sm:w-1/6 pr-4">
+                            <label className="block text-sm font-medium text-gray-600 mb-1">
+                              Year Started:
+                            </label>
+                            <input
+                              type="text"
+                              className="form-input border w-full rounded-md border-gray-300"
+                              value={work.from_year}
+                              onChange={(e) =>
+                                handleWorkHistoryChange(
+                                  index,
+                                  "from_year",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                          <div className="sm:w-1/6 pr-4">
+                            <label className="block text-sm font-medium text-gray-600 mb-1">
+                              Year Finished:
+                            </label>
+                            <input
+                              type="text"
+                              className="form-input border w-full rounded-md border-gray-300"
+                              value={work.to_year}
+                              onChange={(e) =>
+                                handleWorkHistoryChange(
+                                  index,
+                                  "to_year",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
 
-                       
-                        {index > 0 && (
-                          <button
-                            type="button"
-                            className="text-red-500 hover:text-red-700 underline cursor-pointer"
-                            onClick={() => handleWorkHistoryRemove(index)}
-                          >
-                            Remove
-                          </button>
-                        )}
-                      </div>
-                      <div className="col-span-6 pr-4">
+                          {index > 0 && (
+                            <button
+                              type="button"
+                              className="text-red-500 hover:text-red-700 underline cursor-pointer"
+                              onClick={() => handleWorkHistoryRemove(index)}
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                        <div className="col-span-6 pr-4">
                           <label className="block text-sm font-medium text-gray-600 mb-1">
                             Job summary
                           </label>
@@ -750,7 +775,6 @@ const Complete_profile = () => {
                             id="summary"
                             rows="4"
                             className="my-2 w-full rounded-lg border p-1 max-w-3xl border-gray-200 align-top shadow-sm sm:text-sm"
-
                             value={work.summary}
                             onChange={(e) =>
                               handleWorkHistoryChange(
@@ -762,8 +786,6 @@ const Complete_profile = () => {
                           ></textarea>
                         </div>
                       </>
-                     
-                      
                     ))}
                     <button
                       type="button"
@@ -808,8 +830,6 @@ const Complete_profile = () => {
                     Experience:
                   </label>
                   <div className="flex col-span-2 md:col-span-1">
-  
-
                     <select
                       name="experience"
                       id="experience"
@@ -818,7 +838,9 @@ const Complete_profile = () => {
                       value={completedProfile.experience}
                       className="border rounded p-1 w-full"
                     >
-                      <option value="Junior" selected>Junior {"0 - 2 years"}</option>
+                      <option value="Junior" selected>
+                        Junior {"0 - 2 years"}
+                      </option>
                       <option value="Mid level">
                         Mid level {"3 - 5 years"}
                       </option>
@@ -937,15 +959,6 @@ const Complete_profile = () => {
                     </div>
                   </div>
 
-                  {/* <div className=" col-span-1">
-                    <button
-                      type="button"
-                      className="bg-gray-900 text-white py-2 px-4 rounded-md hover:bg-white hover:text-black hover:border transition-colors"
-                      onClick={handleAddSocialMedia}
-                    >
-                      Add Social Link
-                    </button>
-                  </div> */}
                 </div>
 
                 <div className="grid grid-cols-3">
@@ -961,13 +974,6 @@ const Complete_profile = () => {
                     </div>
                   </div>
                 </div>
-              </form>
-            </div>
-
-            <div>
-              <form onSubmit={handlePdfSubmit }>
-                <input type="file" accept=".pdf" onChange={handleFileChange} />
-                <button type="submit" className="rounded px-2 p-1 border shadow">Upload PDF</button>
               </form>
             </div>
           </div>

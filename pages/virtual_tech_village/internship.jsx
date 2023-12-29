@@ -1,20 +1,23 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useContext,
-  useLayoutEffect,
-} from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { useSession, getSession } from "next-auth/react";
+import { useSelector, dispatch, useDispatch } from "react-redux";
+import {
+  resetUser,
+  fetchUserData,
+  setUserData,
+  setUserId,
+} from "@/features/user/UserSlice";
 
 import Layout from "./components/layouts/layout";
-import Complete_Profile from "./components/alerts/completeProfile";
+import Complete_Profile from "../virtual_tech_village/components/alerts/completeProfile";
+import Unapproved from "./components/alerts/unapproved";
 import MemberProfile from "./components/profiles/MemberProfile";
 import ExpandedProfileModal from "./components/profiles/ExpandedProfileModal";
-import New_job from "./components/forms/new_job";
+import JobAdded from "./components/alerts/jobAdded";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { JellyTriangle } from "@uiball/loaders";
@@ -118,6 +121,8 @@ const ExpandedCompanyModal = ({
 };
 
 const Virtual_internship = () => {
+  const router = useRouter();
+
   const [memberShow, setMemberShow] = useState(true);
   const [companyShow, setCompanyShow] = useState(false);
   const [addNewJobShow, setAddNewJobShow] = useState(false);
@@ -133,9 +138,9 @@ const Virtual_internship = () => {
   const expandedCompanyRef = useRef(null);
   const memberStartRef = useRef(null);
   const newJobRef = useRef(null);
+  const [success, setSuccess] = useState(false);
 
   const [talentPages, setTalentPages] = useState([]);
-  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [memberList, setMemberList] = useState(null);
   const [activePage, setActivePage] = useState(1);
@@ -152,23 +157,27 @@ const Virtual_internship = () => {
     company_name: "",
     company_industry: "",
   });
-  const [id, setId] = useState("");
+  const [currentSessionId, setCurrentSessionId] = useState(null);
 
-  const router = useRouter();
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
+    }
+  });
 
-  const login = () => {
-    const token = localStorage.getItem("token");
+  // const user_id = useSelector((state) => {
+  //   return state.user.user_id;
+  // });
 
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
+  const dispatch = useDispatch();
 
-    setUser(decodedToken);
-    setId(id);
-    // console.log(decodedToken);
-
+  const login = (id) => {
+    console.log("Login function called");
     const fetchData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${id}/`,
+        `https://baobabpad.online/village/village_profiles/${id}/`,
         {
           method: "POST",
           headers: {
@@ -179,63 +188,38 @@ const Virtual_internship = () => {
       );
 
       const data = await response.json();
-
+      console.log("MEMBERLIST DATA:", data);
       const pages = Array.from(
-        { length: data.intern_total_pages },
+        { length: data.talent_total_pages },
         (_, index) => index + 1
       );
 
       setTalentPages(pages);
       setMemberList(data);
-      const accountType = data.user[0]?.account_type || "";
-
-      // setCompanyShow(accountType === "village company profile");
-      // setMemberShow(accountType !== "village company profile");
     };
 
     fetchData();
 
     setIsLoading(false);
   };
-  const scrollToTop = () => {
-    memberStartRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
-  useEffect(() => {
-    checkProfileComplete();
-    scrollToTop();
-    console.log(selectedAttributes);
-    console.log(selectedCompanyAttributes);
-  }, [selectedCompanyAttributes]);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
-
+  const country_skills = (id) => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/intern_country_skills/${id}/`
+          `https://baobabpad.online/village/country_skills/${id}/`
         );
         setSelectedAttributes(response.data);
-        // console.log(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     }
 
     fetchData();
-  }, []);
+  };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
-    // setLoggedInId(id);
-
+  const country_industries = (id) => {
     async function fetchData() {
       try {
         const response = await axios.get(
@@ -248,11 +232,43 @@ const Virtual_internship = () => {
     }
 
     fetchData();
-  }, []);
+  };
+
+  const { data: session } = useSession();
+
+  const authenticatedUser = () => {
+    try {
+      console.log("Session:", session);
+
+      if (session && session.access) {
+        const decodedToken = jwt_decode(session.access);
+        const id = decodedToken.user_id;
+        console.log(id);
+        login(id);
+        country_skills(id);
+        country_industries(id);
+        // dispatch(setUserId(id));
+        dispatch(fetchUserData(id));
+
+        setCurrentSessionId(id);
+      }
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
+  const scrollToTop = () => {
+    memberStartRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
-    console.log(memberList);
-  }, [memberList]);
+    checkProfileComplete();
+    scrollToTop();
+  }, [selectedCompanyAttributes]);
+
+  useEffect(() => {
+    authenticatedUser();
+  }, []);
 
   const { companies, interns } = memberList || {
     companies: [],
@@ -317,23 +333,23 @@ const Virtual_internship = () => {
   };
 
   const internReroute = () => {
-    router.push("/virtual_tech_village/complete_intern_profile")
-  }
+    router.push("/virtual_tech_village/complete_profile");
+  };
 
   const companyProfileReroute = () => {
     router.push("/virtual_tech_village/complete_company_profile");
   };
 
+  const unapprovedProfile = () => {
+    router.push("/");
+  };
+
   const handlePageFetch = (number) => {
     setMemberList(null);
 
-    const token = localStorage.getItem("token");
-
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
     const fetchData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${id}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${currentSessionId}/`,
         {
           method: "POST",
           headers: {
@@ -347,7 +363,7 @@ const Virtual_internship = () => {
 
       if (response.ok) {
         const pages = Array.from(
-          { length: data.intern_total_pages },
+          { length: data.talent_total_pages },
           (_, index) => index + 1
         );
 
@@ -367,8 +383,6 @@ const Virtual_internship = () => {
     document.addEventListener("mousedown", handleClickOutsideProfile);
     document.addEventListener("mousedown", handleClickOutsideCompany);
     document.addEventListener("mousedown", handleClickOutsideNewJob);
-
-    login();
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideProfile);
@@ -421,6 +435,14 @@ const Virtual_internship = () => {
     imageRef.current = e.target.files[0];
   };
 
+  const handleJobAlert = () => {
+    setSuccess(true);
+  };
+
+  const handleJobDismiss = () => {
+    setSuccess(false);
+  };
+
   const handleNewJobSubmit = (e) => {
     e.preventDefault();
 
@@ -434,14 +456,14 @@ const Virtual_internship = () => {
 
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/job_listings/${id}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/job_listings/${currentSessionId}/`,
         {
           method: "POST",
           body: formData,
         }
       );
       if (response.ok) {
-        alert("New job added successfully");
+        handleJobAlert();
         setAddNewJobShow(false);
         setNewJob({
           position: "",
@@ -470,13 +492,9 @@ const Virtual_internship = () => {
       [name]: value,
     }));
 
-    const token = localStorage.getItem("token");
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
-
     try {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${id}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${currentSessionId}/`,
         {
           method: "POST",
           headers: {
@@ -508,6 +526,14 @@ const Virtual_internship = () => {
     }
   };
 
+  if (!memberList) {
+    return (
+      <div className="flex h-screen items-center justify-center ">
+        <JellyTriangle size={40} color="#231F20" />
+      </div>
+    );
+  }
+
   if (
     memberList?.user[0].is_profile_complete === "False" &&
     memberList?.user[0].account_type === "village talent profile"
@@ -517,6 +543,20 @@ const Virtual_internship = () => {
         <Complete_Profile
           message="Your profile is incomplete! Please complete setting up your profile."
           alertDismiss={profileReroute}
+        />
+      </div>
+    );
+  }
+
+  if (
+    memberList?.user[0].is_profile_complete === "False" &&
+    memberList?.user[0].account_type === "village company profile"
+  ) {
+    return (
+      <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+        <Complete_Profile
+          message="Your profile is incomplete! Please complete setting up your profile."
+          alertDismiss={companyProfileReroute}
         />
       </div>
     );
@@ -536,10 +576,47 @@ const Virtual_internship = () => {
     );
   }
 
-  if (!memberList) {
+  if (
+    memberList?.user[0].is_approved === "False" &&
+    memberList?.user[0].is_profile_complete === "True" &&
+    memberList?.user[0].account_type === "Intern"
+  ) {
     return (
-      <div className="flex h-screen items-center justify-center ">
-        <JellyTriangle size={40} color="#231F20" />
+      <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+        <Unapproved
+          message="Please note that your access to the platform is pending approval. Our team is working diligently to process your profile. You'll receive an email once it's approved."
+          alertDismiss={unapprovedProfile}
+        />
+      </div>
+    );
+  }
+
+  if (
+    memberList?.user[0].is_approved === "False" &&
+    memberList?.user[0].is_profile_complete === "True" &&
+    memberList?.user[0].account_type === "village talent profile"
+  ) {
+    return (
+      <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+        <Unapproved
+          message="Please note that your access to the platform is pending approval. Our team is working diligently to process your profile. You'll receive an email once it's approved."
+          alertDismiss={unapprovedProfile}
+        />
+      </div>
+    );
+  }
+
+  if (
+    memberList?.user[0].is_approved === "False" &&
+    memberList?.user[0].is_profile_complete === "True" &&
+    memberList?.user[0].account_type === "village company profile"
+  ) {
+    return (
+      <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+        <Unapproved
+          message="Please note that your access to the platform is pending approval. Our team is working diligently to process your profile. You'll receive an email once it's approved."
+          alertDismiss={unapprovedProfile}
+        />
       </div>
     );
   }
@@ -599,8 +676,6 @@ const Virtual_internship = () => {
     endCompanyIndex
   );
 
-  // const totalCompanyPages = Math.ceil(filteredData.length / itemsPerPage);
-
   const showProfile = (memberInfo) => {
     enableAnimations(true);
     setProfile(memberInfo);
@@ -618,379 +693,452 @@ const Virtual_internship = () => {
 
   return (
     <Layout sideHighlight="virtual internship">
-    <div className="flex flex-col gap-5 relative pb-8" ref={parent}>
-      <div className="relative" ref={memberStartRef}></div>
-      <div>
-        {addNewJobShow && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 flex items-center justify-center z-[999] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
-          >
-            <div ref={newJobRef}>
-              {" "}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                {/* <New_job
+      <div className="flex flex-col gap-5 relative pb-8" ref={parent}>
+        {success && (
+          <div className="rounded fixed bottom-10 sm:right-10 z-[999] max-w-[450px]">
+            <JobAdded
+              message="New job added successfully"
+              alertDismiss={handleJobDismiss}
+            />
+          </div>
+        )}
+        <div className="relative" ref={memberStartRef}></div>
+        <div>
+          {addNewJobShow && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 flex items-center justify-center z-[999] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
+            >
+              <div ref={newJobRef}>
+                {" "}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  {/* <New_job
                   userId={id}
                   onSubmit={handleNewJobSubmit}
                   onChange={handleNewJobChange}
                   value={newJob}
                 /> */}
 
-                <div className="p-6 bg-white border z-50 rounded flex flex-col gap-2">
-                  <div className="flex flex-col gap-4">
-                    <h1 className="text-2xl font-semibold">
-                      Enter New Job Listing
-                    </h1>
-                    <p className="text-lg font-normal text-gray-500">
-                      Fill out the details below to post a new job opportunity
-                    </p>
+                  <div className="p-6 bg-white border z-50 rounded flex flex-col gap-2">
+                    <div className="flex flex-col gap-4">
+                      <h1 className="text-2xl font-semibold">
+                        Enter New Job Listing
+                      </h1>
+                      <p className="text-lg font-normal text-gray-500">
+                        Fill out the details below to post a new job opportunity
+                      </p>
+                    </div>
+
+                    <form
+                      onSubmit={handleNewJobSubmit}
+                      className="flex flex-col gap-4"
+                    >
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="position"
+                          className="text-sm font-medium"
+                        >
+                          Position
+                        </label>
+                        <input
+                          type="text"
+                          name="position"
+                          value={newJob.position}
+                          className="border rounded px-1"
+                          onChange={handleNewJobChange}
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="job_type"
+                          className="text-sm font-medium"
+                        >
+                          Job Type
+                        </label>
+                        <input
+                          type="text"
+                          name="job_type"
+                          value={newJob.job_type}
+                          className="border rounded px-1"
+                          onChange={handleNewJobChange}
+                          placeholder="e.g., Full Time"
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="location"
+                          className="text-sm font-medium"
+                        >
+                          Location
+                        </label>
+                        <input
+                          type="text"
+                          name="location"
+                          value={newJob.location}
+                          className="border rounded px-1"
+                          onChange={handleNewJobChange}
+                          placeholder="e.g., On-site"
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-1">
+                        <label htmlFor="link" className="text-sm font-medium">
+                          Link
+                        </label>
+                        <input
+                          type="text"
+                          name="link"
+                          value={newJob.link}
+                          className="border rounded px-1"
+                          onChange={handleNewJobChange}
+                          placeholder="e.g., www.glassdoor.com/job-123"
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-1">
+                        <label htmlFor="image" className="text-sm font-medium">
+                          Cover Image
+                        </label>
+                        <input
+                          accept="image/*"
+                          id="image"
+                          type="file"
+                          name="image"
+                          value={jobImage}
+                          className="border rounded px-1"
+                          onChange={handleNewJobImage}
+                          placeholder="e.g., www.glassdoor.com/job-123"
+                        />
+                      </div>
+
+                      <div className="">
+                        <button className="bg-gray-900 text-white w-full rounded-md p-1 shadow hover:bg-gray-800 transition delay-100">
+                          Add New Job
+                        </button>
+                      </div>
+                    </form>
                   </div>
-
-                  <form
-                    onSubmit={handleNewJobSubmit}
-                    className="flex flex-col gap-4"
-                  >
-                    <div className="flex flex-col gap-1">
-                      <label htmlFor="position" className="text-sm font-medium">
-                        Position
-                      </label>
-                      <input
-                        type="text"
-                        name="position"
-                        value={newJob.position}
-                        className="border rounded px-1"
-                        onChange={handleNewJobChange}
-                      />
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <label htmlFor="job_type" className="text-sm font-medium">
-                        Job Type
-                      </label>
-                      <input
-                        type="text"
-                        name="job_type"
-                        value={newJob.job_type}
-                        className="border rounded px-1"
-                        onChange={handleNewJobChange}
-                        placeholder="e.g., Full Time"
-                      />
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <label htmlFor="location" className="text-sm font-medium">
-                        Location
-                      </label>
-                      <input
-                        type="text"
-                        name="location"
-                        value={newJob.location}
-                        className="border rounded px-1"
-                        onChange={handleNewJobChange}
-                        placeholder="e.g., On-site"
-                      />
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <label htmlFor="link" className="text-sm font-medium">
-                        Link
-                      </label>
-                      <input
-                        type="text"
-                        name="link"
-                        value={newJob.link}
-                        className="border rounded px-1"
-                        onChange={handleNewJobChange}
-                        placeholder="e.g., www.glassdoor.com/job-123"
-                      />
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <label htmlFor="image" className="text-sm font-medium">
-                        Cover Image
-                      </label>
-                      <input
-                        accept="image/*"
-                        id="image"
-                        type="file"
-                        name="image"
-                        value={jobImage}
-                        className="border rounded px-1"
-                        onChange={handleNewJobImage}
-                        placeholder="e.g., www.glassdoor.com/job-123"
-                      />
-                    </div>
-
-                    <div className="">
-                      <button className="bg-gray-900 text-white w-full rounded-md p-1 shadow hover:bg-gray-800 transition delay-100">
-                        Add New Job
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </div>
-
-      <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2 relative w-full p-4 bg-white">
-        <div className="flex flex-wrap gap-4">
-          {((memberList &&
-            memberList?.user[0]?.account_type === "village talent profile") ||
-            (memberList &&
-              memberList?.user[0]?.account_type === "village admin profile") ||
-            (memberList &&
-              memberList?.user[0]?.account_type === "community manager") ||
-            (memberList &&
-              memberList?.user[0]?.account_type ===
-                "village company profile") ||
-            (memberList && memberList?.user[0]?.account_type === "Intern")) && (
-            <div
-              className={` pb-1 w-max cursor-pointer  ${
-                memberShow
-                  ? "border-b-2 border-black"
-                  : "border-b-2 hover:border-gray-300 border-white ease-in-out transition-colors"
-              }`}
-              onClick={handleMemberShow}
-            >
-              Interns{" "}
-              <span className="bg-black text-white rounded p-1">
-                {memberList?.total_intern_profiles}
-              </span>
-            </div>
-          )}
-
-          {(memberList?.user[0]?.account_type === "village admin profile" ||
-            memberList?.user[0]?.account_type === "community manager") && (
-            <div
-              className={`"pb-1 w-max cursor-pointer ${
-                companyShow
-                  ? "border-b-2 border-black"
-                  : "hover:border-b-2 hover:border-gray-300 delay-200 ease-in-out transition-colors"
-              }`}
-              onClick={handleCompanyShow}
-            >
-              Companies{" "}
-              <span className="bg-black text-white rounded p-1">
-                {memberList?.total_company_profiles}
-              </span>
-            </div>
+                </motion.div>
+              </div>
+            </motion.div>
           )}
         </div>
 
-        <div className="flex-grow flex-wrap">
-          {((memberList?.user[0]?.account_type === "village talent profile" &&
-            memberShow) ||
-            (memberList?.user[0]?.account_type === "village admin profile" &&
+        <div className="flex flex-col md:flex-row md:justify-between md:flex-wrap gap-2 relative w-full p-4 bg-white">
+          <div className="flex flex-wrap gap-4">
+            {((memberList &&
+              memberList?.user[0]?.account_type === "village talent profile") ||
+              (memberList &&
+                memberList?.user[0]?.account_type ===
+                  "village admin profile") ||
+              (memberList &&
+                memberList?.user[0]?.account_type === "community manager") ||
+              (memberList &&
+                memberList?.user[0]?.account_type ===
+                  "village company profile") ||
+              (memberList &&
+                memberList?.user[0]?.account_type === "Intern")) && (
+              <div
+                className={` pb-1 w-max cursor-pointer  ${
+                  memberShow
+                    ? "border-b-2 border-black"
+                    : "border-b-2 hover:border-gray-300 border-white ease-in-out transition-colors"
+                }`}
+                onClick={handleMemberShow}
+              >
+                Members{" "}
+                <span className="bg-black text-white rounded p-1">
+                  {memberList?.total_talent_profiles}
+                </span>
+              </div>
+            )}
+
+            {(memberList?.user[0]?.account_type === "village admin profile" ||
+              memberList?.user[0]?.account_type === "community manager") && (
+              <div
+                className={`"pb-1 w-max cursor-pointer ${
+                  companyShow
+                    ? "border-b-2 border-black"
+                    : "hover:border-b-2 hover:border-gray-300 delay-200 ease-in-out transition-colors"
+                }`}
+                onClick={handleCompanyShow}
+              >
+                Companies{" "}
+                <span className="bg-black text-white rounded p-1">
+                  {memberList?.total_company_profiles}
+                </span>
+              </div>
+            )}
+          </div>
+
+          <div className="flex-grow flex-wrap">
+            {((memberList?.user[0]?.account_type === "village talent profile" &&
               memberShow) ||
-            (memberList?.user[0]?.account_type === "community manager" &&
-              memberShow) ||
-            memberList?.user[0]?.account_type === "village company profile" ||
-            memberList?.user[0]?.account_type === "Intern") && (
-            <form className="flex flex-col md:flex-row md:justify-around">
-              <div className="mb-4 md:mb-0">
-                <select
-                  name="country"
-                  id="country"
-                  className="border-gray-900 bg-white border-2 rounded px-1 w-full"
-                  onChange={(e) => handleInputChange(e)}
-                  value={filters.country}
-                >
-                  <option value="" disabled>
-                    Country
-                  </option>
-                  <option value="">All</option>
-
-                  {selectedAttributes?.countries?.map((country, index) => (
-                    <option value={country.country} key={index}>
-                      {country.country}
+              (memberList?.user[0]?.account_type === "village admin profile" &&
+                memberShow) ||
+              (memberList?.user[0]?.account_type === "community manager" &&
+                memberShow) ||
+              memberList?.user[0]?.account_type === "village company profile" ||
+              memberList?.user[0]?.account_type === "Intern") && (
+              <form className="flex flex-col md:flex-row md:justify-around">
+                <div className="mb-4 md:mb-0">
+                  <select
+                    name="country"
+                    id="country"
+                    className="border-gray-900 bg-white border-2 rounded px-1 w-full"
+                    onChange={(e) => handleInputChange(e)}
+                    value={filters.country}
+                  >
+                    <option value="" disabled>
+                      Country
                     </option>
-                  ))}
-                </select>
-              </div>
+                    <option value="">All</option>
 
-              <div className="mb-4 md:mb-0">
-                <input
-                  type="text"
-                  placeholder="Search by name"
-                  className="border-gray-900 border-2 rounded px-1 w-full focus:outline-none"
-                  onChange={(e) => handleInputChange(e)}
-                  name="name"
-                  id="name"
-                  value={filters.name}
-                />
-              </div>
-
-              <div>
-                <select
-                  name="skill"
-                  id="skills"
-                  className="border-gray-900 border- bg-white rounded px-1 w-full"
-                  onChange={(e) => handleInputChange(e)}
-                  value={filters.skill}
-                >
-                  <option value="" disabled>
-                    Skills
-                  </option>
-                  <option value="">All</option>
-                  {selectedAttributes?.skills?.map((skill, index) => (
-                    <option value={skill.skill} key={index}>
-                      {skill.skill}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </form>
-          )}
-
-          {((memberList?.user[0]?.account_type === "community manager" &&
-            companyShow) ||
-            (memberList?.user[0]?.account_type === "village admin profile" &&
-              companyShow)) && (
-            <form className="flex flex-col md:flex-row md:justify-around">
-              <div className="mb-4 md:mb-0">
-                <select
-                  name="company_country"
-                  id="company_country"
-                  className="border-gray-300 border-2 rounded px-1 w-full"
-                  onChange={(e) => handleInputChange(e)}
-                  value={filters.company_country}
-                >
-                  <option value="" disabled>
-                    Country
-                  </option>
-                  <option value="">All</option>
-
-                  {selectedCompanyAttributes?.countries?.map(
-                    (country, index) => (
+                    {selectedAttributes?.countries?.map((country, index) => (
                       <option value={country.country} key={index}>
                         {country.country}
                       </option>
-                    )
-                  )}
-                </select>
-              </div>
+                    ))}
+                  </select>
+                </div>
 
-              <div className="mb-4 md:mb-0">
-                <input
-                  type="text"
-                  placeholder="Search by company name"
-                  className="border-gray-300 border-2 rounded px-1 w-full"
-                  onChange={(e) => handleInputChange(e)}
-                  name="company_name"
-                  id="company_name"
-                  value={filters.company_name}
-                />
-              </div>
+                <div className="mb-4 md:mb-0">
+                  <input
+                    type="text"
+                    placeholder="Search by name"
+                    className="border-gray-900 border-2 rounded px-1 w-full focus:outline-none"
+                    onChange={(e) => handleInputChange(e)}
+                    name="name"
+                    id="name"
+                    value={filters.name}
+                  />
+                </div>
 
-              <div>
-                <select
-                  name="company_industry"
-                  id="company_industry "
-                  className="border-gray-300 border-2 rounded px-1 w-full"
-                  onChange={(e) => handleInputChange(e)}
-                  value={filters.company_industry}
-                >
-                  <option value="" disabled>
-                    Industry
-                  </option>
-                  <option value="">All industries</option>
-                  {selectedCompanyAttributes?.industries?.map(
-                    (industry, index) => (
-                      <option value={industry.industry} key={index}>
-                        {industry.industry}
+                <div>
+                  <select
+                    name="skill"
+                    id="skills"
+                    className="border-gray-900 border-2 bg-white rounded px-1 w-full"
+                    onChange={(e) => handleInputChange(e)}
+                    value={filters.skill}
+                  >
+                    <option value="" disabled>
+                      Skills
+                    </option>
+                    <option value="">All</option>
+                    {selectedAttributes?.skills?.map((skill) => (
+                      <option value={skill.skill} key={skill.skill}>
+                        {skill.skill}
                       </option>
-                    )
-                  )}
-                </select>
-              </div>
-            </form>
-          )}
+                    ))}
+                  </select>
+                </div>
+              </form>
+            )}
+
+            {((memberList?.user[0]?.account_type === "community manager" &&
+              companyShow) ||
+              (memberList?.user[0]?.account_type === "village admin profile" &&
+                companyShow)) && (
+              <form className="flex flex-col md:flex-row md:justify-around">
+                <div className="mb-4 md:mb-0">
+                  <select
+                    name="company_country"
+                    id="company_country"
+                    className="border-gray-300 border-2 rounded px-1 w-full"
+                    onChange={(e) => handleInputChange(e)}
+                    value={filters.company_country}
+                  >
+                    <option value="" disabled>
+                      Country
+                    </option>
+                    <option value="">All</option>
+
+                    {selectedCompanyAttributes?.countries?.map(
+                      (country, index) => (
+                        <option value={country.country} key={index}>
+                          {country.country}
+                        </option>
+                      )
+                    )}
+                  </select>
+                </div>
+
+                <div className="mb-4 md:mb-0">
+                  <input
+                    type="text"
+                    placeholder="Search by company name"
+                    className="border-gray-300 border-2 rounded px-1 w-full"
+                    onChange={(e) => handleInputChange(e)}
+                    name="company_name"
+                    id="company_name"
+                    value={filters.company_name}
+                  />
+                </div>
+
+                <div>
+                  <select
+                    name="company_industry"
+                    id="company_industry "
+                    className="border-gray-300 border-2 rounded px-1 w-full"
+                    onChange={(e) => handleInputChange(e)}
+                    value={filters.company_industry}
+                  >
+                    <option value="" disabled>
+                      Industry
+                    </option>
+                    <option value="">All industries</option>
+                    {selectedCompanyAttributes?.industries?.map(
+                      (industry, index) => (
+                        <option value={industry.industry} key={index}>
+                          {industry.industry}
+                        </option>
+                      )
+                    )}
+                  </select>
+                </div>
+              </form>
+            )}
+          </div>
         </div>
 
-        {incompleteProfile && (
-          <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-sm">
-            <Complete_Profile
-              message="Your profile is incomplete! Please complete setting up your profile."
-              alertDismiss={profileReroute}
-            />
-          </div>
+        {(memberList.user[0]?.account_type === "village talent profile" ||
+          memberList.user[0].account_type === "village admin profile" ||
+          memberList.user[0].account_type === "community manager" ||
+          memberList.user[0].account_type === "village company profile" ||
+          memberList.user[0].account_type === "Intern") && (
+          <AnimatePresence>
+            {memberShow && (
+              <motion.div
+                className="grid grid-cols-1 xl:min-h-[500px] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 relative"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                {filteredData.length === 0 ? (
+                  <div className="flex min-h-[10rem] h-full w-screen items-center justify-center ">
+                    <JellyTriangle size={40} color="#231F20" />
+                  </div>
+                ) : (
+                  visibleData.map((profile, index) => (
+                    <MemberProfile
+                      key={index}
+                      image={profile.image}
+                      name={`${profile.first_name} ${profile.last_name}`}
+                      skills={profile.skills}
+                      showProfile={showProfile}
+                      country={profile.country}
+                      experience={profile.experience}
+                      certificate={profile.education[0]?.degree_name}
+                      user_id={profile.user_id}
+                      bio={profile.bio}
+                    />
+                  ))
+                )}
+                <AnimatePresence>
+                  {profile && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 flex items-center justify-center z-[999] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
+                    >
+                      <div ref={expandedProfileRef}>
+                        <ExpandedProfileModal
+                          image={profile.image}
+                          name={profile.name}
+                          skills={profile.skills}
+                          hideProfile={hideProfile}
+                          country={profile.country}
+                          certificate={profile.certificate}
+                          experience={profile.experience}
+                          bio={profile.bio}
+                          onClick={() => {
+                            handleMoreInfoClick(profile.user_id);
+                          }}
+                          handleChat={() => {
+                            handleChatClick(profile.user_id);
+                          }}
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            )}
+            {memberShow && (
+              <div className="flex w-full justify-center items-center gap-2">
+                {talentPages.map((pageNumber, index) => (
+                  <div className="flex gap-2" key={index}>
+                    <button
+                      onClick={() => handlePageFetch(pageNumber)}
+                      className={`inline-block rounded-full border border-black p-3 transition-colors delay-75 ${
+                        pageNumber === activePage
+                          ? "bg-transparent text-black cursor-not-allowed"
+                          : "text-white bg-black"
+                      }  hover:bg-transparent hover:text-black focus:outline-none focus:ring active:text-indigo-500`}
+                      disabled={activePage === pageNumber}
+                    >
+                      {pageNumber}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </AnimatePresence>
         )}
 
-        {incompleteCompanyProfile && (
-          <div className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm">
-            <Complete_Profile
-              message="Your profile is incomplete! Please complete setting up your profile."
-              alertDismiss={companyProfileReroute}
-            />
-          </div>
-        )}
-      </div>
-
-      {(memberList.user[0]?.account_type === "village talent profile" ||
-        memberList.user[0].account_type === "village admin profile" ||
-        memberList.user[0].account_type === "community manager" ||
-        memberList.user[0].account_type === "village company profile" ||
-        memberList.user[0].account_type === "Intern") && (
         <AnimatePresence>
-          {memberShow && (
+          {companyShow && (
             <motion.div
-              className="grid grid-cols-1 xl:min-h-[500px] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 relative"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 relative"
             >
-              {filteredData.length === 0 ? (
-                <div className="flex min-h-[10rem] h-full w-screen items-center justify-center ">
-                  <JellyTriangle size={40} color="#231F20" />
-                </div>
+              {filteredCompanyData.length === 0 ? (
+                <p className="font-bold text-slate-600 text-lg col-span-3 text-center">
+                  No company profiles match your filter criteria.
+                </p>
               ) : (
-                visibleData.map((profile, index) => (
-                  <MemberProfile
-                    key={index}
-                    image={profile.image}
-                    name={`${profile.first_name} ${profile.last_name}`}
-                    skills={profile.skills}
-                    showProfile={showProfile}
-                    country={profile.country}
-                    experience={profile.experience}
-                    certificate={profile.education[0]?.degree_name}
-                    user_id={profile.user_id}
-                    bio={profile.bio}
+                visibleCompanyData.map((company) => (
+                  <CompanyProfile
+                    key={company.user_id}
+                    company_name={company.company_name}
+                    image={company.image}
+                    industry={company.industry}
+                    showCompany={showCompany}
+                    company_description={company.company_description}
+                    website={company.company_website}
+                    user_id={company.user_id}
                   />
                 ))
               )}
+
               <AnimatePresence>
-                {profile && (
+                {company && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 flex items-center justify-center z-[999] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
+                    className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
                   >
-                    <div ref={expandedProfileRef}>
-                      <ExpandedProfileModal
-                        image={profile.image}
-                        name={profile.name}
-                        skills={profile.skills}
-                        hideProfile={hideProfile}
-                        country={profile.country}
-                        certificate={profile.certificate}
-                        experience={profile.experience}
-                        bio={profile.bio}
-                        onClick={() => {
-                          handleMoreInfoClick(profile.user_id);
-                        }}
-                        handleChat={() => {
-                          handleChatClick(profile.user_id);
-                        }}
+                    <div ref={expandedCompanyRef}>
+                      <ExpandedCompanyModal
+                        company_name={company.company_name}
+                        image={company.image}
+                        company_description={company.company_description}
+                        industry={company.industry}
+                        website={company.website}
+                        user_id={company.user_id}
                       />
                     </div>
                   </motion.div>
@@ -998,90 +1146,18 @@ const Virtual_internship = () => {
               </AnimatePresence>
             </motion.div>
           )}
-          {memberShow && (
-            <div className="flex w-full justify-center items-center gap-2">
-              {talentPages.map((pageNumber) => (
-                <div className="flex gap-2" key={pageNumber}>
-                  <button
-                    onClick={() => handlePageFetch(pageNumber)}
-                    className={`inline-block rounded-full border border-black p-3 transition-colors delay-75 ${
-                      pageNumber === activePage
-                        ? "bg-transparent text-black cursor-not-allowed"
-                        : "text-white bg-black"
-                    }  hover:bg-transparent hover:text-black focus:outline-none focus:ring active:text-indigo-500`}
-                    disabled={activePage === pageNumber}
-                  >
-                    {pageNumber}
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
         </AnimatePresence>
-      )}
 
-      <AnimatePresence>
-        {companyShow && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 relative"
+        {(memberList.user[0].account_type === "community manager" ||
+          memberList.user[0].account_type === "village admin profile") && (
+          <div
+            className="fixed bottom-5 right-10 rounded p-2 bg-white text-2xl border cursor-pointer transition transform hover:scale-105"
+            onClick={handleNewJobShow}
           >
-            {filteredCompanyData.length === 0 ? (
-              <p className="font-bold text-slate-600 text-lg col-span-3 text-center">
-                No company profiles match your filter criteria.
-              </p>
-            ) : (
-              visibleCompanyData.map((company, index) => (
-                <CompanyProfile
-                  key={index}
-                  company_name={company.company_name}
-                  image={company.image}
-                  industry={company.industry}
-                  showCompany={showCompany}
-                  company_description={company.company_description}
-                  website={company.company_website}
-                  user_id={company.user_id}
-                />
-              ))
-            )}
-
-            <AnimatePresence>
-              {company && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
-                >
-                  <div ref={expandedCompanyRef}>
-                    <ExpandedCompanyModal
-                      company_name={company.company_name}
-                      image={company.image}
-                      company_description={company.company_description}
-                      industry={company.industry}
-                      website={company.website}
-                      user_id={company.user_id}
-                    />
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
+            <FcAddDatabase />
+          </div>
         )}
-      </AnimatePresence>
-
-      {(memberList.user[0].account_type === "community manager" ||
-        memberList.user[0].account_type === "village admin profile") && (
-        <div
-          className="fixed bottom-5 right-10 rounded p-2 bg-white text-2xl border cursor-pointer transition transform hover:scale-105"
-          onClick={handleNewJobShow}
-        >
-          <FcAddDatabase />
-        </div>
-      )}
-    </div>
+      </div>
     </Layout>
   );
 };

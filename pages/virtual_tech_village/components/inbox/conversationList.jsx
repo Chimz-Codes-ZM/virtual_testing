@@ -15,20 +15,6 @@ const ConversationList = ({
   const [meTyping, setMeTyping] = useState(false);
   const [typing, setTyping] = useState(false);
 
-
-  const { sendMessage } = useWebSocket(
-    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/106/106_110/`
-  );
-
-  const handleSendInput = async () => {
-    sendMessage(
-      JSON.stringify({
-        type: "chat_message",
-        message: messageText,
-      })
-    );
-  };
-
   const { readyState } = useWebSocket(
     `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${loggedInID}/${loggedInID}${roomName}/`,
     {
