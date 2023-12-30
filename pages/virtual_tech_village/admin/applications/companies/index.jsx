@@ -213,7 +213,7 @@ const Index = () => {
                 >
                   <Link
                     className="text-md text-gray-800 flex flex-grow gap-2"
-                    href={`/virtual_tech_village//admin/applications/${applicant.user_id}`}
+                    href={`/virtual_tech_village/admin/applications/${applicant.user_id}`}
                   >
                     <div className="relative w-6 h-6 rounded">
                       <Image
@@ -257,7 +257,7 @@ const Index = () => {
             >
               {info?.approved_companies?.map((applicant) => (
                 <div
-                  key={applicant.id}
+                  key={applicant.user_id}
                   className="w-full flex border-b py-2 border-gray-600"
                 >
                   <span className="text-md text-gray-800 flex flex-grow">

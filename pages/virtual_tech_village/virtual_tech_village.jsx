@@ -661,11 +661,11 @@ const Virtual_Tech_Village = () => {
           .toLocaleLowerCase()
           .includes(filters.name.toLocaleLowerCase())
       : true;
-    const skillFilter = filters.skill
-      ? profile.skills.toLowerCase() === filters.skill.toLowerCase()
+    const industryFilter = filters.company_industry
+      ? profile.industry.toLowerCase() === filters.company_industry.toLowerCase()
       : true;
 
-    return countryFilter && searchFilter && skillFilter;
+    return countryFilter && searchFilter && industryFilter;
   });
 
   const itemsPerCompanyPage = 12;

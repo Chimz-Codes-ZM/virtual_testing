@@ -309,7 +309,7 @@ const Index = () => {
             >
               {info?.approved_talents?.map((applicant) => (
                 <div
-                  key={applicant.id}
+                  key={applicant.user_id}
                   className="w-full flex border-b py-2 border-gray-600"
                 >
                   <span className="text-md text-gray-800 flex flex-grow">

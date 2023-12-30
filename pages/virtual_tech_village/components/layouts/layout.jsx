@@ -72,7 +72,6 @@ const Layout = ({ children, sideHighlight }) => {
   const logoutHandler = () => {
     signOut({ callbackUrl: "/homepage/login" });
 
-    dispatch(resetUser());
   };
 
   useEffect(() => {

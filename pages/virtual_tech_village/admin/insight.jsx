@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { resetState } from "@/features/applications/TalentSlice";
-
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 
@@ -18,16 +17,20 @@ const Teams = () => {
   const [info, setInfo] = useState(null);
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
+    }
+  });
 
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
+  useEffect(() => {
 
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/total_applications/${id}/`
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/total_applications/${user.user_id}/`
         );
         setInfo(response.data);
           console.log("Total applications: ", response.data)

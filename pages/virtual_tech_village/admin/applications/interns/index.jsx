@@ -57,7 +57,7 @@ const Index = () => {
   async function fetchData() {
     try {
       const response = await axios.get(
-        `https://baobabpad.online/village/intern_approval/${user.user_id}/`
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/intern_approval/${user.user_id}/`
       );
       setInfo(response.data);
       console.log("Intern data: ", response.data);
@@ -77,7 +77,7 @@ const Index = () => {
       setLoading(true);
 
       const response = await fetch(
-        `https://baobabpad.online/village/intern_approval/${user.user_id}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/intern_approval/${user.user_id}/`,
         {
           method: "POST",
           headers: {
@@ -213,7 +213,7 @@ const Index = () => {
                 >
                   <Link
                     className="text-md text-gray-800 flex flex-grow gap-2"
-                    href={`/virtual_tech_village//admin/applications/${applicant.user_id}`}
+                    href={`/virtual_tech_village/admin/applications/${applicant.user_id}`}
                   >
                     <div className="relative w-6 h-6 rounded">
                       <Image
