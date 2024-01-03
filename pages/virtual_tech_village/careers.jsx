@@ -6,6 +6,7 @@ import SidePanel from "./components/events/SidePanel";
 
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { BsFillCalendar2EventFill } from "react-icons/bs";
@@ -28,6 +29,13 @@ const Careers = () => {
     const [addEvent, setAddEvent] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [jobs, setJobs] = useState([])
+    const user = useSelector((state) => {
+      if(state.user?.userData && state.user.userData.length > 0) {
+        return state.user.userData[0]
+      } else {
+        return null
+      }
+    })
   
     const handleAddEvent = () => {
       setAddEvent(true);
@@ -104,15 +112,10 @@ const Careers = () => {
     };
 
     useEffect(() => {
-      const token = localStorage.getItem("token");
-  
-      const decodedToken = jwt_decode(token);
-      const id = decodedToken.user_id;
-  
       async function fetchData() {
         try {
           const response = await axios.get(
-            `https://baobabpad-334a8864da0e.herokuapp.com/village/job_listings/${id}/`
+            `https://baobabpad-334a8864da0e.herokuapp.com/village/job_listings/${user.user_id}/`
           );
           console.log("This is the careers data ===>", response.data);
           setJobs(response.data)

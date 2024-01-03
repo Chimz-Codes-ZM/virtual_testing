@@ -54,20 +54,25 @@ const Index = () => {
     }
   })
 
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0]
+    } else {
+      return null
+    }
+  })
+
   const uniqueRoom = `_${id}`;
   const userId =
     userData && userData.length > 0 ? `${userData[0].user_id}` : "";
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
 
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
 
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${id}/`
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${user.user_id}/`
         );
         setUserData(response.data);
         // console.log(response.data);
@@ -239,7 +244,7 @@ const Index = () => {
                                 {message.content}
                               </div>
                             )}
-                            {message.from_user?.email !== email && (
+                            {message?.from_user?.email !== email && (
                               <div>
                                 <div className="flex items-start gap-2.5">
                                   <Image

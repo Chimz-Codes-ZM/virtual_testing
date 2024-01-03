@@ -6,7 +6,6 @@ import jwt_decode from "jwt-decode";
 import { useSession, getSession } from "next-auth/react";
 import { useSelector, dispatch, useDispatch } from "react-redux";
 import {
-  resetUser,
   fetchUserData,
   setUserData,
   setUserId,
@@ -17,107 +16,15 @@ import Unapproved from "./components/alerts/unapproved";
 import MemberProfile from "./components/profiles/MemberProfile";
 import ExpandedProfileModal from "./components/profiles/ExpandedProfileModal";
 import JobAdded from "./components/alerts/jobAdded";
+import CompanyProfile from "./components/profiles/companyProfile";
+import ExpandedCompanyModal from "./components/profiles/expandedCompanyModal";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { JellyTriangle } from "@uiball/loaders";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { FaExternalLinkSquareAlt } from "react-icons/fa";
-import { BsFillInfoCircleFill } from "react-icons/bs";
 import { FcAddDatabase } from "react-icons/fc";
 
-const CompanyProfile = ({
-  company_name,
-  image,
-  industry,
-  company_description,
-  website,
-  showCompany,
-  user_id,
-}) => {
-  const showCompanyProfile = () => {
-    showCompany({
-      image,
-      industry,
-      company_name,
-      company_description,
-      website,
-      user_id,
-    });
-  };
 
-  return (
-    <div className="block" onClick={showCompanyProfile}>
-      <img
-        alt={company_name}
-        src={image}
-        className="h-56 w-full rounded-bl-3xl rounded-tr-3xl object-cover sm:h-64 lg:h-72  transition-opacity opacity-0 duration-[1.2s]"
-        onLoad={(event) => event.target.classList.remove("opacity-0")}
-      />
-
-      <div className="mt-4 sm:flex sm:items-center sm:justify-center sm:gap-4">
-        <strong className="font-medium">{company_name}</strong>
-
-        <span className="hidden sm:block sm:h-px sm:w-8 sm:bg-yellow-500"></span>
-
-        <p className="mt-0.5 opacity-50 sm:mt-0">{industry}</p>
-      </div>
-    </div>
-  );
-};
-
-const ExpandedCompanyModal = ({
-  industry,
-  image,
-  company_name,
-  company_description,
-  website,
-  user_id,
-}) => {
-  return (
-    <>
-      <div className="relative block overflow-hidden rounded-lg border border-gray-100 p-4 sm:p-6 lg:p-8 bg-white">
-        <span className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
-
-        <div className="sm:flex sm:justify-between sm:gap-4">
-          <div>
-            <h3 className="text-lg font-bold text-gray-900 sm:text-xl">
-              {company_name}
-            </h3>
-
-            <p className="mt-1 text-xs font-medium text-gray-600">{industry}</p>
-          </div>
-
-          <div className="hidden sm:block sm:shrink-0">
-            <img
-              alt={company_name}
-              src={image}
-              className="h-16 w-16 rounded-lg object-cover shadow-sm"
-            />
-          </div>
-        </div>
-
-        <div className="mt-4">
-          <p className="max-w-[40ch] text-sm text-gray-500">
-            {company_description}
-          </p>
-        </div>
-
-        <div className="mt-6 flex gap-4 sm:gap-6">
-          <div className="flex gap-4 font-medium text-gray-900">
-            <a href={`${website}`} target="_blank" className="">
-              <FaExternalLinkSquareAlt />
-              {/* THIS NEEDS TO BE FIXED ASAP */}
-            </a>
-
-            <Link href={`/virtual_tech_village/company_info/${user_id}`}>
-              <BsFillInfoCircleFill />
-            </Link>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
 
 const Virtual_Tech_Village = () => {
   const router = useRouter();
@@ -165,10 +72,6 @@ const Virtual_Tech_Village = () => {
       return null;
     }
   });
-
-  // const user_id = useSelector((state) => {
-  //   return state.user.user_id;
-  // });
 
   const dispatch = useDispatch();
 
@@ -653,13 +556,10 @@ const Virtual_Tech_Village = () => {
     const countryFilter = filters.country
       ? profile.country === filters.country
       : true;
-    const searchFilter = filters.name
-      ? profile.first_name
+    const searchFilter = filters.company_name
+      ? profile.company_name
           .toLowerCase()
-          .includes(filters.name.toLocaleLowerCase()) ||
-        profile.last_name
-          .toLocaleLowerCase()
-          .includes(filters.name.toLocaleLowerCase())
+          .includes(filters.company_name.toLocaleLowerCase())
       : true;
     const industryFilter = filters.company_industry
       ? profile.industry.toLowerCase() === filters.company_industry.toLowerCase()
@@ -1008,7 +908,7 @@ const Virtual_Tech_Village = () => {
         memberList.user[0].account_type === "Intern") && (
         <AnimatePresence>
           {memberShow && (
-            <motion.div
+            <div
               className="grid grid-cols-1 xl:min-h-[500px] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 relative"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -1034,13 +934,13 @@ const Virtual_Tech_Village = () => {
                   />
                 ))
               )}
-              <AnimatePresence>
+              {/* <AnimatePresence> */}
                 {profile && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 flex items-center justify-center z-[999] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
+                    className={"fixed inset-0 flex items-center justify-end z-[600] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"}
                   >
                     <div ref={expandedProfileRef}>
                       <ExpandedProfileModal
@@ -1062,8 +962,8 @@ const Virtual_Tech_Village = () => {
                     </div>
                   </motion.div>
                 )}
-              </AnimatePresence>
-            </motion.div>
+              {/* </AnimatePresence> */}
+            </div>
           )}
           {memberShow && (
             <div className="flex w-full justify-center items-center gap-2">

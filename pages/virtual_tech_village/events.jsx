@@ -7,9 +7,11 @@ import SidePanel from "./components/events/SidePanel";
 
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { BsFillCalendar2EventFill } from "react-icons/bs";
+
 
 import { event_grid } from "../data";
 
@@ -31,6 +33,14 @@ const Events = () => {
   const [success, setSuccess] = useState(false);
 
   const [events, setEvents] = useState([]);
+
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
+    }
+  })
 
   const handleAddEvent = () => {
     setAddEvent(true);
@@ -130,15 +140,12 @@ const Events = () => {
   // AXIOS REQUEST
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
 
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
 
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/events/${id}/`
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/events/${user.user_id}/`
         );
         console.log("This is the events ===>", response.data);
         setEvents(response.data);

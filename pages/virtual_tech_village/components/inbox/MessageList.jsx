@@ -30,7 +30,7 @@ const MessageList = ({ selectedConversation, onConversationClick }) => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `hhttps://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${user.user_id}/`
+          `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${user.user_id}/`
         );
         setConversations(response.data);
         console.log(response.data);

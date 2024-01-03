@@ -19,7 +19,7 @@ const ExpandedProfileModal = ({
 }) => {
   return (
     <div className="">
-      <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg relative">
+      <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg relative h-screen">
         <div className="grid grid-cols-1 md:grid-cols-1 gap-4 p-4 md:p-8">
           {/* Left Column */}
           <div className="md:col-span-1 flex flex-col items-center space-y-4">

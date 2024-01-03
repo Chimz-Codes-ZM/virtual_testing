@@ -360,7 +360,7 @@ const tech_signup = () => {
 
                   <div className="col-span-4 lg:col-span-2 text-gray-700">
                     <label
-                      for="accountType"
+                      htmlFor="accountType"
                       name="radioGroup"
                       className="block text-sm font-medium text-gray-700"
                     >
@@ -388,18 +388,6 @@ const tech_signup = () => {
                         onChange={handleChange}
                       />
                       <span className="ml-2 text-sm">Talent</span>
-                    </label>
-
-                    <label className="inline-flex items-center">
-                      <input
-                        type="radio"
-                        className="form-radio text-green-500 h-4 w-4"
-                        name="accountType"
-                        value="Intern"
-                        checked={values.accountType === "Intern"}
-                        onChange={handleChange}
-                      />
-                      <span className="ml-2 text-sm">Intern</span>
                     </label>
                   </div>
 
@@ -544,7 +532,7 @@ const tech_signup = () => {
                     >
                       <div className="col-span-4">
                         <label
-                          for="FirstName"
+                          htmlFor="FirstName"
                           className="block text-sm font-medium text-gray-700"
                         >
                           First Name
@@ -568,7 +556,7 @@ const tech_signup = () => {
 
                       <div className="col-span-4 ">
                         <label
-                          for="LastName"
+                          htmlFor="LastName"
                           className="block text-sm font-medium text-gray-700"
                         >
                           Last Name
@@ -591,7 +579,7 @@ const tech_signup = () => {
 
                       <div className="col-span-4">
                         <label
-                          for="Email"
+                          htmlFor="Email"
                           className="block text-sm font-medium text-gray-700"
                         >
                           Email
@@ -615,7 +603,7 @@ const tech_signup = () => {
                       <div className="col-span-4">
                         <div className="flex flex-col">
                           <label
-                            for="Password"
+                            htmlFor="Password"
                             className="block text-sm font-medium text-gray-700"
                           >
                             Password
@@ -631,7 +619,7 @@ const tech_signup = () => {
 
                         <div className="mt-4">
                           <label
-                            for="PasswordConfirmation"
+                            htmlFor="PasswordConfirmation"
                             className="block text-sm font-medium text-gray-700"
                           >
                             Password Confirmation
@@ -648,7 +636,7 @@ const tech_signup = () => {
                       </div>
 
                       <div className="col-span-4">
-                        <label for="MarketingAccept" className="flex gap-4">
+                        <label htmlFor="MarketingAccept" className="flex gap-4">
                           <input
                             type="checkbox"
                             id="MarketingAccept"
@@ -713,185 +701,6 @@ const tech_signup = () => {
                       </div>
                     </form>
                   )}
-                  {values.accountType === "Intern" && (
-                    <form
-                      onSubmit={handleSubmit}
-                      className="mt-8 grid grid-cols-4 gap-5"
-                    >
-                      <div className="col-span-4">
-                        <label
-                          for="FirstName"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          First Name
-                        </label>
-
-                        <input
-                          type="text"
-                          id="FirstName"
-                          name="first_name"
-                          onChange={handleChange}
-                          className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
-                          // required={}
-                        />
-
-                        {validationErrors?.first_name && (
-                          <p className="text-red-500 text-sm">
-                            {validationErrors.first_name}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="col-span-4 ">
-                        <label
-                          for="LastName"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Last Name
-                        </label>
-
-                        <input
-                          type="text"
-                          id="LastName"
-                          name="last_name"
-                          onChange={handleChange}
-                          className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
-                        />
-
-                        {validationErrors?.last_name && (
-                          <p className="text-red-500 text-sm">
-                            {validationErrors.last_name}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="col-span-4">
-                        <label
-                          for="Email"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Email
-                        </label>
-
-                        <input
-                          type="email"
-                          id="Email"
-                          name="email"
-                          onChange={handleChange}
-                          className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-1"
-                        />
-
-                        {validationErrors?.email && (
-                          <p className="text-red-500 text-sm">
-                            {validationErrors.email}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="col-span-4 flex flex-col">
-                        <div className="flex flex-col">
-                          <label
-                            for="Password"
-                            className="block text-sm font-medium text-gray-700"
-                          >
-                            Password
-                          </label>
-
-                          <input
-                            type="password"
-                            id="Password"
-                            name="password"
-                            onChange={handleChange}
-                            className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                          />
-                        </div>
-
-                        <div className="mt-4">
-                          <label
-                            for="PasswordConfirmation"
-                            className="block text-sm font-medium text-gray-700"
-                          >
-                            Password Confirmation
-                          </label>
-
-                          <input
-                            type="password"
-                            id="PasswordConfirmation"
-                            name="confirm_password"
-                            onChange={handleChange}
-                            className="mt-1 w-full rounded-md border border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-span-4">
-                        <label for="MarketingAccept" className="flex gap-4">
-                          <input
-                            type="checkbox"
-                            id="MarketingAccept"
-                            name="marketing_opt_in"
-                            checked={values.marketing_opt_in === "true"}
-                            onChange={handleChange}
-                            className="h-5 w-5 rounded-md border-gray-200 bg-white shadow-sm"
-                          />
-
-                          <span className="text-sm text-gray-700">
-                            I want to receive emails about events, product
-                            updates and company announcements.
-                          </span>
-                        </label>
-                      </div>
-
-                      <div className="col-span-4">
-                        <p className="text-sm text-gray-500">
-                          By creating an account, you agree to our{" "}
-                          <span className="mx-1">
-                            <a
-                              href="/homepage/talent_terms"
-                              target="_blank"
-                              className="text-gray-700 underline"
-                            >
-                              terms and conditions
-                            </a>{" "}
-                          </span>
-                          and{" "}
-                          <span className="mx-1">
-                            {" "}
-                            <a
-                              href="/homepage/privacy"
-                              target="_blank"
-                              className="text-gray-700 underline"
-                            >
-                              privacy policy
-                            </a>
-                          </span>
-                          .
-                        </p>
-                      </div>
-
-                      <div className="col-span-4 sm:flex sm:items-center sm:gap-4">
-                        <button
-                          className="inline-block shrink-0 rounded-md border border-teal-600 bg-teal-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-teal-600 focus:outline-none focus:ring active:text-teal-500"
-                          disabled={!validateForm() || buttonClicked}
-                        >
-                          Create an account
-                        </button>
-
-                        <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-                          Already have an account?{" "}
-                          <span className="mx-1">
-                            <Link
-                              href="/homepage/login"
-                              className="text-gray-700 underline"
-                            >
-                              Log in
-                            </Link>
-                          </span>
-                          .
-                        </p>
-                      </div>
-                    </form>
-                  )}
                 </div>
               </main>
             </div>
@@ -903,3 +712,4 @@ const tech_signup = () => {
 };
 
 export default tech_signup;
+
