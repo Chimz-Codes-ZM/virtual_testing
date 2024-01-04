@@ -57,6 +57,10 @@ import React, {
   
       };
     }, []);
+
+    useEffect(() => {
+      setSocketUrl(`wss://baobabpad-334a8864da0e.herokuapp.com/ws/channels/${id}/${room}/`);
+    }, [room])
   
     const connectionStatus = {
       [ReadyState.CONNECTING]: "Connecting",

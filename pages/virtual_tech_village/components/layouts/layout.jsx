@@ -87,7 +87,7 @@ const Layout = ({ children, sideHighlight }) => {
   }, []);
 
   const { readyState, sendJsonMessage } = useWebSocket(
-    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat_notifications/${id}/`,
+    `wss://baobabpad.online/ws/chat_notifications/2/`,
     {
       onOpen: () => {
         console.log("Connected to Notifications!");

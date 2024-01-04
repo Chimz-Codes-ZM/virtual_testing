@@ -48,27 +48,25 @@ const Index = () => {
 
   const email = useSelector((state) => {
     if (state.user?.userData && state.user.userData.length > 0) {
-      return state.user.userData[0].email
+      return state.user.userData[0].email;
     } else {
-      return null
+      return null;
     }
-  })
+  });
 
   const user = useSelector((state) => {
     if (state.user?.userData && state.user.userData.length > 0) {
-      return state.user.userData[0]
+      return state.user.userData[0];
     } else {
-      return null
+      return null;
     }
-  })
+  });
 
   const uniqueRoom = `_${id}`;
   const userId =
     userData && userData.length > 0 ? `${userData[0].user_id}` : "";
 
   useEffect(() => {
-
-
     async function fetchData() {
       try {
         const response = await axios.get(
@@ -181,8 +179,6 @@ const Index = () => {
     fetchInfo();
   }, [id]);
 
-  
-
   useEffect(() => {
     router.events.on("routeChangeComplete", () => {});
   }, [router]);
@@ -244,29 +240,31 @@ const Index = () => {
                                 {message.content}
                               </div>
                             )}
-                            {message?.from_user?.email !== email && (
-                              <div>
+                            {message.from_user?.email !== email && (
+                              <div className=" max-w-[83%]">
                                 <div className="flex items-start gap-2.5">
-                                  <Image
-                                    className="w-8 h-8 rounded-full"
-                                    src="/docs/images/people/profile-picture-3.jpg"
-                                    alt="Jese image"
-                                  />
+                                  <div className="w-8 h-8 relative rounded-full">
+                                    <Image
+                                      className="w-8 h-8 rounded-full"
+                                      src={message?.from_user?.image}
+                                      alt="profile picture"
+                                      fill
+                                      objectFit="cover"
+                                    />
+                                  </div>
+
                                   <div className="flex flex-col w-full max-w-[320px] leading-1.5">
                                     <div className="flex items-center space-x-2 rtl:space-x-reverse">
                                       <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        Bonnie Green
+                                        {message?.from_user?.name}
                                       </span>
                                       <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                        11:46
+                                        {message.time}
                                       </span>
                                     </div>
                                     <p className="text-sm font-normal py-2 text-gray-900 dark:text-white">
                                       {message.content}
                                     </p>
-                                    <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                      Delivered
-                                    </span>
                                   </div>
                                 </div>
                               </div>

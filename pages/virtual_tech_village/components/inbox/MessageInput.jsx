@@ -48,6 +48,10 @@ const MessageInput = ({ roomName, userId }) => {
     };
   }, []);
 
+  useEffect(() => {
+    setSocketUrl(`wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${userId}/${userId}${roomName}/`);
+  }, [roomName])
+
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
     [ReadyState.OPEN]: "Open",

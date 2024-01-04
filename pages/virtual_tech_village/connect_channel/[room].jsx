@@ -136,9 +136,14 @@ const connect = () => {
     scrollToBottom();
   }, [messageHistory]);
 
+  useEffect(() => {
+    setMessageHistory([]);
+    
+  }, [room]);
+
   const containerStyles = {
-    scrollbarWidth: "none", // For Firefox
-    msOverflowStyle: "none", // For IE
+    scrollbarWidth: "none",
+    msOverflowStyle: "none",
   };
 
   return (
