@@ -86,22 +86,22 @@ const Complete_company_profile = () => {
     e.preventDefault();
 
 console.log(completedProfile)
-    // const response = await fetch(
-    //   `https://baobabpad.online/village/complete_profile/${user.user_id}/`,
-    //   // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ completedProfile }),
-    //   }
-    // );
-  //   if (response.ok) {
-  // handleFormSuccess()
-  //   } else {
-  //     alert("Something went wrong, please try again!");
-  //   }
+    const response = await fetch(
+      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
+      // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ completedProfile }),
+      }
+    );
+    if (response.ok) {
+  handleFormSuccess()
+    } else {
+      alert("Something went wrong, please try again!");
+    }
   };
 
   return (

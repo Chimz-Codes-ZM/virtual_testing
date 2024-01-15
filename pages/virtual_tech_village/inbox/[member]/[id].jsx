@@ -225,7 +225,7 @@ const Index = () => {
                 unread={unread}
                 archived={archived}
               />
-              <div className="scrollbar h-full">
+              <div className="scrollbar h-full ">
                 <div className="mx-auto max-w-6xl sm:px-14 px-4 py-4 pt-10 pb-4 max-h-full overflow-y-auto">
                   <div className="">
                     {messageHistory.length > 0 && (
@@ -241,28 +241,28 @@ const Index = () => {
                               </div>
                             )}
                             {message.from_user?.email !== email && (
-                              <div className=" max-w-[83%]">
+                              <div>
                                 <div className="flex items-start gap-2.5">
-                                  <div className="w-8 h-8 relative rounded-full">
+                                  <div className="relative w-8 h-8">
                                     <Image
                                       className="w-8 h-8 rounded-full"
-                                      src={message?.from_user?.image}
-                                      alt="profile picture"
-                                      fill
+                                      src={message.from_user.image}
+                                      alt="Jese image"
                                       objectFit="cover"
+                                      fill
                                     />
                                   </div>
 
                                   <div className="flex flex-col w-full max-w-[320px] leading-1.5">
                                     <div className="flex items-center space-x-2 rtl:space-x-reverse">
-                                      <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                                        {message?.from_user?.name}
+                                      <span className="text-sm font-semibold text-gray-900">
+                                       {message.from_user.name}
                                       </span>
-                                      <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                                      <span className="text-sm font-normal text-gray-500">
                                         {message.time}
                                       </span>
                                     </div>
-                                    <p className="text-sm font-normal py-2 text-gray-900 dark:text-white">
+                                    <p className="text-sm font-normal py-2 text-gray-900">
                                       {message.content}
                                     </p>
                                   </div>

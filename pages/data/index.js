@@ -6,24 +6,14 @@ import { BsExclamationTriangleFill } from "react-icons/bs";
 import {
   FaRecycle,
   FaLeaf,
-  FaIndustry,
-  FaGasPump,
-  FaTrash,
-  FaPlane,
-  FaBicycle,
-  FaHandshake,
-  FaShippingFast,
-  FaCogs,
-  FaTrashAlt,
-  FaBuilding,
-  FaUsers,
-  FaMoneyBill,
 } from "react-icons/fa";
-import { MdOutlineBolt } from "react-icons/md";
-import { HiOutlineShoppingCart } from "react-icons/hi";
-import { RiTruckFill } from "react-icons/ri";
-import { BsStack, BsFillInfoCircleFill } from "react-icons/bs";
-import { FaLongArrowAltLeft } from "react-icons/fa";
+
+import { SiHomeassistantcommunitystore } from "react-icons/si";
+import { IoPeopleCircleOutline } from "react-icons/io5";
+import { MdOutlineConnectWithoutContact, MdOutlineInsights } from "react-icons/md";
+import { FaSlideshare } from "react-icons/fa";
+import { GoInbox } from "react-icons/go";
+import { CgProfile } from "react-icons/cg";
 
 import Salomon from "../../public/assets/Salomo4.jpg";
 import Samson from "../../public/team/samson.png";
@@ -37,7 +27,6 @@ import albert from "../../public/assets/albert.jpeg";
 import Kenny from "../../public/assets/kenny.jpg";
 import Karen from "../../public/assets/karen.jpg";
 
-import Mehafo from "../../public/assets/mehafo.jpg";
 import Learnio from "../../public/assets/learnio.svg";
 import Terran from "../../public/assets/Terran_icon.png";
 import Forge from "../../public/assets/Forge.png";
@@ -53,6 +42,8 @@ import itay from "../../public/placeholders/itay.webp";
 import ronny from "../../public/placeholders/ronny.webp";
 import shadreck from "../../public/placeholders/shedrack.webp";
 import willian from "../../public/placeholders/willian.webp";
+
+
 
 export const products = [
   { id: 1, name: "Product 1", price: 10 },
@@ -1372,5 +1363,49 @@ export const trends = [
 
   },
   
+]
+
+export const navbar = [
+  {
+    icon: SiHomeassistantcommunitystore,
+    sideHighlight: "Tech Village",
+    href: "/virtual_tech_village/",
+    tooltip: "Tech Village"
+  },
+
+  {
+    icon: IoPeopleCircleOutline,
+    sideHighlight: "virtual internship",
+    href: "/virtual_tech_village/internship",
+    tooltip: "Internship"
+  },
+
+  {
+    icon: MdOutlineConnectWithoutContact,
+    sideHighlight: "connect",
+    href: "/virtual_tech_village/connect",
+    tooltip: "Connect"
+  },
+
+  {
+    icon: FaSlideshare,
+    sideHighlight: "sharepad",
+    href: "/virtual_tech_village/trends",
+    tooltip: "Sharepad"
+  },
+
+  {
+    icon: GoInbox,
+    sideHighlight: "inbox",
+    href: "/virtual_tech_village/inbox",
+    tooltip: "Inbox"
+  },
+  {
+    icon: CgProfile,
+    sideHighlight: "profile",
+    href: "/virtual_tech_village/profile",
+    tooltip: "Profile"
+  },
+
 ]
 export default () => null;

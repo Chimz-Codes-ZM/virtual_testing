@@ -23,8 +23,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { JellyTriangle } from "@uiball/loaders";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { FcAddDatabase } from "react-icons/fc";
-
-
+import Resume_component from "./components/cv/Resume_component";
 
 const Virtual_Tech_Village = () => {
   const router = useRouter();
@@ -90,7 +89,7 @@ const Virtual_Tech_Village = () => {
       );
 
       const data = await response.json();
-      console.log("MEMBERLIST DATA:",data);
+      console.log("MEMBERLIST DATA:", data);
       const pages = Array.from(
         { length: data.talent_total_pages },
         (_, index) => index + 1
@@ -119,7 +118,7 @@ const Virtual_Tech_Village = () => {
     }
 
     fetchData();
-  }
+  };
 
   const country_industries = (id) => {
     async function fetchData() {
@@ -134,31 +133,30 @@ const Virtual_Tech_Village = () => {
     }
 
     fetchData();
-  }
+  };
 
   const { data: session } = useSession();
 
   const authenticatedUser = () => {
     try {
       console.log("Session:", session);
-  
+
       if (session && session.access) {
         const decodedToken = jwt_decode(session.access);
         const id = decodedToken.user_id;
         console.log(id);
-        login(id)
-        country_skills(id)
-        country_industries(id)
+        login(id);
+        country_skills(id);
+        country_industries(id);
         // dispatch(setUserId(id));
         dispatch(fetchUserData(id));
-  
+
         setCurrentSessionId(id);
       }
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
   };
-  
 
   const scrollToTop = () => {
     memberStartRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -168,7 +166,6 @@ const Virtual_Tech_Village = () => {
     checkProfileComplete();
     scrollToTop();
   }, [selectedCompanyAttributes]);
-
 
   useEffect(() => {
     authenticatedUser();
@@ -562,7 +559,8 @@ const Virtual_Tech_Village = () => {
           .includes(filters.company_name.toLocaleLowerCase())
       : true;
     const industryFilter = filters.company_industry
-      ? profile.industry.toLowerCase() === filters.company_industry.toLowerCase()
+      ? profile.industry.toLowerCase() ===
+        filters.company_industry.toLowerCase()
       : true;
 
     return countryFilter && searchFilter && industryFilter;
@@ -931,38 +929,47 @@ const Virtual_Tech_Village = () => {
                     certificate={profile.education[0]?.degree_name}
                     user_id={profile.user_id}
                     bio={profile.bio}
+                    city={profile.city}
+                    title={profile.skills}
+                    job1={profile.work_experience[0]?.company}
+                    position1={profile.work_experience[0]?.position}
+                    work_experience={profile.work_experience}
+                    education={profile.education}
+                    languages={profile.languages}
+                    linkedin={profile.link}
+                    soft_skills={profile.soft_skills}
                   />
                 ))
               )}
               {/* <AnimatePresence> */}
-                {profile && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className={"fixed inset-0 flex items-center justify-end z-[600] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"}
-                  >
-                    <div ref={expandedProfileRef}>
-                      <ExpandedProfileModal
-                        image={profile.image}
-                        name={profile.name}
-                        skills={profile.skills}
-                        hideProfile={hideProfile}
-                        country={profile.country}
-                        certificate={profile.certificate}
-                        experience={profile.experience}
-                        bio={profile.bio}
-                        onClick={() => {
-                          handleMoreInfoClick(profile.user_id);
-                        }}
-                        handleChat={() => {
-                          handleChatClick(profile.user_id);
-                        }}
-                      />
-                    </div>
-                  </motion.div>
-                )}
-              {/* </AnimatePresence> */}
+              {profile && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className={
+                    "fixed inset-0 flex overflow-y-auto justify-end z-[600] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
+                  }
+                >
+                  <div ref={expandedProfileRef}>
+                    <Resume_component 
+                    name={profile.name}
+                    skills={profile.skills}
+                    bio={profile.bio}
+                    country={profile.country}
+                    city={profile.city}
+                    title={profile.title}
+                    job1={profile.job1}
+                    position1={profile.position1}
+                    work_experience={profile.work_experience}
+                    education={profile.education}
+                    languages={profile.languages}
+                    linkedin={profile.link}
+                    soft_skills={profile.soft_skills}
+                    />
+                  </div>
+                </motion.div>
+              )}
             </div>
           )}
           {memberShow && (

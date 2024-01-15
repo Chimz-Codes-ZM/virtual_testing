@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Profile_layout = ({ children, title }) => {
   return (
-    <div className="w-full lg:h-screen overflow-hidden flex flex-col lg:flex-row gap-5 pt-12">
+    <div className="w-full lg:h-screen overflow-hidden overflow-y-auto flex flex-col lg:flex-row gap-5 pt-12">
       <div className="w-48 gap-3 flex flex-col flex-shrink-0">
         <div className="w-full flex flex-col gap-2">
           <h1 className="text-green-600">Virtual Tech Village</h1>
