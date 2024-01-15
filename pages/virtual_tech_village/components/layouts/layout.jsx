@@ -1,38 +1,30 @@
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  resetUser,
-  fetchUserData,
-  setUserData,
-} from "@/features/user/UserSlice";
-import { signOut, useSession, getSession } from "next-auth/react";
-import jwt_decode from "jwt-decode";
+import { signOut } from "next-auth/react";
 
 import Logo from "/public/logo.png";
-import { JellyTriangle } from "@uiball/loaders";
-import { IoPeopleCircleOutline } from "react-icons/io5";
-import { SiHomeassistantcommunitystore } from "react-icons/si";
-import { MdOutlineConnectWithoutContact } from "react-icons/md";
-import { FaSlideshare } from "react-icons/fa";
-import { FcSupport } from "react-icons/fc";
-import { GoInbox } from "react-icons/go";
-import { CgProfile } from "react-icons/cg";
 import { BiLogOut } from "react-icons/bi";
 import { AiOutlineBell } from "react-icons/ai";
 import { MdOutlineInsights } from "react-icons/md";
 
+import { navbar } from "@/pages/data";
+
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 const Layout = ({ children, sideHighlight }) => {
-  const [userData, setUserData] = useState(null);
   const [unreadMessageCount, setUnreadMessageCount] = useState(null);
   const [notificationContent, setNotificationContent] = useState(null);
   const [showNotification, setShowNotification] = useState(false);
-  const [decodedToken, setDecodedToken] = useState(null);
   const [id, setId] = useState("");
-  const router = useRouter();
   const notificationRef = useRef();
 
   const dispatch = useDispatch();
@@ -45,20 +37,11 @@ const Layout = ({ children, sideHighlight }) => {
     }
   });
 
-
   const user_id = () => {
     if (user) {
       setId(user.user_id);
     }
   };
-
-  // if (!session) {
-  //   return (
-  //     <div className="flex h-screen items-center justify-center ">
-  //       <JellyTriangle size={40} color="#231F20" />
-  //     </div>
-  //   );
-  // }
 
   const handleClickOutsideNotification = (event) => {
     if (
@@ -71,7 +54,6 @@ const Layout = ({ children, sideHighlight }) => {
 
   const logoutHandler = () => {
     signOut({ callbackUrl: "/homepage/login" });
-
   };
 
   useEffect(() => {
@@ -87,7 +69,7 @@ const Layout = ({ children, sideHighlight }) => {
   }, []);
 
   const { readyState, sendJsonMessage } = useWebSocket(
-    `wss://baobabpad.online/ws/chat_notifications/2/`,
+    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat_notifications/${user.user_id}/`,
     {
       onOpen: () => {
         console.log("Connected to Notifications!");
@@ -138,166 +120,86 @@ const Layout = ({ children, sideHighlight }) => {
   return (
     <>
       <main className="h-screen w-screen flex relative">
-        <nav className="sm:w-60 w-20 transition-all z-[100] h-screen relative pt-10 group">
+        <nav className="w-20 transition-all z-[100] h-screen relative pt-10 group">
           <div className="w-full h-full flex flex-col">
             <div className="w-full pl-5 flex-shrink-0 h-20 gap-4 flex items-center cursor-pointer">
               <div className="relative w-10 h-10 rounded">
                 <Image src={Logo} priority alt="logo" fill />
               </div>
-              <h1 className="font-bold text-gray-800 hidden sm:block">
-                Baobabpad
-              </h1>
             </div>
 
-            <div className="h-full pl-5 pb-10 rounded-tr-2xl flex flex-col bg-gray-900 w-full justify-between">
+            <div className="h-full pl-2 pb-10 rounded-tr-2xl flex flex-col bg-gray-900 w-full justify-between">
               <div className="w-full h-max flex flex-col gap-2 pr-5 pt-10">
-                <div className="w-full flex flex-col">
-                  <Link href="/virtual_tech_village/">
-                    <div
-                      className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
-											${
-                        sideHighlight === "Tech Village"
-                          ? "font-bold bg-gray-100 text-gray-900"
-                          : "hover:font-bold hover:bg-gray-100 hover:text-gray-800"
-                      }
-										`}
-                    >
-                      <SiHomeassistantcommunitystore className="text-xl" />
-                      <h1 className="hidden sm:block">Tech Village</h1>
-                    </div>
-                  </Link>
-                </div>
-
-                <div className="w-full flex flex-col">
-                  <Link href="/virtual_tech_village/internship">
-                    <div
-                      className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
-											${
-                        sideHighlight === "virtual internship"
-                          ? "font-bold bg-gray-100 text-gray-900"
-                          : "hover:font-bold hover:bg-gray-100 hover:text-gray-800"
-                      }
-										`}
-                    >
-                      <IoPeopleCircleOutline className="text-xl" />
-                      <h1 className="hidden sm:block">Internship</h1>
-                    </div>
-                  </Link>
-                </div>
-
-                <div className="w-full flex flex-col">
-                  <Link href="/virtual_tech_village/connect">
-                    <div
-                      className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
-											${
-                        sideHighlight === "connect"
-                          ? "font-bold bg-gray-100 text-gray-900"
-                          : " hover:font-bold hover:bg-gray-100 hover:text-gray-800"
-                      }
-										`}
-                    >
-                      <MdOutlineConnectWithoutContact className="text-xl" />
-                      <h1 className="hidden sm:block">Connect</h1>
-                    </div>
-                  </Link>
-                </div>
-
-                <div className="w-full flex flex-col">
-                  <Link href="/virtual_tech_village/trends">
-                    <div
-                      className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
-											${
-                        sideHighlight === "sharepad"
-                          ? "font-bold bg-gray-100 text-gray-900"
-                          : " hover:font-bold hover:bg-gray-100 hover:text-gray-800"
-                      }
-										`}
-                    >
-                      <FaSlideshare className="text-xl" />
-                      <h1 className="hidden  sm:block">SharePad</h1>
-                    </div>
-                  </Link>
-                </div>
-
-                <div className="w-full flex flex-col">
-                  <Link href="/virtual_tech_village/inbox">
-                    <div
-                      className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
-											${
-                        sideHighlight === "inbox"
-                          ? "font-bold bg-gray-100 text-gray-900"
-                          : " hover:font-bold hover:bg-gray-100 hover:text-gray-800"
-                      }
-										`}
-                    >
-                      <GoInbox className="text-xl" />
-                      <h1 className="hidden sm:block">Inbox</h1>
-                    </div>
-                  </Link>
-                </div>
+                {navbar.map((page, index) => (
+                  <div className="w-full flex flex-col">
+                    <Link href={page.href}>
+                      <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            {sideHighlight === page.sideHighlight ? (
+                              <Button variant="outline">
+                                {React.createElement(page.icon, {
+                                  className: "text-xl",
+                                })}
+                              </Button>
+                            ) : (
+                              <Button>
+                                {React.createElement(page.icon, {
+                                  className: "text-xl",
+                                })}
+                              </Button>
+                            )}
+                          </TooltipTrigger>
+                          <TooltipContent side="right">
+                            <p>{page.tooltip}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Link>
+                  </div>
+                ))}
 
                 {user?.account_type === "village admin profile" && (
+
                   <div className="w-full flex flex-col">
                     <Link href="/virtual_tech_village/admin/insight">
-                      <div
-                        className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
-											${
-                        sideHighlight === "Insight"
-                          ? "font-bold bg-gray-100 text-gray-900"
-                          : " hover:font-bold hover:bg-gray-100 hover:text-gray-800"
-                      }
-										`}
-                      >
-                        <MdOutlineInsights className="text-xl" />
-                        <h1 className="hidden sm:block">Insights</h1>
-                      </div>
+                      <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            {sideHighlight === "Insight" ? (
+                              <Button variant="outline">
+                                <MdOutlineInsights className="text-xl" />
+                              </Button>
+                            ) : (
+                              <Button>
+                                <MdOutlineInsights className="text-xl" />
+                              </Button>
+                            )}
+                          </TooltipTrigger>
+                          <TooltipContent side="right">
+                            <p>Insights</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </Link>
                   </div>
                 )}
-
-                <div className="w-full flex flex-col">
-                  <Link href="/virtual_tech_village/profile">
-                    <div
-                      className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
-											${
-                        sideHighlight === "profile"
-                          ? "font-bold bg-gray-100 text-gray-900"
-                          : " hover:font-bold hover:bg-gray-100 hover:text-gray-800"
-                      }
-										`}
-                    >
-                      <CgProfile className="text-xl" />
-                      <h1 className="hidden sm:block">Profile</h1>
-                    </div>
-                  </Link>
-                </div>
-
-                {/* <div className="w-full flex flex-col">
-                  <Link href="/virtual_tech_village/support/2">
-                    <div
-                      className={`flex transition-all duration-500 text-gray-100 gap-3 flex items-center rounded px-2 py-1
-											${
-                        sideHighlight === "support"
-                          ? "font-bold bg-gray-100 text-gray-900"
-                          : " hover:font-bold hover:bg-gray-100 hover:text-gray-800"
-                      }
-										`}
-                    >
-                      <FcSupport className="text-xl" />
-                      <h1 className="hidden sm:block">Support</h1>
-                    </div>
-                  </Link>
-                </div> */}
               </div>
 
-              <div className="w-full h-max rounded-r-full pt-5 pr-5">
-                <div className="w-full flex flex-col">
-                  <div href="/" className="" onClick={logoutHandler}>
-                    <div className="flex transition-all duration-500 gap-3 flex items-center rounded px-2 py-1 text-gray-100 hover:font-bold hover:bg-gray-100 hover:text-gray-800 cursor-pointer ">
-                      <BiLogOut className="text-xl logout" />
-                      <h1 className="hidden sm:block">Logout</h1>
-                    </div>
-                  </div>
+              <div className="w-full h-max rounded-r-full">
+                <div className="justify-center flex flex-col" onClick={logoutHandler}>
+                  <TooltipProvider delayDuration={100}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button className={``}>
+                          <BiLogOut className="text-xl logout" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent side="right">
+                        <p>Logout</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
               </div>
             </div>
