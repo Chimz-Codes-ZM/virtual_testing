@@ -25,6 +25,17 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { FcAddDatabase } from "react-icons/fc";
 import Resume_component from "./components/cv/Resume_component";
 
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  SelectGroup,
+  SelectLabel,
+} from "@/components/ui/select";
+
 const Virtual_Tech_Village = () => {
   const router = useRouter();
 
@@ -383,11 +394,7 @@ const Virtual_Tech_Village = () => {
     console.log(formData);
   };
 
-  const handleInputChange = async (e) => {
-    e.preventDefault();
-
-    const { name, value } = e.target;
-
+  const handleInputChange = async (value, name) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: value,
@@ -618,13 +625,6 @@ const Virtual_Tech_Village = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                {/* <New_job
-                  userId={id}
-                  onSubmit={handleNewJobSubmit}
-                  onChange={handleNewJobChange}
-                  value={newJob}
-                /> */}
-
                 <div className="p-6 bg-white border z-50 rounded flex flex-col gap-2">
                   <div className="flex flex-col gap-4">
                     <h1 className="text-2xl font-semibold">
@@ -767,8 +767,10 @@ const Virtual_Tech_Village = () => {
             </div>
           )}
         </div>
-
-        <div className="flex-grow flex-wrap">
+        <div className="hidden lg:block mr-8 text-xl font-semibold border-b-2">
+          <h1>Search Profiles</h1>
+        </div>
+        {/* <div className="flex-grow flex-wrap">
           {((memberList?.user[0]?.account_type === "village talent profile" &&
             memberShow) ||
             (memberList?.user[0]?.account_type === "village admin profile" &&
@@ -896,155 +898,249 @@ const Virtual_Tech_Village = () => {
               </div>
             </form>
           )}
-        </div>
+        </div> */}
       </div>
 
-      {(memberList.user[0]?.account_type === "village talent profile" ||
-        memberList.user[0].account_type === "village admin profile" ||
-        memberList.user[0].account_type === "community manager" ||
-        memberList.user[0].account_type === "village company profile" ||
-        memberList.user[0].account_type === "Intern") && (
-        <AnimatePresence>
-          {memberShow && (
-            <div
-              className="grid grid-cols-1 xl:min-h-[500px] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 relative"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              {filteredData.length === 0 ? (
-                <div className="flex min-h-[10rem] h-full w-screen items-center justify-center ">
-                  <JellyTriangle size={40} color="#231F20" />
-                </div>
-              ) : (
-                visibleData.map((profile, index) => (
-                  <MemberProfile
-                    key={index}
-                    image={profile.image}
-                    name={`${profile.first_name} ${profile.last_name}`}
-                    skills={profile.skills}
-                    showProfile={showProfile}
-                    country={profile.country}
-                    experience={profile.experience}
-                    certificate={profile.education[0]?.degree_name}
-                    user_id={profile.user_id}
-                    bio={profile.bio}
-                    city={profile.city}
-                    title={profile.skills}
-                    job1={profile.work_experience[0]?.company}
-                    position1={profile.work_experience[0]?.position}
-                    work_experience={profile.work_experience}
-                    education={profile.education}
-                    languages={profile.languages}
-                    linkedin={profile.link}
-                    soft_skills={profile.soft_skills}
-                  />
-                ))
-              )}
-              {/* <AnimatePresence> */}
-              {profile && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className={
-                    "fixed inset-0 flex overflow-y-auto justify-end z-[600] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
-                  }
-                >
-                  <div ref={expandedProfileRef}>
-                    <Resume_component 
-                    name={profile.name}
-                    skills={profile.skills}
-                    bio={profile.bio}
-                    country={profile.country}
-                    city={profile.city}
-                    title={profile.title}
-                    job1={profile.job1}
-                    position1={profile.position1}
-                    work_experience={profile.work_experience}
-                    education={profile.education}
-                    languages={profile.languages}
-                    linkedin={profile.link}
-                    soft_skills={profile.soft_skills}
-                    />
-                  </div>
-                </motion.div>
-              )}
-            </div>
-          )}
-          {memberShow && (
-            <div className="flex w-full justify-center items-center gap-2">
-              {talentPages.map((pageNumber, index) => (
-                <div className="flex gap-2" key={index}>
-                  <button
-                    onClick={() => handlePageFetch(pageNumber)}
-                    className={`inline-block rounded-full border border-black p-3 transition-colors delay-75 ${
-                      pageNumber === activePage
-                        ? "bg-transparent text-black cursor-not-allowed"
-                        : "text-white bg-black"
-                    }  hover:bg-transparent hover:text-black focus:outline-none focus:ring active:text-indigo-500`}
-                    disabled={activePage === pageNumber}
-                  >
-                    {pageNumber}
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </AnimatePresence>
-      )}
-
-      <AnimatePresence>
-        {companyShow && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 relative"
-          >
-            {filteredCompanyData.length === 0 ? (
-              <p className="font-bold text-slate-600 text-lg col-span-3 text-center">
-                No company profiles match your filter criteria.
-              </p>
-            ) : (
-              visibleCompanyData.map((company) => (
-                <CompanyProfile
-                  key={company.user_id}
-                  company_name={company.company_name}
-                  image={company.image}
-                  industry={company.industry}
-                  showCompany={showCompany}
-                  company_description={company.company_description}
-                  website={company.company_website}
-                  user_id={company.user_id}
-                />
-              ))
-            )}
-
+      <div className="flex relative">
+        <div className="lg:w-4/5">
+          {(memberList.user[0]?.account_type === "village talent profile" ||
+            memberList.user[0].account_type === "village admin profile" ||
+            memberList.user[0].account_type === "community manager" ||
+            memberList.user[0].account_type === "village company profile" ||
+            memberList.user[0].account_type === "Intern") && (
             <AnimatePresence>
-              {company && (
-                <motion.div
+              {memberShow && (
+                <div
+                  className="grid grid-cols-1 xl:min-h-[500px] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 relative"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
                 >
-                  <div ref={expandedCompanyRef}>
-                    <ExpandedCompanyModal
-                      company_name={company.company_name}
-                      image={company.image}
-                      company_description={company.company_description}
-                      industry={company.industry}
-                      website={company.website}
-                      user_id={company.user_id}
-                    />
-                  </div>
-                </motion.div>
+                  {filteredData.length === 0 ? (
+                    <div className="flex min-h-[10rem] h-full w-screen items-center justify-center ">
+                      <JellyTriangle size={40} color="#231F20" />
+                    </div>
+                  ) : (
+                    visibleData.map((profile, index) => (
+                      <MemberProfile
+                        key={index}
+                        image={profile.image}
+                        name={`${profile.first_name} ${profile.last_name}`}
+                        skills={profile.skills}
+                        showProfile={showProfile}
+                        country={profile.country}
+                        experience={profile.experience}
+                        certificate={profile.education[0]?.degree_name}
+                        user_id={profile.user_id}
+                        bio={profile.bio}
+                        city={profile.city}
+                        title={profile.skills}
+                        job1={profile.work_experience[0]?.company}
+                        position1={profile.work_experience[0]?.position}
+                        work_experience={profile.work_experience}
+                        education={profile.education}
+                        languages={profile.languages}
+                        linkedin={profile.link}
+                        soft_skills={profile.soft_skills}
+                      />
+                    ))
+                  )}
+                  {/* <AnimatePresence> */}
+                  {profile && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className={
+                        "fixed inset-0 flex overflow-y-auto justify-end z-[600] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
+                      }
+                    >
+                      <div ref={expandedProfileRef}>
+                        <Resume_component
+                          name={profile.name}
+                          skills={profile.skills}
+                          bio={profile.bio}
+                          country={profile.country}
+                          city={profile.city}
+                          title={profile.title}
+                          job1={profile.job1}
+                          position1={profile.position1}
+                          work_experience={profile.work_experience}
+                          education={profile.education}
+                          languages={profile.languages}
+                          linkedin={profile.link}
+                          soft_skills={profile.soft_skills}
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              )}
+              {memberShow && (
+                <div className="flex w-full justify-center items-center gap-2">
+                  {talentPages.map((pageNumber, index) => (
+                    <div className="flex gap-2" key={index}>
+                      <button
+                        onClick={() => handlePageFetch(pageNumber)}
+                        className={`inline-block rounded-full border border-black p-3 transition-colors delay-75 ${
+                          pageNumber === activePage
+                            ? "bg-transparent text-black cursor-not-allowed"
+                            : "text-white bg-black"
+                        }  hover:bg-transparent hover:text-black focus:outline-none focus:ring active:text-indigo-500`}
+                        disabled={activePage === pageNumber}
+                      >
+                        {pageNumber}
+                      </button>
+                    </div>
+                  ))}
+                </div>
               )}
             </AnimatePresence>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+
+          <AnimatePresence>
+            {companyShow && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 relative"
+              >
+                {filteredCompanyData.length === 0 ? (
+                  <p className="font-bold text-slate-600 text-lg col-span-3 text-center">
+                    No company profiles match your filter criteria.
+                  </p>
+                ) : (
+                  visibleCompanyData.map((company) => (
+                    <CompanyProfile
+                      key={company.user_id}
+                      company_name={company.company_name}
+                      image={company.image}
+                      industry={company.industry}
+                      showCompany={showCompany}
+                      company_description={company.company_description}
+                      website={company.company_website}
+                      user_id={company.user_id}
+                    />
+                  ))
+                )}
+
+                <AnimatePresence>
+                  {company && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 flex items-center justify-center z-[99] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
+                    >
+                      <div ref={expandedCompanyRef}>
+                        <ExpandedCompanyModal
+                          company_name={company.company_name}
+                          image={company.image}
+                          company_description={company.company_description}
+                          industry={company.industry}
+                          website={company.website}
+                          user_id={company.user_id}
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <div className="lg:w-1/5 px-4">
+          <div className="h-full rounded-md">
+            <div className="border-b px-1 p-2">
+              <h2 className="font-semibold">Filters</h2>
+            </div>
+
+            <form className="py-2 flex flex-col gap-3">
+              <div>
+                <h1>Name</h1>
+
+                <Input type="text" placeholder="Search by Name" />
+              </div>
+              <div>
+                <h1>Country</h1>
+                <Select
+                name="country"
+                id="country"
+                onValueChange={(value) => handleInputChange(value, "country")}
+                
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a country" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Countries</SelectLabel>
+
+                      {selectedAttributes?.countries?.map((country, index) => (
+                        <SelectItem key={index} value={country.country}>
+                         {country.country}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <h1>Category</h1>
+                <Select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Categories</SelectLabel>
+                      <SelectItem value="apple">Apple</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <h1>Experience</h1>
+                <Select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select Experience Level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Categories</SelectLabel>
+                      <SelectItem value="Junior">
+                        Junior: {"0 - 2 years"}
+                      </SelectItem>
+                      <SelectItem value="Mid level">
+                        Mid Level: {"3 - 5 years"}
+                      </SelectItem>
+                      <SelectItem value="Senior">
+                        Senior: {"5+ years"}
+                      </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <h1>Role</h1>
+                <Select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a Role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Select a Role</SelectLabel>
+                      <SelectItem value="apple">Apple</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
       {(memberList.user[0].account_type === "community manager" ||
         memberList.user[0].account_type === "village admin profile") && (

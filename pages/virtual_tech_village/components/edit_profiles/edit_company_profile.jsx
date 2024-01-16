@@ -226,8 +226,8 @@ const EditCompanyProfile = () => {
                     </div>
                   </form>
     
-                  <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-2">
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full sm:px-10">
+                  <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+                    <div className="grid grid-cols-1 gap-2 w-full sm:px-10">
                       <label
                         htmlFor="experience"
                         className="font-semibold sm:text-xl col-span-1"

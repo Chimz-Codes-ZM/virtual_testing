@@ -128,7 +128,7 @@ const Layout = ({ children, sideHighlight }) => {
               </div>
             </div>
 
-            <div className="h-full pl-2 pb-10 rounded-tr-2xl flex flex-col bg-gray-900 w-full justify-between">
+            <div className="h-full pl-2 pb-10 rounded-tr-2xl flex flex-col bg-[#004643] w-full justify-between">
               <div className="w-full h-max flex flex-col gap-2 pr-5 pt-10">
                 {navbar.map((page, index) => (
                   <div className="w-full flex flex-col">
