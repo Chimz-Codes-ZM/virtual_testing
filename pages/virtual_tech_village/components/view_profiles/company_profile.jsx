@@ -4,6 +4,7 @@ import { FcPicture } from "react-icons/fc";
 import Link from "next/link";
 import Profile_layout from "../layouts/Profile_layout";
 import { useRouter } from "next/router";
+import { countries } from "@/pages/data";
 
 import { useSelector } from "react-redux";
 
@@ -232,11 +233,11 @@ const Company_profile = () => {
                         <option value="" disabled selected>
                           Select a country
                         </option>
-                        {/* {countries.map((country, index) => (
+                        {countries.map((country, index) => (
                             <option key={index} value={country.country}>
                               {country.country}
                             </option>
-                          ))} */}
+                          ))}
                       </select>
                     </div>
                   </div>

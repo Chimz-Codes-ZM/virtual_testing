@@ -69,9 +69,11 @@ const Virtual_Tech_Village = () => {
     country: "",
     name: "",
     skill: "",
+    experience: "",
     company_country: "",
     company_name: "",
     company_industry: "",
+
   });
   const [currentSessionId, setCurrentSessionId] = useState(null);
 
@@ -395,10 +397,14 @@ const Virtual_Tech_Village = () => {
   };
 
   const handleInputChange = async (value, name) => {
+
+   
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: value,
     }));
+
+    console.log(filters)
 
     try {
       const response = await fetch(
@@ -1061,15 +1067,20 @@ const Virtual_Tech_Village = () => {
               <div>
                 <h1>Name</h1>
 
-                <Input type="text" placeholder="Search by Name" />
+                <Input
+                  
+                  placeholder="Search by Name"
+                  name="name"
+                  id="name"
+                  onValueChange={(value) => handleInputChange(value, "name")}
+                />
               </div>
               <div>
                 <h1>Country</h1>
                 <Select
-                name="country"
-                id="country"
-                onValueChange={(value) => handleInputChange(value, "country")}
-                
+                  name="country"
+                  id="country"
+                  onValueChange={(value) => handleInputChange(value, "country")}
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a country" />
@@ -1080,7 +1091,7 @@ const Virtual_Tech_Village = () => {
 
                       {selectedAttributes?.countries?.map((country, index) => (
                         <SelectItem key={index} value={country.country}>
-                         {country.country}
+                          {country.country}
                         </SelectItem>
                       ))}
                     </SelectGroup>
@@ -1103,13 +1114,20 @@ const Virtual_Tech_Village = () => {
               </div>
               <div>
                 <h1>Experience</h1>
-                <Select>
+                <Select 
+                name="experience"
+                id="experience"
+                onValueChange={(value) => handleInputChange(value, "experience")}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select Experience Level" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Categories</SelectLabel>
+                      <SelectItem value="All">
+                        All
+                      </SelectItem>
                       <SelectItem value="Junior">
                         Junior: {"0 - 2 years"}
                       </SelectItem>
@@ -1125,14 +1143,22 @@ const Virtual_Tech_Village = () => {
               </div>
               <div>
                 <h1>Role</h1>
-                <Select>
+                <Select
+                  name="skill"
+                  id="skills"
+                  onValueChange={(value) => handleInputChange(value, "skill")}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a Role" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Select a Role</SelectLabel>
-                      <SelectItem value="apple">Apple</SelectItem>
+                      {selectedAttributes?.skills?.map((skill) => (
+                        <SelectItem value={skill.skill} key={skill.skill}>
+                          {skill.skill}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
