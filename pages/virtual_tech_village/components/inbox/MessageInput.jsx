@@ -5,6 +5,14 @@ import React, {
 } from "react";
 import { AiOutlineSend, AiOutlinePaperClip } from "react-icons/ai";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import dynamic from "next/dynamic";
+import 'react-quill/dist/quill.snow.css';
+
+
+const QuillNoSSRWrapper = dynamic(import('./RichTextEditor'), {
+  ssr: false,
+  loading: () => <p>Loading editor...</p>,
+});
 
 const MessageInput = ({ roomName, userId }) => {
   const [messageText, setMessageText] = useState("");
@@ -72,7 +80,7 @@ const MessageInput = ({ roomName, userId }) => {
               value={messageText}
               onChange={(e) => setMessageText(e.target.value)}
             ></textarea>
-            {/* {connectionStatus} */}
+            {connectionStatus}
             <button
               className="absolute top-8 right-2 bg-gray-400 text-white p-1 rounded-full"
               style={{ cursor: "pointer" }}

@@ -105,7 +105,7 @@ const Company_profile = () => {
   return (
     <>
       <Layout sideHighlight="profile">
-        <Profile_layout>
+        <Profile_layout title="view profile">
           <div className="w-full flex justify-center flex-col">
             {/* Gray background */}
 

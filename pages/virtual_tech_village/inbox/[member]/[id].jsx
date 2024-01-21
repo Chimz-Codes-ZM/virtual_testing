@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import Layout from "../../components/layouts/layout";
-import Inbox from "../../components/inbox/inbox";
+import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import MessageInput from "../../components/inbox/MessageInput";
 import { useRouter } from "next/router";
 import { JellyTriangle } from "@uiball/loaders";
-import jwt_decode from "jwt-decode";
 import MessageList from "../../components/inbox/MessageList";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Toolbar from "../../components/inbox/Toolbar";
-import { AiOutlineSend } from "react-icons/ai";
 import axios from "axios";
 
 import { useSelector } from "react-redux";
@@ -25,6 +23,7 @@ const Index = () => {
   const [chatName, setChatName] = useState(null);
   const [message, setMessage] = useState([]);
   const [messageHistory, setMessageHistory] = useState([]);
+  const [newMessages, setNewMessages] = useState([]);
   const [hasMoreMessages, setHasMoreMessages] = useState(false);
   const [participants, setParticipants] = useState([]);
   const [conversation, setConversation] = useState(null);
@@ -103,7 +102,7 @@ const Index = () => {
         const data = JSON.parse(e.data);
         switch (data.type) {
           case "chat_message_echo":
-            setMessageHistory((prev) => [...prev, data.message]);
+            setNewMessages((prev) => [...prev, data.message]);
             console.log("This is the recently sent message: ", data.message);
             break;
 
@@ -114,7 +113,7 @@ const Index = () => {
             setHasMoreMessages(data.has_more);
             break;
           case "user_join":
-            console.log("User joined the conversation:", data.user);
+            // console.log("User joined the conversation:", data.user);
             setParticipants((pcpts) => {
               if (!pcpts.includes(data.user)) {
                 return [...pcpts, data.user];
@@ -140,7 +139,7 @@ const Index = () => {
             setPinned(data.pin);
             setArchived(data.archive);
             setUnread(data.unread);
-            console.log("This is the conversation data: ", data);
+          // console.log("This is the conversation data: ", data);
           default:
             console.error("Unknown message type!");
             break;
@@ -185,8 +184,8 @@ const Index = () => {
 
   useEffect(() => {
     scrollToBottom();
-    console.log(messageHistory);
-  }, [messageHistory]);
+    console.log(newMessages);
+  }, [messageHistory, newMessages]);
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
@@ -230,13 +229,67 @@ const Index = () => {
                   <div className="">
                     {messageHistory.length > 0 && (
                       <div className="message-list flex flex-col gap-1 pt-2">
-                        {messageHistory.map((message, index) => (
+                        {messageHistory.map((day, index) => (
                           <div
                             key={index}
                             className="flex flex-col gap-2 w-full"
                           >
+                            <div className="w-fit self-center">
+                              <Badge variant="outline">{day?.date}</Badge>
+                            </div>
+
+                            {day?.messages?.map((message, index) => (
+                              <div
+                                key={index}
+                                className="flex flex-col gap-2 w-full"
+                              >
+                                {message.from_user?.email === email && (
+                                  <div className="self-end w-fit p-1 px-3 rounded-lg bg-slate-800 text-white">
+                                    {message.content}
+                                  </div>
+                                )}
+                                {message.from_user?.email !== email && (
+                                  <div>
+                                    <div className="flex items-start gap-2.5">
+                                      <div className="relative w-8 h-8">
+                                        <Image
+                                          className="w-8 h-8 rounded-full"
+                                          src={message.from_user.image}
+                                          alt="Jese image"
+                                          objectFit="cover"
+                                          fill
+                                        />
+                                      </div>
+
+                                      <div className="flex flex-col w-full max-w-[320px] leading-1.5">
+                                        <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                                          <span className="text-sm font-semibold text-gray-900">
+                                            {message.from_user.name}
+                                          </span>
+                                          <span className="text-sm font-normal text-gray-500">
+                                            {message.time}
+                                          </span>
+                                        </div>
+                                        <p className="text-sm font-normal py-2 text-gray-900">
+                                          {message.content}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {newMessages.length > 0 && (
+                      <div className="message-list flex flex-col gap-1 pt-2">
+                        {newMessages.map((message, index) => (
+                          <div  className="flex flex-col gap-2 w-full">
                             {message.from_user?.email === email && (
-                              <div className="self-end  p-1 px-3 rounded-lg bg-slate-800 text-white">
+                              <div className="self-end w-fit p-1 px-3 rounded-lg bg-slate-800 text-white">
                                 {message.content}
                               </div>
                             )}
@@ -256,7 +309,7 @@ const Index = () => {
                                   <div className="flex flex-col w-full max-w-[320px] leading-1.5">
                                     <div className="flex items-center space-x-2 rtl:space-x-reverse">
                                       <span className="text-sm font-semibold text-gray-900">
-                                       {message.from_user.name}
+                                        {message.from_user.name}
                                       </span>
                                       <span className="text-sm font-normal text-gray-500">
                                         {message.time}

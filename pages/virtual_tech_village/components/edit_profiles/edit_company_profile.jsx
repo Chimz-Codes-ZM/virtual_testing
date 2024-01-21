@@ -82,6 +82,10 @@ const EditCompanyProfile = () => {
         router.push("/virtual_tech_village")
         setSuccess(false)
       }
+
+      useEffect(() => {
+// profile data route and set state
+      }, [])
     
       const handleSubmit = async (e) => {
         e.preventDefault();
@@ -108,7 +112,7 @@ const EditCompanyProfile = () => {
         <>
     
           <Layout>
-            <Profile_layout>
+            <Profile_layout title="edit profile">
             <div className="w-full flex justify-center flex-col relative">
               {/* Gray background */}
     

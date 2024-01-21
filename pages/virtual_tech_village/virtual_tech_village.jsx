@@ -73,6 +73,7 @@ const Virtual_Tech_Village = () => {
     company_country: "",
     company_name: "",
     company_industry: "",
+    category: ""
 
   });
   const [currentSessionId, setCurrentSessionId] = useState(null);
@@ -401,8 +402,9 @@ const Virtual_Tech_Village = () => {
    
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: value,
+      [name]: value === "ALL" ? "" : value,
     }));
+    
 
     console.log(filters)
 
@@ -776,136 +778,7 @@ const Virtual_Tech_Village = () => {
         <div className="hidden lg:block mr-8 text-xl font-semibold border-b-2">
           <h1>Search Profiles</h1>
         </div>
-        {/* <div className="flex-grow flex-wrap">
-          {((memberList?.user[0]?.account_type === "village talent profile" &&
-            memberShow) ||
-            (memberList?.user[0]?.account_type === "village admin profile" &&
-              memberShow) ||
-            (memberList?.user[0]?.account_type === "community manager" &&
-              memberShow) ||
-            memberList?.user[0]?.account_type === "village company profile" ||
-            memberList?.user[0]?.account_type === "Intern") && (
-            <form className="flex flex-col md:flex-row md:justify-around">
-              <div className="mb-4 md:mb-0">
-                <select
-                  name="country"
-                  id="country"
-                  className="border-gray-900 bg-white border-2 rounded px-1 w-full"
-                  onChange={(e) => handleInputChange(e)}
-                  value={filters.country}
-                >
-                  <option value="" disabled>
-                    Country
-                  </option>
-                  <option value="">All</option>
-
-                  {selectedAttributes?.countries?.map((country, index) => (
-                    <option value={country.country} key={index}>
-                      {country.country}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="mb-4 md:mb-0">
-                <input
-                  type="text"
-                  placeholder="Search by name"
-                  className="border-gray-900 border-2 rounded px-1 w-full focus:outline-none"
-                  onChange={(e) => handleInputChange(e)}
-                  name="name"
-                  id="name"
-                  value={filters.name}
-                />
-              </div>
-
-              <div>
-                <select
-                  name="skill"
-                  id="skills"
-                  className="border-gray-900 border-2 bg-white rounded px-1 w-full"
-                  onChange={(e) => handleInputChange(e)}
-                  value={filters.skill}
-                >
-                  <option value="" disabled>
-                    Skills
-                  </option>
-                  <option value="">All</option>
-                  {selectedAttributes?.skills?.map((skill) => (
-                    <option value={skill.skill} key={skill.skill}>
-                      {skill.skill}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </form>
-          )}
-
-          {((memberList?.user[0]?.account_type === "community manager" &&
-            companyShow) ||
-            (memberList?.user[0]?.account_type === "village admin profile" &&
-              companyShow)) && (
-            <form className="flex flex-col md:flex-row md:justify-around">
-              <div className="mb-4 md:mb-0">
-                <select
-                  name="company_country"
-                  id="company_country"
-                  className="border-gray-300 border-2 rounded px-1 w-full"
-                  onChange={(e) => handleInputChange(e)}
-                  value={filters.company_country}
-                >
-                  <option value="" disabled>
-                    Country
-                  </option>
-                  <option value="">All</option>
-
-                  {selectedCompanyAttributes?.countries?.map(
-                    (country, index) => (
-                      <option value={country.country} key={index}>
-                        {country.country}
-                      </option>
-                    )
-                  )}
-                </select>
-              </div>
-
-              <div className="mb-4 md:mb-0">
-                <input
-                  type="text"
-                  placeholder="Search by company name"
-                  className="border-gray-300 border-2 rounded px-1 w-full"
-                  onChange={(e) => handleInputChange(e)}
-                  name="company_name"
-                  id="company_name"
-                  value={filters.company_name}
-                />
-              </div>
-
-              <div>
-                <select
-                  name="company_industry"
-                  id="company_industry "
-                  className="border-gray-300 border-2 rounded px-1 w-full"
-                  onChange={(e) => handleInputChange(e)}
-                  value={filters.company_industry}
-                >
-                  <option value="" disabled>
-                    Industry
-                  </option>
-                  <option value="">All industries</option>
-                  {selectedCompanyAttributes?.industries?.map(
-                    (industry, index) => (
-                      <option value={industry.industry} key={index}>
-                        {industry.industry}
-                      </option>
-                    )
-                  )}
-                </select>
-              </div>
-            </form>
-          )}
-        </div> */}
-      </div>
+     </div>
 
       <div className="flex relative">
         <div className="lg:w-4/5">
@@ -927,9 +800,9 @@ const Virtual_Tech_Village = () => {
                       <JellyTriangle size={40} color="#231F20" />
                     </div>
                   ) : (
-                    visibleData.map((profile, index) => (
+                    visibleData.map((profile) => (
                       <MemberProfile
-                        key={index}
+                        key={profile.user_id}
                         image={profile.image}
                         name={`${profile.first_name} ${profile.last_name}`}
                         skills={profile.skills}
@@ -1072,6 +945,7 @@ const Virtual_Tech_Village = () => {
                   placeholder="Search by Name"
                   name="name"
                   id="name"
+                  // value={filters.name}
                   onValueChange={(value) => handleInputChange(value, "name")}
                 />
               </div>
@@ -1088,9 +962,8 @@ const Virtual_Tech_Village = () => {
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Countries</SelectLabel>
-
-                      {selectedAttributes?.countries?.map((country, index) => (
-                        <SelectItem key={index} value={country.country}>
+                      {selectedAttributes?.countries?.map((country) => (
+                        <SelectItem key={country.country} value={country.country}>
                           {country.country}
                         </SelectItem>
                       ))}
