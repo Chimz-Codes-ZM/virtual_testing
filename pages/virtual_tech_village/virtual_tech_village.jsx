@@ -35,6 +35,7 @@ import {
   SelectGroup,
   SelectLabel,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 const Virtual_Tech_Village = () => {
   const router = useRouter();
@@ -73,8 +74,7 @@ const Virtual_Tech_Village = () => {
     company_country: "",
     company_name: "",
     company_industry: "",
-    category: ""
-
+    category: "",
   });
   const [currentSessionId, setCurrentSessionId] = useState(null);
 
@@ -158,7 +158,6 @@ const Virtual_Tech_Village = () => {
       if (session && session.access) {
         const decodedToken = jwt_decode(session.access);
         const id = decodedToken.user_id;
-        console.log(id);
         login(id);
         country_skills(id);
         country_industries(id);
@@ -398,19 +397,67 @@ const Virtual_Tech_Village = () => {
   };
 
   const handleInputChange = async (value, name) => {
-
-   
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value === "ALL" ? "" : value,
-    }));
-    
-
-    console.log(filters)
-
+    setFilters((prevFilters) => {
+      const updatedFilters = {
+        ...prevFilters,
+        [name]: value === "All" ? "" : value,
+      };
+  
+      console.log(updatedFilters);
+  
+      makeAPICall(updatedFilters);
+  
+      return updatedFilters;
+    });
+  };
+  
+  const makeAPICall = async (updatedFilters) => {
     try {
       const response = await fetch(
         `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${currentSessionId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ filters: updatedFilters }),
+        }
+      );
+  
+      if (response.ok) {
+        const data = await response.json();
+  
+        const pages = Array.from(
+          { length: data.talent_total_pages },
+          (_, index) => index + 1
+        );
+  
+        console.log("========> Total number of pages: ", pages);
+  
+        setMemberList(data);
+        setTalentPages(pages);
+        console.log();
+      } else {
+        console.error("Something went wrong, please try again!");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+  
+  const handleInputNameChange = async (e) => {
+    e.preventDefault();
+
+    const { name, value } = e.target;
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+
+    try {
+      const response = await fetch(
+        `https://baobabpad.online/village/village_profiles/${currentSessionId}/`,
         {
           method: "POST",
           headers: {
@@ -441,6 +488,54 @@ const Virtual_Tech_Village = () => {
       console.error("Error:", error);
     }
   };
+
+  const clearFilter = async (e) => {
+    e.preventDefault();
+    setFilters({
+      page: "1",
+      country: "",
+      name: "",
+      skill: "",
+      experience: "",
+      company_country: "",
+      company_name: "",
+      company_industry: "",
+      category: "",
+    })
+
+    try {
+      const response = await fetch(
+        `https://baobabpad.online/village/village_profiles/${currentSessionId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ filters }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+
+        // console.log("====> This is my filtered data: ", data);
+        const pages = Array.from(
+          { length: data.talent_total_pages },
+          (_, index) => index + 1
+        );
+
+        console.log("========> Total number of pages: ", pages);
+
+        setMemberList(data);
+        setTalentPages(pages);
+        console.log();
+      } else {
+        console.error("Something went wrong, please try again!");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
 
   if (!memberList) {
     return (
@@ -778,7 +873,7 @@ const Virtual_Tech_Village = () => {
         <div className="hidden lg:block mr-8 text-xl font-semibold border-b-2">
           <h1>Search Profiles</h1>
         </div>
-     </div>
+      </div>
 
       <div className="flex relative">
         <div className="lg:w-4/5">
@@ -941,13 +1036,13 @@ const Virtual_Tech_Village = () => {
                 <h1>Name</h1>
 
                 <Input
-                  
                   placeholder="Search by Name"
                   name="name"
                   id="name"
-                  // value={filters.name}
-                  onValueChange={(value) => handleInputChange(value, "name")}
+                  value={filters.name}
+                 onChange={(e) => handleInputNameChange(e)}
                 />
+
               </div>
               <div>
                 <h1>Country</h1>
@@ -963,7 +1058,10 @@ const Virtual_Tech_Village = () => {
                     <SelectGroup>
                       <SelectLabel>Countries</SelectLabel>
                       {selectedAttributes?.countries?.map((country) => (
-                        <SelectItem key={country.country} value={country.country}>
+                        <SelectItem
+                          key={country.country}
+                          value={country.country}
+                        >
                           {country.country}
                         </SelectItem>
                       ))}
@@ -987,10 +1085,12 @@ const Virtual_Tech_Village = () => {
               </div>
               <div>
                 <h1>Experience</h1>
-                <Select 
-                name="experience"
-                id="experience"
-                onValueChange={(value) => handleInputChange(value, "experience")}
+                <Select
+                  name="experience"
+                  id="experience"
+                  onValueChange={(value) =>
+                    handleInputChange(value, "experience")
+                  }
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select Experience Level" />
@@ -998,9 +1098,7 @@ const Virtual_Tech_Village = () => {
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Categories</SelectLabel>
-                      <SelectItem value="All">
-                        All
-                      </SelectItem>
+                      <SelectItem value="All">All</SelectItem>
                       <SelectItem value="Junior">
                         Junior: {"0 - 2 years"}
                       </SelectItem>
@@ -1035,6 +1133,11 @@ const Virtual_Tech_Village = () => {
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+              </div>
+
+              <div className="pt-10">
+{/* <Button variant="outline" className="float-right" onClick={clearFilter}>Clear</Button> */}
+<div className="p-1 px-2 rounded-sm border bg-white hover:bg-gray-100 w-fit float-right cursor-pointer" onClick={(e) => clearFilter(e)}>Clear</div>
               </div>
             </form>
           </div>

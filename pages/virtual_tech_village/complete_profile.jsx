@@ -6,8 +6,7 @@ import { useRouter } from "next/router";
 import Success from "./components/alerts/success";
 
 import { FcPicture } from "react-icons/fc";
-import { techPositions } from "../data";
-import { countries } from "../data";
+import { techPositions, countries, techCategories } from "../data";
 import { useSelector } from "react-redux";
 
 const Complete_profile = () => {
@@ -29,6 +28,7 @@ const Complete_profile = () => {
     city: "",
     link: "",
     experience: "",
+    category: ""
   });
 
   const [education, setEducation] = useState([
@@ -293,7 +293,7 @@ const Complete_profile = () => {
 
     try {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com*/village/talent_resume/${user.user_id}/`,
+        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${user.user_id}/`,
         {
           method: "POST",
           body: formData,
@@ -346,14 +346,14 @@ const Complete_profile = () => {
               </div>
               <div className="text-white bg-black rounded h-min">
                 <div
-                  class="group relative inline-block text-sm cursor-pointer font-medium text-gray-900 focus:outline-none focus:ring active:text-gray-900"
+                  className="group relative inline-block text-sm cursor-pointer font-medium text-gray-900 focus:outline-none focus:ring active:text-gray-900"
                   href=""
                 >
-                  <span class="absolute inset-0 translate-x-0.5 translate-y-0.5 bg-gray-900 transition-transform group-hover:translate-y-0 group-hover:translate-x-0"></span>
+                  <span className="absolute inset-0 translate-x-0.5 translate-y-0.5 bg-gray-900 transition-transform group-hover:translate-y-0 group-hover:translate-x-0"></span>
 
                   <Link
                     href={"/virtual_tech_village/profile/"}
-                    class="relative block border border-current bg-white px-2 py-1 sm:px-6 sm:py-3"
+                    className="relative block border border-current bg-white px-2 py-1 sm:px-6 sm:py-3"
                   >
                     View Profile
                   </Link>
@@ -802,6 +802,31 @@ const Complete_profile = () => {
                     htmlFor="position"
                     className="font-semibold sm:text-xl col-span-1"
                   >
+                    Category:
+                  </label>
+                  <div className="flex col-span-2 md:col-span-1">
+                    <select
+                      name="category"
+                      id="category"
+                      value={completedProfile.category}
+                      onChange={handleInputChange}
+                      className="border rounded p-1 w-full"
+                      required
+                    >
+                      {techCategories.map((role, index) => (
+                        <option key={index} value={role}>
+                          {role}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="sm:grid grid-cols-1 sm:grid-cols-3 flex flex-col w-full sm:px-10 pt-4 pb-4 ">
+                  <label
+                    htmlFor="position"
+                    className="font-semibold sm:text-xl col-span-1"
+                  >
                     Position:
                   </label>
                   <div className="flex col-span-2 md:col-span-1">
@@ -875,7 +900,7 @@ const Complete_profile = () => {
                       htmlFor="softSkill"
                       className="font-semibold sm:text-xl"
                     >
-                      Soft Skill's
+                      Skill's
                     </label>
                   </div>
 
@@ -893,7 +918,7 @@ const Complete_profile = () => {
                             type="text"
                             className="form-input border w-full rounded-md border-gray-300 px-1"
                             value={skill.name}
-                            placeholder="e.g., Creativity"
+                            placeholder="e.g., PHP"
                             onChange={(e) =>
                               handleSoftSkillChange(
                                 index,

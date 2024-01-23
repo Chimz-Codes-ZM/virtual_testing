@@ -3,14 +3,14 @@ import { GiFactory } from "react-icons/gi";
 import { AiFillCar, AiFillFire, AiFillCloud } from "react-icons/ai";
 import { SlChemistry } from "react-icons/sl";
 import { BsExclamationTriangleFill } from "react-icons/bs";
-import {
-  FaRecycle,
-  FaLeaf,
-} from "react-icons/fa";
+import { FaRecycle, FaLeaf } from "react-icons/fa";
 
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { IoPeopleCircleOutline } from "react-icons/io5";
-import { MdOutlineConnectWithoutContact, MdOutlineInsights } from "react-icons/md";
+import {
+  MdOutlineConnectWithoutContact,
+  MdOutlineInsights,
+} from "react-icons/md";
 import { FaSlideshare } from "react-icons/fa";
 import { GoInbox } from "react-icons/go";
 import { CgProfile } from "react-icons/cg";
@@ -42,8 +42,6 @@ import itay from "../../public/placeholders/itay.webp";
 import ronny from "../../public/placeholders/ronny.webp";
 import shadreck from "../../public/placeholders/shedrack.webp";
 import willian from "../../public/placeholders/willian.webp";
-
-
 
 export const products = [
   { id: 1, name: "Product 1", price: 10 },
@@ -629,7 +627,6 @@ export const countries = [
   { country: "Zimbabwe" },
 ];
 
-
 export const roles = [
   { role: "Select a role" },
   { role: "Artificial Intelligence (AI) Engineer" },
@@ -713,6 +710,21 @@ export const primary_skill = [
   { primary_skill: "UX Researcher" },
   { primary_skill: "UX Writer" },
 ];
+
+export const techCategories = [
+  "AI and Machine Learning",
+  "Cybersecurity",
+  "Data and Analytics",
+  "Design",
+  "Hardware and Electronics",
+  "IT and Infrastructure",
+  "Management and Leadership",
+  "Marketing and Sales",
+  "Project and Product Management",
+  "Quality Assurance",
+  "Software Development",
+  "Technical Writing",
+]
 
 export const techPositions = [
   "AI Engineer",
@@ -1260,80 +1272,79 @@ export const trends = [
     date: "November 15, 2023",
     title: "Why Norrsken founder Niklas Adalberth is betting on Africa",
     link: "https://techcrunch.com/2023/11/15/why-norrsken-founder-niklas-adalberth-is-betting-on-africa/",
-    source: "TechCrunch"
-
+    source: "TechCrunch",
   },
   {
     id: 2,
     img: "https://techcrunch.com/wp-content/uploads/2023/11/3-min.png?w=730&crop=1",
     date: "November 30, 2023",
-    title: "Salesforce Ventures and Female Founders Fund back Kenyan climate-tech Amini in $4M seed round",
+    title:
+      "Salesforce Ventures and Female Founders Fund back Kenyan climate-tech Amini in $4M seed round",
     link: "https://techcrunch.com/2023/11/30/salesforce-ventures-and-female-founders-fund-back-kenyan-climate-tech-amini-in-4m-seed-round/",
-    source: "TechCrunch"
-
+    source: "TechCrunch",
   },
   {
     id: 3,
     img: "https://techcrunch.com/wp-content/uploads/2022/08/Jihan-Abass.-e1659423730694.jpg?w=730&crop=1",
     date: "August 2, 2022",
-    title: "Kenyan insurtech Lami raises $3.7M seed extension led by Harlem Capital",
+    title:
+      "Kenyan insurtech Lami raises $3.7M seed extension led by Harlem Capital",
     link: "https://techcrunch.com/2022/08/02/kenyan-insurtech-lami-raises-3-7m-seed-extension-led-by-harlem-capital/",
-    source: "TechCrunch"
-
+    source: "TechCrunch",
   },
   {
     id: 4,
     img: "https://techcrunch.com/wp-content/uploads/2023/11/IMG-2463-min.jpg?w=730&crop=1",
     date: "November 24, 2023",
-    title: "Saviu Ventures’ second fund reaches €12 million first close to back Francophone Africa startups",
+    title:
+      "Saviu Ventures’ second fund reaches €12 million first close to back Francophone Africa startups",
     link: "https://techcrunch.com/2023/11/24/saviu-second-fund/",
-    source: "TechCrunch"
-
+    source: "TechCrunch",
   },
   {
     id: 5,
     img: "https://techcrunch.com/wp-content/uploads/2023/11/B1D80FDE-47E4-469A-BC2A-D6AF17132829.jpeg?w=730&crop=1",
     date: "November 13, 2023",
-    title: "Shekel Mobility, a B2B marketplace for auto dealers in Africa, raises $7M led by Ventures Platform and MaC VC",
+    title:
+      "Shekel Mobility, a B2B marketplace for auto dealers in Africa, raises $7M led by Ventures Platform and MaC VC",
     link: "https://techcrunch.com/2023/11/13/shekel-mobility-a-b2b-marketplace-for-auto-dealers-in-africa-raises-7m-led-by-ventures-platform-and-mac-vc/",
-    source: "TechCrunch"
-
+    source: "TechCrunch",
   },
   {
     id: 6,
     img: "https://techcrunch.com/wp-content/uploads/2021/12/45B7318.jpg?w=730&crop=1",
     date: "November 3, 2023",
-    title: "Norrsken22’s debut fund closes at $205M to back growth-stage startups in Africa",
+    title:
+      "Norrsken22’s debut fund closes at $205M to back growth-stage startups in Africa",
     link: "https://techcrunch.com/2023/11/02/norrsken22s-debut-fund-closes-at-205m-to-back-growth-stage-startups-in-africa/",
-    source: "TechCrunch"
-
+    source: "TechCrunch",
   },
   {
     id: 7,
     img: "https://techcrunch.com/wp-content/uploads/2023/10/Sukhiba.jpeg?w=730&crop=1",
     date: "October 25, 2023",
-    title: "Sukhiba eyes expansion to power WhatsApp conversational commerce in Africa",
+    title:
+      "Sukhiba eyes expansion to power WhatsApp conversational commerce in Africa",
     link: "https://techcrunch.com/2023/10/25/sukhiba-eyes-africa-growth/",
-    source: "TechCrunch"
-
+    source: "TechCrunch",
   },
   {
     id: 8,
     img: "https://techcrunch.com/wp-content/uploads/2023/07/GettyImages-942480316.jpg?w=1390&crop=1",
     date: "October 17, 2023",
-    title: "LeapFrog’s new fund to double down on financial and healthcare sectors in Africa and Asia",
+    title:
+      "LeapFrog’s new fund to double down on financial and healthcare sectors in Africa and Asia",
     link: "https://techcrunch.com/2023/10/17/leapfrog-new-1b-fund/",
-    source: "TechCrunch"
-
+    source: "TechCrunch",
   },
   {
     id: 9,
     img: "https://techcrunch.com/wp-content/uploads/2023/10/545C3940-5903-4132-A537-173B77DD0E3F.jpeg?w=1390&crop=1",
     date: "October 24, 2023",
-    title: "New solar mini-grids in Africa to be powered by Husk Power Systems’ $103M Series D",
+    title:
+      "New solar mini-grids in Africa to be powered by Husk Power Systems’ $103M Series D",
     link: "https://techcrunch.com/2023/10/24/new-solar-mini-grids-in-africa-to-be-powered-by-husk-power-systems-103m-series-d/",
-    source: "TechCrunch"
-
+    source: "TechCrunch",
   },
   {
     id: 10,
@@ -1341,8 +1352,7 @@ export const trends = [
     date: "December 5, 2023",
     title: "Call of Duty: Mobile launches dedicated Nigerian server ",
     link: "https://techpoint.africa/2023/12/05/call-of-duty-mobile-nigerian-server/",
-    source: "Techpoint Africa"
-
+    source: "Techpoint Africa",
   },
   {
     id: 11,
@@ -1350,62 +1360,173 @@ export const trends = [
     date: "December 5, 2023",
     title: "South Africa wants to be a global EV player ",
     link: "https://techpoint.africa/2023/12/05/techpoint-digest-728/",
-    source: "Techpoint Africa"
-
+    source: "Techpoint Africa",
   },
   {
     id: 12,
     img: "https://techpoint.africa/wp-content/uploads/2022/11/Pivo-Team-min-978x682.jpg",
     date: "December 5, 2023",
-    title: "Nigerian fintech startup Pivo shuts down 1 year after announcing a $2 million round",
+    title:
+      "Nigerian fintech startup Pivo shuts down 1 year after announcing a $2 million round",
     link: "https://techpoint.africa/2023/12/05/pivo-has-shut-down/",
-    source: "Techpoint Africa"
-
+    source: "Techpoint Africa",
   },
-  
-]
+];
 
 export const navbar = [
   {
     icon: SiHomeassistantcommunitystore,
     sideHighlight: "Tech Village",
     href: "/virtual_tech_village/",
-    tooltip: "Tech Village"
+    tooltip: "Tech Village",
   },
 
   {
     icon: IoPeopleCircleOutline,
     sideHighlight: "virtual internship",
     href: "/virtual_tech_village/internship",
-    tooltip: "Internship"
+    tooltip: "Internship",
   },
 
   {
     icon: MdOutlineConnectWithoutContact,
     sideHighlight: "connect",
     href: "/virtual_tech_village/connect",
-    tooltip: "Connect"
+    tooltip: "Connect",
   },
 
   {
     icon: FaSlideshare,
     sideHighlight: "sharepad",
     href: "/virtual_tech_village/trends",
-    tooltip: "Sharepad"
+    tooltip: "Sharepad",
   },
 
   {
     icon: GoInbox,
     sideHighlight: "inbox",
     href: "/virtual_tech_village/inbox",
-    tooltip: "Inbox"
+    tooltip: "Inbox",
   },
   {
     icon: CgProfile,
     sideHighlight: "profile",
     href: "/virtual_tech_village/profile",
-    tooltip: "Profile"
+    tooltip: "Profile",
   },
+];
 
-]
+export const Project_teams = [
+  {
+    number: "1",
+    projectId: "abc123",
+    projectName: "Online Marketplace Platform",
+    teamOwner: "Alice Johnson",
+    projectDescription:
+      "Developing a robust e-commerce platform with advanced search and recommendation features.",
+    dateStarted: "2023-05-15",
+    numberOfTeamMembers: 8,
+  },
+  {
+    number: "2",
+    projectId: "def456",
+    projectName: "Health Monitoring App",
+    teamOwner: "Bob Smith",
+    projectDescription:
+      "Building a mobile application to track and monitor users' health metrics, including fitness and medical data.",
+    dateStarted: "2023-02-28",
+    numberOfTeamMembers: 6,
+  },
+  {
+    number: "3",
+    projectId: "ghi789",
+    projectName: "Financial Analytics Dashboard",
+    teamOwner: "Charlie Davis",
+    projectDescription:
+      "Creating a comprehensive dashboard for financial analysts to visualize and analyze market trends.",
+    dateStarted: "2023-07-10",
+    numberOfTeamMembers: 10,
+  },
+  {
+    number: "4",
+    projectId: "jkl012",
+    projectName: "Smart Home Automation System",
+    teamOwner: "David Wilson",
+    projectDescription:
+      "Designing and implementing an intelligent home automation system with IoT integration.",
+    dateStarted: "2023-04-03",
+    numberOfTeamMembers: 12,
+  },
+  {
+    number: "5",
+    projectId: "mno345",
+    projectName: "Educational Learning Platform",
+    teamOwner: "Eva Martinez",
+    projectDescription:
+      "Developing an online learning platform with interactive courses, quizzes, and real-time progress tracking.",
+    dateStarted: "2023-01-20",
+    numberOfTeamMembers: 15,
+  },
+  {
+    number: "6",
+    projectId: "pqr678",
+    projectName: "Supply Chain Management System",
+    teamOwner: "Frank Anderson",
+    projectDescription:
+      "Building a scalable and efficient supply chain management system for a global logistics company.",
+    dateStarted: "2023-06-05",
+    numberOfTeamMembers: 14,
+  },
+  {
+    number: "7",
+    projectId: "stu901",
+    projectName: "Social Media Analytics Tool",
+    teamOwner: "Grace Turner",
+    projectDescription:
+      "Creating a tool to analyze and visualize social media data for marketing and brand management.",
+    dateStarted: "2023-03-12",
+    numberOfTeamMembers: 9,
+  },
+  {
+    number: "8",
+    projectId: "vwx234",
+    projectName: "Customer Relationship Management (CRM) System",
+    teamOwner: "Harry Brown",
+    projectDescription:
+      "Developing a CRM system to streamline customer interactions, sales, and support processes.",
+    dateStarted: "2023-08-20",
+    numberOfTeamMembers: 11,
+  },
+  {
+    number: "9",
+    projectId: "yz567",
+    projectName: "Augmented Reality Game",
+    teamOwner: "Ivy Green",
+    projectDescription:
+      "Designing an augmented reality game that combines real-world elements with immersive gameplay.",
+    dateStarted: "2023-05-02",
+    numberOfTeamMembers: 7,
+  },
+  {
+    number: "10",
+    projectId: "123abc",
+    projectName: "EHR (Electronic Health Record) System",
+    teamOwner: "Jack Taylor",
+    projectDescription:
+      "Creating a secure and user-friendly electronic health record system for healthcare institutions.",
+    dateStarted: "2023-09-15",
+    numberOfTeamMembers: 13,
+  },
+  {
+    number: "11",
+    projectId: "456def",
+    projectName: "AI-Powered Chatbot",
+    teamOwner: "Karen Lee",
+    projectDescription:
+      "Developing an intelligent chatbot with natural language processing capabilities for customer support.",
+    dateStarted: "2023-04-18",
+    numberOfTeamMembers: 8,
+  },
+];
+
 export default () => null;

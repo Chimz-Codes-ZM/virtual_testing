@@ -9,6 +9,7 @@ import Logo from "/public/logo.png";
 import { BiLogOut } from "react-icons/bi";
 import { AiOutlineBell } from "react-icons/ai";
 import { MdOutlineInsights } from "react-icons/md";
+import { GiTeamIdea } from "react-icons/gi";
 
 import { navbar } from "@/pages/data";
 
@@ -183,6 +184,31 @@ const Layout = ({ children, sideHighlight }) => {
                       </TooltipProvider>
                     </Link>
                   </div>
+                )}
+
+                {user?.account_type === "village company profile" && (
+                  <div className="w-full flex flex-col">
+                  <Link href="/virtual_tech_village/team">
+                    <TooltipProvider delayDuration={100}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          {sideHighlight === "Team" ? (
+                            <Button variant="outline">
+                               <GiTeamIdea className="text-xl"/>
+                            </Button>
+                          ) : (
+                            <Button>
+                              <GiTeamIdea className="text-xl"/>
+                            </Button>
+                          )}
+                        </TooltipTrigger>
+                        <TooltipContent side="right">
+                          <p>Team</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </Link>
+                </div>
                 )}
               </div>
 

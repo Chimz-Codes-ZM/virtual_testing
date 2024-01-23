@@ -108,6 +108,24 @@ const Teams = () => {
               </div>
             </div>
           </Link>
+
+          <Link href="/virtual_tech_village/admin/teams">
+            <div className="h-40 shadow-lg hover:bottom-1 cursor-pointer transition-all duration-300 relative rounded-xl flex flex-col justify-between p-4">
+              <div className="w-full h-full absolute top-0 left-0">
+                <Image src={Poly} fill alt="polygon pattern" />
+              </div>
+
+              <h1 className="text-xl z-10 font-bold text-yellow-600">
+                Teams
+              </h1>
+              <div className="w-full z-10 flex justify-end items-center">
+                <span className="text-xl text-gray-600">
+                  <TbFileStack />
+                </span>
+                <span className="text-lg font-bold text-gray-600">{info[0]?.total_talents}</span>
+              </div>
+            </div>
+          </Link>
         </div>
       </Layout>
     </>
