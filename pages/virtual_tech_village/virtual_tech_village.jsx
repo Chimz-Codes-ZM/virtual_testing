@@ -702,6 +702,10 @@ const Virtual_Tech_Village = () => {
     setCompany(companyInfo);
   };
 
+  const cvDismiss = () => {
+    setProfile(false)
+  }
+
   return (
     <div className="flex flex-col gap-5 relative pb-8" ref={parent}>
       {success && (
@@ -944,6 +948,7 @@ const Virtual_Tech_Village = () => {
                           languages={profile.languages}
                           linkedin={profile.link}
                           soft_skills={profile.soft_skills}
+                          onClick={cvDismiss}
                         />
                       </div>
                     </motion.div>

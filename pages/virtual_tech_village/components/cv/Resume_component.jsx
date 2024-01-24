@@ -2,6 +2,7 @@ import React from "react";
 import { MdOutlineEmail } from "react-icons/md";
 import { BsLinkedin } from "react-icons/bs";
 import { FaCity, FaMapMarkedAlt } from "react-icons/fa";
+import { FaX } from "react-icons/fa6";
 
 const Resume_component = ({
   bio,
@@ -14,16 +15,20 @@ const Resume_component = ({
   education,
   linkedin,
   soft_skills,
+  onClick
 }) => {
   return (
-    <main className="bg-white text-gray-800 min-h-screen">
+    <main className="bg-white text-gray-800 min-h-screen relative">
+      <div className="fixed right-10 top-10 cursor-pointer p-1 border-2 rounded-md" onClick={onClick}>
+      <FaX />
+      </div>
       <div className="py-20 lg:py-24 px-6 mx-auto max-w-7xl">
         <div className="relative">
-          {/* <!-- Your Name --> */}
+         
           <div></div>
 
           <div className="relative grid grid-cols-1 md:grid-cols-4 gap-10 xl:gap-24 z-10">
-            {/* <!-- Your Title --> */}
+           
             <div className="col-span-1">
               <h1 className="font-bold text-4xl z-[999]">{name}</h1>
               <h2 className="text-lg">{title}</h2>

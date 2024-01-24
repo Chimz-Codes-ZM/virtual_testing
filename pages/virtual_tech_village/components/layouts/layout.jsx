@@ -3,8 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useSelector, useDispatch } from "react-redux";
+import {
+  resetUser,
+  fetchUserData,
+  setUserData,
+} from "@/features/user/UserSlice";
 import { signOut } from "next-auth/react";
-
+import { useRouter } from "next/router";
 import Logo from "/public/logo.png";
 import { BiLogOut } from "react-icons/bi";
 import { AiOutlineBell } from "react-icons/ai";
@@ -22,14 +27,16 @@ import {
 } from "@/components/ui/tooltip";
 
 const Layout = ({ children, sideHighlight }) => {
+  const [userData, setUserData] = useState(null);
   const [unreadMessageCount, setUnreadMessageCount] = useState(null);
   const [notificationContent, setNotificationContent] = useState(null);
   const [showNotification, setShowNotification] = useState(false);
+  const [decodedToken, setDecodedToken] = useState(null);
   const [id, setId] = useState("");
+  const router = useRouter();
   const notificationRef = useRef();
 
   const dispatch = useDispatch();
-
   const user = useSelector((state) => {
     if (state.user?.userData && state.user.userData.length > 0) {
       return state.user.userData[0];
@@ -38,11 +45,20 @@ const Layout = ({ children, sideHighlight }) => {
     }
   });
 
+
   const user_id = () => {
     if (user) {
       setId(user.user_id);
     }
   };
+
+  // if (!session) {
+  //   return (
+  //     <div className="flex h-screen items-center justify-center ">
+  //       <JellyTriangle size={40} color="#231F20" />
+  //     </div>
+  //   );
+  // }
 
   const handleClickOutsideNotification = (event) => {
     if (
@@ -55,22 +71,22 @@ const Layout = ({ children, sideHighlight }) => {
 
   const logoutHandler = () => {
     signOut({ callbackUrl: "/homepage/login" });
+
+    dispatch(resetUser());
   };
 
   useEffect(() => {
     user_id();
   }, [user]);
-
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideNotification);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideNotification);
     };
   }, []);
 
   const { readyState, sendJsonMessage } = useWebSocket(
-    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat_notifications/${user.user_id}/`,
+    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat_notifications/${id}/`,
     {
       onOpen: () => {
         console.log("Connected to Notifications!");
@@ -97,20 +113,17 @@ const Layout = ({ children, sideHighlight }) => {
       retryOnError: true,
     }
   );
-
   const handleSendNotification = () => {
     sendJsonMessage({
       type: "read_notifications",
     });
   };
-
   const handleShowNotification = () => {
     setShowNotification(!showNotification);
     sendJsonMessage({
       type: "read_messages",
     });
   };
-
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
     [ReadyState.OPEN]: "Open",
