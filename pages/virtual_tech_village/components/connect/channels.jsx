@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import Skeleton from "../../admin/components/skeleton";
 
 import { MdGroupRemove } from "react-icons/md";
+import { API_URL } from "@/config";
 
 const Channels = ({ addChannel, setAddChannel }) => {
   const [conversations, setConversations] = useState([]);
@@ -27,7 +28,7 @@ const Channels = ({ addChannel, setAddChannel }) => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/channel_list/${user.user_id}/`
+          `https://${API_URL}/village/channel_list/${user.user_id}/`
         );
         setConversations(response.data)
       } catch (error) {

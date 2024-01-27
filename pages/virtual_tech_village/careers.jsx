@@ -13,6 +13,7 @@ import { BsFillCalendar2EventFill } from "react-icons/bs";
 
 import { event_grid } from "../data";
 import { GiJawbone } from "react-icons/gi";
+import { API_URL } from "@/config";
 const Careers = () => {
     const newEventRef = useRef();
     const selectedEventRef = useRef();
@@ -70,7 +71,7 @@ const Careers = () => {
       formData.append("image", imageRef.current);
       const sendData = async () => {
         const response = await fetch(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/events/109/`,
+          `https://${API_URL}/village/events/${user.user_id}/`,
           {
             method: "POST",
             body: formData,
@@ -115,7 +116,7 @@ const Careers = () => {
       async function fetchData() {
         try {
           const response = await axios.get(
-            `https://baobabpad-334a8864da0e.herokuapp.com/village/job_listings/${user.user_id}/`
+            `https://${API_URL}/village/job_listings/${user.user_id}/`
           );
           console.log("This is the careers data ===>", response.data);
           setJobs(response.data)

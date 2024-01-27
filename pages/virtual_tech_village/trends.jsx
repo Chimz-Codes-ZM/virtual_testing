@@ -77,7 +77,7 @@ const sharepad = () => {
 
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/trends/${user.user_id}/`,
+        `https://${API_URL}/village/trends/${user.user_id}/`,
         {
           method: "POST",
           headers: {

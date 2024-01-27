@@ -36,6 +36,7 @@ import {
   SelectLabel,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { API_URL } from "@/config";
 
 const Virtual_Tech_Village = () => {
   const router = useRouter();
@@ -92,7 +93,7 @@ const Virtual_Tech_Village = () => {
     console.log("Login function called");
     const fetchData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${id}/`,
+        `https://${API_URL}/village/village_profiles/${id}/`,
         {
           method: "POST",
           headers: {
@@ -122,7 +123,7 @@ const Virtual_Tech_Village = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/country_skills/${id}/`
+          `https://${API_URL}/village/country_skills/${id}/`
         );
         setSelectedAttributes(response.data);
         console.log(response.data);
@@ -138,7 +139,7 @@ const Virtual_Tech_Village = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/country_industries/${id}/`
+          `https://${API_URL}/village/country_industries/${id}/`
         );
         setSelectedCompanyAttributes(response.data);
       } catch (error) {
@@ -263,7 +264,7 @@ const Virtual_Tech_Village = () => {
 
     const fetchData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${currentSessionId}/`,
+        `https://${API_URL}/village/village_profiles/${currentSessionId}/`,
         {
           method: "POST",
           headers: {
@@ -370,7 +371,7 @@ const Virtual_Tech_Village = () => {
 
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/job_listings/${currentSessionId}/`,
+        `https://${API_URL}/village/job_listings/${currentSessionId}/`,
         {
           method: "POST",
           body: formData,
@@ -414,7 +415,7 @@ const Virtual_Tech_Village = () => {
   const makeAPICall = async (updatedFilters) => {
     try {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/village_profiles/${currentSessionId}/`,
+        `https://${API_URL}/village/village_profiles/${currentSessionId}/`,
         {
           method: "POST",
           headers: {

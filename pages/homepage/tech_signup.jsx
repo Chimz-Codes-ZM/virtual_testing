@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { initialValidationErrors } from "../data";
 import logo from "../../public/logo.png";
+import { API_URL } from "@/config";
 
 const tech_signup = () => {
   const [values, setValues] = useState({
@@ -179,7 +180,7 @@ const tech_signup = () => {
 
     const response = await fetch(
       // "http://127.0.0.1:8000/village/village_signup/",
-      "https://baobabpad-334a8864da0e.herokuapp.com/village/village_signup/",
+      `https://${API_URL}/village/village_signup/`,
       {
         method: "POST",
         headers: {

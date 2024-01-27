@@ -5,6 +5,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import MessageInput from '../components/support/supportInput';
 import Support_toolbar from '../components/support/support_Toolbar';
+import { API_URL } from '@/config';
 
 const support = () => {
     const [userData, setUserData] = useState([])
@@ -25,7 +26,7 @@ const support = () => {
         async function fetchData() {
           try {
             const response = await axios.get(
-              `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${id}/`
+              `https://${API_URL}/village/profile_data/${id}/`
             );
             setUserData(response.data);
             setUserId(response.data[0].user_id);
@@ -44,7 +45,7 @@ console.log("SUPPORT USER DATA: ", userData)
 
 
       const { readyState, sendMessage, sendJsonMessage } = useWebSocket(
-        `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${userId}/${userId}${uniqueRoom}/`,
+        `wss://${API_URL}/ws/chat/${userId}/${userId}${uniqueRoom}/`,
         {
           onOpen: () => {
             sendJsonMessage({

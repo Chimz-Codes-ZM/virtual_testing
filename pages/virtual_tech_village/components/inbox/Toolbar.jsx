@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { RiMenuAddFill } from "react-icons/ri";
 import Image from "next/image";
+import { API_URL } from "@/config";
 
 const Toolbar = ({
   names,
@@ -46,7 +47,7 @@ const Toolbar = ({
     const sendData = async () => {
       try {
         const response = await fetch(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+          `https://${API_URL}/village/conversation_data/${userId}/`,
           {
             method: "POST",
             headers: {
@@ -99,7 +100,7 @@ const Toolbar = ({
         console.log(requestBody);
 
         const response = await fetch(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+          `https://${API_URL}/village/conversation_data/${userId}/`,
           {
             method: "POST",
             headers: {
@@ -146,7 +147,7 @@ const Toolbar = ({
   const sendDeleteData = () => {
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+        `https://${API_URL}/village/conversation_data/${userId}/`,
         {
           method: "POST",
           headers: {
@@ -187,7 +188,7 @@ const Toolbar = ({
   const sendArchivedData = () => {
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+        `https://${API_URL}/village/conversation_data/${userId}/`,
         {
           method: "POST",
           headers: {
@@ -228,7 +229,7 @@ const Toolbar = ({
   const sendUnarchivedData = () => {
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+        `https://${API_URL}/village/conversation_data/${userId}/`,
         {
           method: "POST",
           headers: {
@@ -269,7 +270,7 @@ const Toolbar = ({
   const handleSendUnread = () => {
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+        `https://${API_URL}/village/conversation_data/${userId}/`,
         {
           method: "POST",
           headers: {
@@ -310,7 +311,7 @@ const Toolbar = ({
   const handleSendRead = () => {
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${userId}/`,
+        `https://${API_URL}/village/conversation_data/${userId}/`,
         {
           method: "POST",
           headers: {

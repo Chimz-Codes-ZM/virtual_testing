@@ -25,6 +25,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { API_URL } from "@/config";
 
 const Layout = ({ children, sideHighlight }) => {
   const [userData, setUserData] = useState(null);
@@ -86,7 +87,7 @@ const Layout = ({ children, sideHighlight }) => {
   }, []);
 
   const { readyState, sendJsonMessage } = useWebSocket(
-    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat_notifications/${id}/`,
+    `wss://${API_URL}/ws/chat_notifications/${id}/`,
     {
       onOpen: () => {
         console.log("Connected to Notifications!");

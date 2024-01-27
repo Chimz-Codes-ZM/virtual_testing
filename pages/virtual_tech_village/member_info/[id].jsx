@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Resume_component from "../components/cv/Resume_component";
 
 import { JellyTriangle } from "@uiball/loaders";
+import { API_URL } from "@/config";
 
 
 
@@ -31,7 +32,7 @@ const { id } = router.query;
   });
 
   const fetchInfo = async (e) => {
-    const userInfoUrl = `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${user.user_id}`;
+    const userInfoUrl = `https://${API_URL}/village/profile_data/${user.user_id}`;
 
     fetch(userInfoUrl)
       .then((response) => {
@@ -66,7 +67,7 @@ const { id } = router.query;
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${user.user_id}/`
+          `https://${API_URL}/village/profile_data/${user.user_id}/`
         );
         setLoggedIn(response.data[0].user_id);
         console.log(response.data[0].user_id);
@@ -84,7 +85,7 @@ const { id } = router.query;
   
     try {
       const response = await axios.get(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${user.user_id}/`,
+        `https://${API_URL}/village/talent_resume/${user.user_id}/`,
         { responseType: 'arraybuffer' }
       );
   
@@ -124,7 +125,7 @@ const { id } = router.query;
           linkedin={member[0]?.link}
           soft_skills={member[0]?.soft_skills}
         />
-        <a href={`https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${user.user_id}/`}
+        <a href={`https://${API_URL}/village/talent_resume/${user.user_id}/`}
           className="p-1 px-1 rounded-lg border shadow-md w-fit cursor-pointer bg-black text-white fixed bottom-10 right-10"
           target="_blank"
         >
@@ -138,7 +139,7 @@ const { id } = router.query;
 export default MemberInfo;
 
 export async function getStaticPaths() {
-  const response = await fetch('https://baobabpad-334a8864da0e.herokuapp.com/village/talent_ids/');
+  const response = await fetch(`https://${API_URL}/village/talent_ids/`);
   
   if (!response.ok) {
     console.error('Failed to fetch data');
@@ -166,7 +167,7 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   const { params } = context;
 
-  const response = await fetch(`https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${params.id}`)
+  const response = await fetch(`https://${API_URL}/village/profile_data/${params.id}`)
   const data = await response.json()
 
   return {

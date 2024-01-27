@@ -9,6 +9,7 @@ import { FcPicture } from "react-icons/fc";
 import { countries, techPositions } from "../../../data";
 import { useSelector } from "react-redux";
 import Profile_layout from "../layouts/Profile_layout";
+import { API_URL } from "@/config";
 
 const Edit_profile_component = () => {
   const router = useRouter();
@@ -157,7 +158,7 @@ const Edit_profile_component = () => {
     imageData.append("file", file);
 
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
+      `https://${API_URL}/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "PUT",
@@ -190,7 +191,7 @@ const Edit_profile_component = () => {
 
   useEffect(() => {
     const profileData = fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
+      `https://${API_URL}/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "GET",
@@ -235,7 +236,7 @@ const Edit_profile_component = () => {
 
     if (cvSubmitted === true) {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/edit_profile/${user.user_id}/`,
+        `https://${API_URL}/village/edit_profile/${user.user_id}/`,
         {
           method: "POST",
           headers: {
@@ -260,7 +261,7 @@ const Edit_profile_component = () => {
     e.preventDefault();
 
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
+      `https://${API_URL}/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "POST",
@@ -298,7 +299,7 @@ const Edit_profile_component = () => {
 
     try {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${user.user_id}/`,
+        `https://${API_URL}/village/talent_resume/${user.user_id}/`,
         {
           method: "POST",
           body: formData,

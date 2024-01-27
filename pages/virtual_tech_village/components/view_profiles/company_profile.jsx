@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { countries } from "@/pages/data";
 
 import { useSelector } from "react-redux";
+import { API_URL } from "@/config";
 
 const Company_profile = () => {
   const user = useSelector((state) => {
@@ -61,7 +62,7 @@ const Company_profile = () => {
     imageData.append("file", file);
 
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
+      `https://${API_URL}/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "PUT",
@@ -84,7 +85,7 @@ const Company_profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
+      `https://${API_URL}/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "POST",

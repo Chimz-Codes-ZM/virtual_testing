@@ -8,6 +8,7 @@ import Layout from "../../components/layouts/layout"
 import Resume_component from '@/pages/virtual_tech_village/components/cv/Resume_component'
 
 import { JellyTriangle } from "@uiball/loaders";
+import { API_URL } from "@/config";
 
 const CV = ({member}) => {
 
@@ -22,7 +23,7 @@ const CV = ({member}) => {
  
 
   const fetchInfo = async (e) => {
-    const userInfoUrl = `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${id}`;
+    const userInfoUrl = `https://${API_URL}/village/profile_data/${id}`;
 
     fetch(userInfoUrl)
       .then((response) => {
@@ -59,7 +60,7 @@ const CV = ({member}) => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${id}/`
+          `https://${API_URL}/village/profile_data/${id}/`
         );
         setLoggedIn(response.data[0].user_id);
         console.log(response.data[0].user_id);
@@ -77,7 +78,7 @@ const CV = ({member}) => {
     e.preventDefault();
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/download_cv/${id}/`,
+        `https://${API_URL}/village/download_cv/${id}/`,
         {
           method: "POST",
           headers: {
@@ -143,7 +144,7 @@ const CV = ({member}) => {
 export default CV
 
 export async function getStaticPaths() {
-    const response = await fetch('https://baobabpad-334a8864da0e.herokuapp.com/village/talent_ids/');
+    const response = await fetch(`https://${API_URL}/village/talent_ids/`);
     
     if (!response.ok) {
       console.error('Failed to fetch data');
@@ -171,7 +172,7 @@ export async function getStaticPaths() {
   export async function getStaticProps(context) {
     const { params } = context;
   
-    const response = await fetch(`https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${params.id}`)
+    const response = await fetch(`https://${API_URL}/village/profile_data/${params.id}`)
     const data = await response.json()
   
     return {

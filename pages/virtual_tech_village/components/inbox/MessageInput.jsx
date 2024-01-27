@@ -7,6 +7,7 @@ import { AiOutlineSend, AiOutlinePaperClip } from "react-icons/ai";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
+import { API_URL } from "@/config";
 
 
 const QuillNoSSRWrapper = dynamic(import('./RichTextEditor'), {
@@ -20,7 +21,7 @@ const MessageInput = ({ roomName, userId }) => {
   const inputRef = useRef(null);
 
   const [socketUrl, setSocketUrl] = useState(
-    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${userId}/${userId}${roomName}/`
+    `wss://${API_URL}/ws/chat/${userId}/${userId}${roomName}/`
   );
   const { readyState, sendJsonMessage } =
     useWebSocket(socketUrl);
@@ -57,7 +58,7 @@ const MessageInput = ({ roomName, userId }) => {
   }, []);
 
   useEffect(() => {
-    setSocketUrl(`wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${userId}/${userId}${roomName}/`);
+    setSocketUrl(`wss://${API_URL}/ws/chat/${userId}/${userId}${roomName}/`);
   }, [roomName])
 
   const connectionStatus = {

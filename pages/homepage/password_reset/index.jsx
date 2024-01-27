@@ -8,6 +8,7 @@ import Password_hero from "../../../public/assets/password_hero.jpg";
 import { TbPasswordFingerprint } from "react-icons/tb";
 import { MdToken } from "react-icons/md";
 import { PiPasswordBold } from "react-icons/pi";
+import { API_URL } from "@/config";
 
 const Password_reset = () => {
   const router = useRouter()
@@ -29,7 +30,7 @@ const Password_reset = () => {
     e.preventDefault();
 
     const response = await fetch(
-      "https://baobabpad-334a8864da0e.herokuapp.com/api/forgot_password/",
+      `https://${API_URL}/api/forgot_password/`,
       {
         method: "PUT",
         headers: {

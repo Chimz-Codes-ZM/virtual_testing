@@ -5,6 +5,7 @@ import User_exists from "./alerts/user_exists";
 import Form_success from "./alerts/form_success";
 
 import { countries } from "../../data/index";
+import { API_URL } from "@/config";
 
 
 
@@ -83,7 +84,7 @@ const Subscription = () => {
     }
 
     const response = await fetch(
-      "https://baobabpad-334a8864da0e.herokuapp.com/api/company_signup/",
+      `https://${API_URL}/api/company_signup/`,
       // "http://127.0.0.1:8000/api/company_signup/",
       {
         method: "POST",

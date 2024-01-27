@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { API_URL } from "@/config";
 
 const ConfirmPage = () => {
   const [otp, setOtp] = useState("");
@@ -11,7 +12,7 @@ const ConfirmPage = () => {
     event.preventDefault();
 
 
-    const response = await fetch('https://baobabpad-334a8864da0e.herokuapp.com/api/talent_signup/', {
+    const response = await fetch(`https://${API_URL}/api/talent_signup/`, {
       // const response = await fetch('http://127.0.0.1:8000/api/talent_signup/', {
       method: 'PUT',
       headers: {

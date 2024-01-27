@@ -14,6 +14,7 @@ import { BsFillCalendar2EventFill } from "react-icons/bs";
 
 
 import { event_grid } from "../data";
+import { API_URL } from "@/config";
 
 const Events = () => {
   const newEventRef = useRef();
@@ -83,7 +84,7 @@ const Events = () => {
     formData.append("image", imageRef.current);
     const sendData = async () => {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/events/109/`,
+        `https://${API_URL}/village/events/109/`,
         {
           method: "POST",
           body: formData,
@@ -145,7 +146,7 @@ const Events = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/events/${user.user_id}/`
+          `https://${API_URL}/village/events/${user.user_id}/`
         );
         console.log("This is the events ===>", response.data);
         setEvents(response.data);

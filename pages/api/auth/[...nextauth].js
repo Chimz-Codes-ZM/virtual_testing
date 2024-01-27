@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
+import { API_URL } from "@/config";
 
 const BACKEND_ACCESS_TOKEN_LIFETIME = 45 * 60; // 45 minutes
 const BACKEND_REFRESH_TOKEN_LIFETIME = 6 * 24 * 60 * 60; // 6 days
@@ -32,7 +33,7 @@ export const authOptions = {
       async authorize(credentials) {
         try {
           const response = await axios({
-            url: "https://baobabpad-334a8864da0e.herokuapp.com/api/token/",
+            url: `https://${API_URL}/api/token/`,
             method: "post",
             data: credentials,
           });

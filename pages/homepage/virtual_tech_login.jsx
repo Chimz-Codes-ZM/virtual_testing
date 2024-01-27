@@ -3,6 +3,7 @@ import Layout from "../layout";
 import Link from "next/link";
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
+import { API_URL } from "@/config";
 
 
 const Virtual_login = () => {
@@ -27,7 +28,7 @@ const Virtual_login = () => {
 
     // const response = await fetch("http://127.0.0.1:8000/api/token/", {
     const response = await fetch(
-      "https://baobabpad-334a8864da0e.herokuapp.com/api/token/",
+      `https://${API_URL}/api/token/`,
       {
         method: "POST",
         headers: {
@@ -53,7 +54,7 @@ const Virtual_login = () => {
 
       // const response = await fetch(`http://127.0.0.1:8000/api/user_type/${id}/`, {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/api/user_type/${id}/`,
+        `https://${API_URL}/api/user_type/${id}/`,
         {
           method: "POST",
           headers: {

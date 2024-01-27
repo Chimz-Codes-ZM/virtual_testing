@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import Success from "./components/alerts/success";
 
 import { countries } from "../data";
+import { API_URL } from "@/config";
 
 const Complete_company_profile = () => {
   const [completedProfile, setCompletedProfile] = useState({
@@ -57,7 +58,7 @@ const Complete_company_profile = () => {
     imageData.append("file", file);
 
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
+      `https://${API_URL}/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "PUT",
@@ -87,7 +88,7 @@ const Complete_company_profile = () => {
 
 console.log(completedProfile)
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
+      `https://${API_URL}/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "POST",

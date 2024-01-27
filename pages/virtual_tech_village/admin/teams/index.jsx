@@ -30,6 +30,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 import { Project_teams } from "@/pages/data";
+import { API_URL } from "@/config";
 
 const index = () => {
   const [newProject, setNewProject] = useState({
@@ -53,7 +54,7 @@ const index = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/create_project/${user.user_id}/`
+          `https://${API_URL}/village/create_project/${user.user_id}/`
         );
         // console.log("This is the events ===>", response.data.companies);
         setProjectOwners(response.data.companies);
@@ -81,41 +82,34 @@ const index = () => {
     
   };
 
-  const createTeam = () => {
+  const createTeam = async () => {
     console.log(newProject);
 
-    // try {
-    //   const response = await fetch(
-    //     `https://baobabpad.online/village/village_profiles/${currentSessionId}/`,
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({ filters: { ...filters, [name]: value } }),
-    //     }
-    //   );
+    try {
+      const response = await fetch(
+        `https://${API_URL}/village/create_project/${user.user_id}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newProject),
+        }
+      );
 
-    //   if (response.ok) {
-    //     const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
 
-    //     // console.log("====> This is my filtered data: ", data);
-    //     const pages = Array.from(
-    //       { length: data.talent_total_pages },
-    //       (_, index) => index + 1
-    //     );
-
-    //     console.log("========> Total number of pages: ", pages);
-
-    //     setMemberList(data);
-    //     setTalentPages(pages);
-    //     console.log();
-    //   } else {
-    //     console.error("Something went wrong, please try again!");
-    //   }
-    // } catch (error) {
-    //   console.error("Error:", error);
-    // }
+       
+        alert("Successfully Submitted!")
+      } else {
+        console.error("Something went wrong, please try again!");
+        // alert("Something went wrong, please try again!")
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong, please try again!")
+    }
   };
   return (
     <Layout sideHighlight="Insight">

@@ -8,6 +8,7 @@ import Success from "./components/alerts/success";
 import { FcPicture } from "react-icons/fc";
 import { techPositions, countries, techCategories } from "../data";
 import { useSelector } from "react-redux";
+import { API_URL } from "@/config";
 
 const Complete_profile = () => {
   const router = useRouter();
@@ -156,7 +157,7 @@ const Complete_profile = () => {
     imageData.append("file", file);
 
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
+      `https://${API_URL}/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "PUT",
@@ -189,7 +190,7 @@ const Complete_profile = () => {
 
   useEffect(() => {
     const profileData = fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
+      `https://${API_URL}/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "GET",
@@ -228,7 +229,7 @@ const Complete_profile = () => {
 
     if (cvSubmitted === true) {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
+        `https://${API_URL}/village/complete_profile/${user.user_id}/`,
         {
           method: "POST",
           headers: {
@@ -255,7 +256,7 @@ const Complete_profile = () => {
     e.preventDefault();
 
     const response = await fetch(
-      `https://baobabpad-334a8864da0e.herokuapp.com/village/complete_profile/${user.user_id}/`,
+      `https://${API_URL}/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
       {
         method: "POST",
@@ -293,7 +294,7 @@ const Complete_profile = () => {
 
     try {
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_resume/${user.user_id}/`,
+        `https://${API_URL}/village/talent_resume/${user.user_id}/`,
         {
           method: "POST",
           body: formData,

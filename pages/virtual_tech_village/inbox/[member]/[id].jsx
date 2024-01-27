@@ -11,6 +11,7 @@ import Toolbar from "../../components/inbox/Toolbar";
 import axios from "axios";
 
 import { useSelector } from "react-redux";
+import { API_URL } from "@/config";
 
 const Index = () => {
   const [info, setInfo] = useState(null);
@@ -69,7 +70,7 @@ const Index = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${user.user_id}/`
+          `https://${API_URL}/village/profile_data/${user.user_id}/`
         );
         setUserData(response.data);
         // console.log(response.data);
@@ -84,7 +85,7 @@ const Index = () => {
   const currentSignedInName = `${userData[0]?.first_name} ${userData[0]?.last_name}`;
 
   const { readyState, sendMessage, sendJsonMessage } = useWebSocket(
-    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${userId}/${userId}${uniqueRoom}/`,
+    `wss://${API_URL}/ws/chat/${userId}/${userId}${uniqueRoom}/`,
     {
       onOpen: () => {
         // console.log("Connected");
@@ -150,7 +151,7 @@ const Index = () => {
   );
 
   const fetchInfo = async (e) => {
-    const userInfoUrl = `https://baobabpad-334a8864da0e.herokuapp.com/village/profile_data/${id}/`;
+    const userInfoUrl = `https://${API_URL}/village/profile_data/${id}/`;
 
     try {
       const response = await fetch(userInfoUrl);

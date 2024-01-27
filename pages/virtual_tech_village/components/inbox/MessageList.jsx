@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import jwt_decode from "jwt-decode";
 import StartConversation from "./StartConversation";
 import axios from "axios";
+import { API_URL } from "@/config";
 
 const MessageList = ({ selectedConversation, onConversationClick }) => {
   const router = useRouter();
@@ -30,7 +31,7 @@ const MessageList = ({ selectedConversation, onConversationClick }) => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/conversation_data/${user.user_id}/`
+          `https://${API_URL}/village/conversation_data/${user.user_id}/`
         );
         setConversations(response.data);
         console.log(response.data);

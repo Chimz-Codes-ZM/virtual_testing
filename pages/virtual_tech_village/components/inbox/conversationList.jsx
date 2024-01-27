@@ -1,3 +1,4 @@
+import { API_URL } from "@/config";
 import React, { useState, useEffect, useRef } from "react";
 import useWebSocket, { ReadyState, SendMessage } from "react-use-websocket";
 
@@ -16,7 +17,7 @@ const ConversationList = ({
   const [typing, setTyping] = useState(false);
 
   const { readyState } = useWebSocket(
-    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${loggedInID}/${loggedInID}${roomName}/`,
+    `wss://${API_URL}/ws/chat/${loggedInID}/${loggedInID}${roomName}/`,
     {
       onOpen: () => {
         console.log("Connected!");

@@ -17,6 +17,7 @@ import {
   setAccountType,
 } from "@/features/applications/TalentSlice";
 import Skeleton from "../components/skeleton";
+import { API_URL } from "@/config";
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -80,7 +81,7 @@ const Index = () => {
   async function fetchData() {
     try {
       const response = await axios.get(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_approval/${user.user_id}/`
+        `https://${API_URL}/village/talent_approval/${user.user_id}/`
       );
       setInfo(response.data);
       console.log("Application data: ", response.data);
@@ -99,7 +100,7 @@ const Index = () => {
     const sendData = async () => {
       setLoading(true);
       const response = await fetch(
-        `https://baobabpad-334a8864da0e.herokuapp.com/village/talent_approval/${user.user_id}/`,
+        `https://${API_URL}/village/talent_approval/${user.user_id}/`,
         {
           method: "POST",
           headers: {

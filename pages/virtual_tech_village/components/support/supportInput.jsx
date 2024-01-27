@@ -14,7 +14,7 @@ import React, {
     const inputRef = useRef(null);
   
     const [socketUrl, setSocketUrl] = useState(
-      `wss://baobabpad-334a8864da0e.herokuapp.com/ws/chat/${userId}/${userId}${roomName}/`
+      `wss://${API_URL}/ws/chat/${userId}/${userId}${roomName}/`
     );
     const { readyState, sendJsonMessage } =
       useWebSocket(socketUrl, {

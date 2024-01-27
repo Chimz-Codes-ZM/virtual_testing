@@ -9,6 +9,7 @@ import { countries } from "../../data/index";
 import Form_success from "./alerts/form_success";
 import User_exists from "./alerts/user_exists";
 import Missing_fields from "./alerts/missing_fields"; 
+import { API_URL } from "@/config";
 
 const Talent_form = () => {
   const [experience, setExperience] = useState(false);
@@ -145,7 +146,7 @@ const Talent_form = () => {
 
     // const response = await fetch("http://127.0.0.1:8000/api/talent_signup/", {
     const response = await fetch(
-      "https://baobabpad-334a8864da0e.herokuapp.com/api/talent_signup/",
+      `https://${API_URL}/api/talent_signup/`,
       {
         method: "POST",
         headers: {

@@ -11,6 +11,7 @@ import axios from "axios";
 import { TbFileStack } from "react-icons/tb";
 import Poly from "../../../public/assets/polygon.png";
 import { JellyTriangle } from "@uiball/loaders";
+import { API_URL } from "@/config";
 
 
 const Teams = () => {
@@ -30,7 +31,7 @@ const Teams = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://baobabpad-334a8864da0e.herokuapp.com/village/total_applications/${user.user_id}/`
+          `https://${API_URL}/village/total_applications/${user.user_id}/`
         );
         setInfo(response.data);
           console.log("Total applications: ", response.data)

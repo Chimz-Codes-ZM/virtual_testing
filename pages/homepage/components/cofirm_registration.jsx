@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { API_URL } from "@/config";
 
 const Confirm_registration = () => {
   const [otp, setOtp] = useState("");
@@ -11,7 +12,7 @@ const Confirm_registration = () => {
     event.preventDefault();
 
     const response = await fetch(
-      "https://baobabpad-334a8864da0e.herokuapp.com/api/company_signup/",
+      `https://${API_URL}/api/company_signup/`,
       {
         method: "PUT",
         headers: {

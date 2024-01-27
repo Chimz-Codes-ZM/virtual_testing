@@ -4,6 +4,7 @@ import Baobab_logo from "../../public/logo.png";
 import Password_hero from "../../public/assets/password_hero.jpg";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { API_URL } from "@/config";
 
 function index() {
   const router = useRouter()
@@ -34,7 +35,7 @@ function index() {
     e.preventDefault();
 
     // const response = await fetch("http://127.0.0.1:8000/api/forgot_password/", {
-      const response = await fetch("https://baobabpad-334a8864da0e.herokuapp.com/api/forgot_password/", {
+      const response = await fetch(`https://${API_URL}/api/forgot_password/`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

@@ -56,7 +56,7 @@ const connect = () => {
   });
 
   const { readyState, sendMessage, sendJsonMessage } = useWebSocket(
-    `wss://baobabpad-334a8864da0e.herokuapp.com/ws/channels/${id}/${room}/`,
+    `wss://${API_URL}/ws/channels/${id}/${room}/`,
     {
       onOpen: () => {
         // console.log("Connected");

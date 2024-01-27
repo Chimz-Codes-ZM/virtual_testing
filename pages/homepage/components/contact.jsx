@@ -1,3 +1,4 @@
+import { API_URL } from "@/config";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -25,7 +26,7 @@ const Contact = () => {
     event.preventDefault();
 
     const response = await fetch(
-      "https://baobabpad-334a8864da0e.herokuapp.com/api/contact/",
+      `https://${API_URL}/api/contact/`,
       {
         method: "POST",
         headers: {

@@ -6,6 +6,7 @@ import React, {
   import { useSelector } from "react-redux";
   import { AiOutlineSend, AiOutlinePaperClip } from "react-icons/ai";
   import useWebSocket, { ReadyState } from "react-use-websocket";
+import { API_URL } from "@/config";
   
   const MessageInput = ({ room }) => {
     const [messageText, setMessageText] = useState("");
@@ -22,7 +23,7 @@ import React, {
   });
   
     const [socketUrl, setSocketUrl] = useState(
-      `wss://baobabpad-334a8864da0e.herokuapp.com/ws/channels/${id}/${room}/`
+      `wss://${API_URL}/ws/channels/${id}/${room}/`
     );
     const { readyState, sendJsonMessage } =
       useWebSocket(socketUrl);
@@ -59,7 +60,7 @@ import React, {
     }, []);
 
     useEffect(() => {
-      setSocketUrl(`wss://baobabpad-334a8864da0e.herokuapp.com/ws/channels/${id}/${room}/`);
+      setSocketUrl(`wss://${API_URL}/ws/channels/${id}/${room}/`);
     }, [room])
   
     const connectionStatus = {
