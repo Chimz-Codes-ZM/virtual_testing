@@ -401,11 +401,6 @@ html {
 }
 
 
-.scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-
 
 /* FADE IN AND OUT ANIMATION FOR VIRTUAL TECH VILLAGE COMPANY AND  MEMBER PROFILES */
 .openIt {
@@ -428,7 +423,7 @@ html {
 
 /* Custom inbox height */
 .custom-height {
-  height: calc(100vh - 70px);
+  height: 100vh
   /* height: 100vh; */
 }
 
@@ -441,6 +436,9 @@ html {
 }
 
 .scrollbar::-webkit-scrollbar {
-  display: none;
+  scrollbar-width: none;
 }
   
+.container {
+  scrollbar-width: none;
+}

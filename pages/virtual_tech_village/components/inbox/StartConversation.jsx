@@ -3,11 +3,16 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
+import { IoIosChatbubbles } from "react-icons/io";
+
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { API_URL } from "@/config";
@@ -53,44 +58,23 @@ const StartConversation = () => {
   return (
     <div className="fixed bottom-4 z-50">
       <div className="border-2 p-1 rounded-md ">
-        {/* <label
-          htmlFor="HeadlineAct"
-          className="block text-sm font-medium text-gray-900"
-        >
-          Start a New Conversation
-        </label>
+    
 
-        <select
-          name="HeadlineAct"
-          id="HeadlineAct"
-          className="mt-1.5 w-full rounded-lg px-1 max-h-[50px] overflow-y-auto border-gray-300 text-gray-700 sm:text-sm"
-        >
-          <option value="">Please select</option>
-          {userData?.individuals?.map((individual) => (
-            <option
-              key={individual.user_id}
-              value={`${individual.first_name} ${individual.last_name}`}
-              onClick={()=> handleInputChange(individual.user_id)}
-            >
-              {`${individual.first_name} ${individual.last_name}`}
-            </option>
-          ))}
-        </select> */}
-
-        <Popover>
-          <PopoverTrigger>Start a Conversation</PopoverTrigger>
-          <PopoverContent>
-            <ScrollArea className="h-[200px] rounded-md flex flex-col gap-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex justify-center items-center p-1 gap-2"><IoIosChatbubbles /> Message</DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Members</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <ScrollArea className="max-h-[200px] w-[250px] rounded-md overflow-y-auto">
               {userData?.individuals?.map((individual) => (
-                <div
+                <DropdownMenuItem
                   key={individual.user_id}
-                  className="w-full hover:bg-gray-100 transition border-y delay-100 cursor-pointer h-6"
                   onClick={() => handleInputChange(individual.user_id)}
-                >{`${individual.first_name} ${individual.last_name}`}</div>
+                >{`${individual.first_name} ${individual.last_name}`}</DropdownMenuItem>
               ))}
             </ScrollArea>
-          </PopoverContent>
-        </Popover>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );

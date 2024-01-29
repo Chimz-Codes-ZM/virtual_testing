@@ -40,9 +40,7 @@ const profile = () => {
   if (user?.account_type === "village company profile") {
     return (
       <div>
-        
           <Company_profile />
-        
       </div>
     );
   }

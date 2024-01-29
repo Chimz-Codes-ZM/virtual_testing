@@ -27,6 +27,17 @@ import {
 } from "@/components/ui/tooltip";
 import { API_URL } from "@/config";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 const Layout = ({ children, sideHighlight }) => {
   const [userData, setUserData] = useState(null);
   const [unreadMessageCount, setUnreadMessageCount] = useState(null);
@@ -45,7 +56,6 @@ const Layout = ({ children, sideHighlight }) => {
       return null;
     }
   });
-
 
   const user_id = () => {
     if (user) {
@@ -175,7 +185,6 @@ const Layout = ({ children, sideHighlight }) => {
                 ))}
 
                 {user?.account_type === "village admin profile" && (
-
                   <div className="w-full flex flex-col">
                     <Link href="/virtual_tech_village/admin/insight">
                       <TooltipProvider delayDuration={100}>
@@ -202,32 +211,35 @@ const Layout = ({ children, sideHighlight }) => {
 
                 {user?.account_type === "village company profile" && (
                   <div className="w-full flex flex-col">
-                  <Link href="/virtual_tech_village/team">
-                    <TooltipProvider delayDuration={100}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          {sideHighlight === "Team" ? (
-                            <Button variant="outline">
-                               <GiTeamIdea className="text-xl"/>
-                            </Button>
-                          ) : (
-                            <Button>
-                              <GiTeamIdea className="text-xl"/>
-                            </Button>
-                          )}
-                        </TooltipTrigger>
-                        <TooltipContent side="right">
-                          <p>Team</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </Link>
-                </div>
+                    <Link href="/virtual_tech_village/team">
+                      <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            {sideHighlight === "Team" ? (
+                              <Button variant="outline">
+                                <GiTeamIdea className="text-xl" />
+                              </Button>
+                            ) : (
+                              <Button>
+                                <GiTeamIdea className="text-xl" />
+                              </Button>
+                            )}
+                          </TooltipTrigger>
+                          <TooltipContent side="right">
+                            <p>Team</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Link>
+                  </div>
                 )}
               </div>
 
               <div className="w-full h-max rounded-r-full">
-                <div className="justify-center flex flex-col" onClick={logoutHandler}>
+                <div
+                  className="justify-center flex flex-col"
+                  onClick={logoutHandler}
+                >
                   <TooltipProvider delayDuration={100}>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -246,8 +258,8 @@ const Layout = ({ children, sideHighlight }) => {
           </div>
         </nav>
         <nav className="fixed bg-slate-200 top-0 left-0 w-full h-12 px-14 gap-4 flex justify-end items-center z-[99] bg-opacity-25 backdrop-blur border-none">
-          <div className="relative flex flex-col justify-center items-center">
-            {/* {connectionStatus} */}
+          {/* <div className="relative flex flex-col justify-center items-center">
+            {connectionStatus}
             <AiOutlineBell
               className={`text-lg cursor-pointer ${
                 unreadMessageCount > 0 ? "animate-bounce" : ""
@@ -259,7 +271,7 @@ const Layout = ({ children, sideHighlight }) => {
             </div>
             <div ref={notificationRef}>
               <div className="relative">
-                {/* <div className="inline-flex items-center overflow-hidden rounded-md border bg-white"></div> */}
+                <div className="inline-flex items-center overflow-hidden rounded-md border bg-white"></div>
                 {showNotification && (
                   <div
                     className="absolute -left-8 md:-left-20 md:end-0 z-[999] w-56 rounded-md border border-gray-100 max-h-40 overflow-x-auto bg-white shadow-lg"
@@ -302,7 +314,59 @@ const Layout = ({ children, sideHighlight }) => {
                 )}
               </div>
             </div>
-          </div>
+          </div> */}
+
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <AiOutlineBell
+                className={`text-lg cursor-pointer ${
+                  unreadMessageCount > 0 ? "animate-bounce" : ""
+                }`}
+                onClick={handleShowNotification}
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <ScrollArea className="max-h-[200px] w-[250px] rounded-md">
+                {notificationContent && notificationContent.length > 0 ? (
+                  notificationContent.map((notification, index) => (
+                    <div className="" key={index}>
+                      <Link
+                        href={`/virtual_tech_village/${notification.route}`}
+                      >
+                        <DropdownMenuItem className="flex items-center gap-2 hover:bg-gray-50 hover:text-gray-700">
+                          <div className="h-8 w-8 relative">
+                            <Image
+                              src={notification.image}
+                              fill
+                              objectFit="cover"
+                              className="rounded-full"
+                            />
+                          </div>
+                          <div
+                            className="block rounded-lg px-4 py-2 text-sm text-gray-500"
+                            role="menuitem"
+                          >
+                            <div className="flex flex-col">
+                              <div className="font-semibold">
+                                {notification.sender}
+                              </div>
+                              <div className="truncate">
+                                {notification.message}
+                              </div>
+                            </div>
+                          </div>
+                        </DropdownMenuItem>
+                      </Link>
+                    </div>
+                  ))
+                ) : (
+                  <DropdownMenuItem>No new notifications.</DropdownMenuItem>
+                )}
+              </ScrollArea>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <Link href="/virtual_tech_village/profile/">
             <div className="w-max truncate px-4 py-2 transition-all duration-500 hover:bg-gray-100 rounded cursor-pointer flex items-center gap-1 sm:gap-2">
@@ -349,10 +413,8 @@ const Layout = ({ children, sideHighlight }) => {
             </div>
           </Link>
         </nav>
-        <div className="w-full h-screen overflow-y-scroll px-4 overflow-x-hidden scrollbar">
-          <div className="w-full h-full flex flex-col gap-5 scrollbar">
-            {children}
-          </div>
+        <div className="w-full h-screen overflow-hidden flex flex-col gap-5 scrollbar">
+          {children}
         </div>
       </main>
     </>

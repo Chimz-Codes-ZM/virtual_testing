@@ -8,6 +8,7 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useSelector } from "react-redux";
 import Toolbar from "../components/connect/Toolbar";
 import MessageInput from "../components/connect/MessageInput";
+import { API_URL } from "@/config";
 
 const connect = () => {
   const [info, setInfo] = useState(null);

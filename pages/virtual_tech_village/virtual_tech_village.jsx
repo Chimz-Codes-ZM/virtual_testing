@@ -403,15 +403,15 @@ const Virtual_Tech_Village = () => {
         ...prevFilters,
         [name]: value === "All" ? "" : value,
       };
-  
+
       console.log(updatedFilters);
-  
+
       makeAPICall(updatedFilters);
-  
+
       return updatedFilters;
     });
   };
-  
+
   const makeAPICall = async (updatedFilters) => {
     try {
       const response = await fetch(
@@ -424,17 +424,17 @@ const Virtual_Tech_Village = () => {
           body: JSON.stringify({ filters: updatedFilters }),
         }
       );
-  
+
       if (response.ok) {
         const data = await response.json();
-  
+
         const pages = Array.from(
           { length: data.talent_total_pages },
           (_, index) => index + 1
         );
-  
+
         console.log("========> Total number of pages: ", pages);
-  
+
         setMemberList(data);
         setTalentPages(pages);
         console.log();
@@ -445,7 +445,7 @@ const Virtual_Tech_Village = () => {
       console.error("Error:", error);
     }
   };
-  
+
   const handleInputNameChange = async (e) => {
     e.preventDefault();
 
@@ -502,7 +502,7 @@ const Virtual_Tech_Village = () => {
       company_name: "",
       company_industry: "",
       category: "",
-    })
+    });
 
     try {
       const response = await fetch(
@@ -536,7 +536,7 @@ const Virtual_Tech_Village = () => {
     } catch (error) {
       console.error("Error:", error);
     }
-  }
+  };
 
   if (!memberList) {
     return (
@@ -704,11 +704,11 @@ const Virtual_Tech_Village = () => {
   };
 
   const cvDismiss = () => {
-    setProfile(false)
-  }
+    setProfile(false);
+  };
 
   return (
-    <div className="flex flex-col gap-5 relative pb-8" ref={parent}>
+    <div className="flex flex-col gap-5 relative pb-8 overflow-x-hidden overflow-y-auto" ref={parent}>
       {success && (
         <div className="rounded fixed bottom-10 sm:right-10 z-[999] max-w-[450px]">
           <JobAdded
@@ -881,7 +881,7 @@ const Virtual_Tech_Village = () => {
       </div>
 
       <div className="flex relative">
-        <div className="lg:w-4/5">
+        <div className="w-full lg:w-4/5">
           {(memberList.user[0]?.account_type === "village talent profile" ||
             memberList.user[0].account_type === "village admin profile" ||
             memberList.user[0].account_type === "community manager" ||
@@ -1031,7 +1031,7 @@ const Virtual_Tech_Village = () => {
           </AnimatePresence>
         </div>
 
-        <div className="lg:w-1/5 px-4">
+        <div className="lg:w-1/5 px-4 hidden sm:block">
           <div className="h-full rounded-md">
             <div className="border-b px-1 p-2">
               <h2 className="font-semibold">Filters</h2>
@@ -1046,9 +1046,8 @@ const Virtual_Tech_Village = () => {
                   name="name"
                   id="name"
                   value={filters.name}
-                 onChange={(e) => handleInputNameChange(e)}
+                  onChange={(e) => handleInputNameChange(e)}
                 />
-
               </div>
               <div>
                 <h1>Country</h1>
@@ -1077,14 +1076,26 @@ const Virtual_Tech_Village = () => {
               </div>
               <div>
                 <h1>Category</h1>
-                <Select>
+                <Select
+                  name="category"
+                  id="category"
+                  onValueChange={(value) => handleInputChange(value, "category")}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a Category" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Categories</SelectLabel>
-                      <SelectItem value="apple">Apple</SelectItem>
+
+                      {selectedAttributes?.categories?.map((category) => (
+                        <SelectItem
+                          key={category.category}
+                          value={category.category}
+                        >
+                          {category.category}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -1142,8 +1153,14 @@ const Virtual_Tech_Village = () => {
               </div>
 
               <div className="pt-10">
-{/* <Button variant="outline" className="float-right" onClick={clearFilter}>Clear</Button> */}
-<div className="p-1 px-2 rounded-sm border bg-white hover:bg-gray-100 w-fit float-right cursor-pointer" onClick={(e) => clearFilter(e)}>Clear</div>
+                <Button
+                  variant="outline"
+                  className="float-left"
+                  onClick={(e) => clearFilter(e)}
+                >
+                  Clear
+                </Button>
+                {/* <div className="p-1 px-2 rounded-sm border bg-white hover:bg-gray-100 w-fit float-right cursor-pointer" onClick={(e) => clearFilter(e)}>Clear</div> */}
               </div>
             </form>
           </div>
