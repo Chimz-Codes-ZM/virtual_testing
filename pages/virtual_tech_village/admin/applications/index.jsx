@@ -106,7 +106,7 @@ const Index = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(sentData),
+          body: JSON.stringify(formattedData),
         }
       );
       if (response.ok) {
@@ -130,7 +130,7 @@ const Index = () => {
   if (!info) {
     return (
       <Layout>
-        <div className="w-full h-full relative flex flex-col gap-5 mt-16 overflow-x-hidden">
+        <div className="w-full h-full relative flex flex-col p-2 gap-5 mt-16 overflow-x-hidden">
           <p className="text-gray-800">Talent applications to join Baobabpad</p>
 
           <div className="flex items-center">
@@ -172,7 +172,7 @@ const Index = () => {
   return (
     <>
       <Layout sideHighlight="Insight">
-        <div className="w-full h-full relative flex flex-col gap-5 mt-16 overflow-x-hidden">
+        <div className="w-full h-full relative flex flex-col p-2 gap-5 mt-16 overflow-x-hidden">
           <div
             className="fixed bottom-16 right-16 bg-gray-900 text-white rounded text-xl px-2 p-1 cursor-pointer transform transition hover:scale-105"
             onClick={handleSubmit}

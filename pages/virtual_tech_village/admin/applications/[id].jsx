@@ -1,26 +1,30 @@
 import React, { useEffect, useState, useLayoutEffect } from "react";
 import { useRouter } from "next/router";
-
+import { useSelector } from "react-redux";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 
-import Layout from "../../components/layouts/layout"
-import Resume_component from '@/pages/virtual_tech_village/components/cv/Resume_component'
+import Layout from "../../components/layouts/layout";
+import Resume_component from "@/pages/virtual_tech_village/components/cv/Resume_component";
 
 import { JellyTriangle } from "@uiball/loaders";
 import { API_URL } from "@/config";
 
-const CV = ({member}) => {
+const CV = ({ member }) => {
+  const [info, setInfo] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loggedIn, setLoggedIn] = useState([]);
+  const router = useRouter();
 
-    const [info, setInfo] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [loggedIn, setLoggedIn] = useState([]);
-    const router = useRouter();
-
-    const { id } = router.query;
+  const { id } = router.query;
   const [error, setError] = useState(null);
 
- 
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
+    }
+  });
 
   const fetchInfo = async (e) => {
     const userInfoUrl = `https://${API_URL}/village/profile_data/${id}`;
@@ -37,9 +41,7 @@ const CV = ({member}) => {
         setInfo(responseData);
         console.log(responseData);
 
-      
-          setLoading(false);
-       
+        setLoading(false);
       })
 
       .catch((error) => {
@@ -52,11 +54,6 @@ const CV = ({member}) => {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    const decodedToken = jwt_decode(token);
-    const id = decodedToken.user_id;
-
     async function fetchData() {
       try {
         const response = await axios.get(
@@ -71,7 +68,6 @@ const CV = ({member}) => {
 
     fetchData();
   }, []);
- 
 
   const handleCVDownload = (e) => {
     // console.log(csrfToken)
@@ -83,18 +79,17 @@ const CV = ({member}) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-          },  
-          credentials: 'include',
+          },
+          credentials: "include",
           body: JSON.stringify({ profile_id: id }),
         }
       );
       if (response.ok) {
         const blob = await response.blob();
 
-        
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = 'zamanis.pdf';
+        link.download = "zamanis.pdf";
         link.click();
       }
 
@@ -115,70 +110,74 @@ const CV = ({member}) => {
   }
   return (
     <>
-    <Layout sideHighlight="Tech Village">
-      <Resume_component
-        name={`${member[0]?.first_name} ${member[0].last_name}`}
-        bio={member[0]?.bio}
-        country={member[0]?.country}
-        city={member[0]?.city}
-        title={member[0]?.skills}
-        job1={member[0]?.work_experience[0]?.company}
-        position1={member[0]?.work_experience[0]?.position}
-        work_experience={member[0]?.work_experience}
-        education={member[0]?.education}
-        languages={member[0]?.languages}
-        linkedin={member[0]?.link}
-        soft_skills={member[0]?.soft_skills}
-      />
-      <div
-        className="p-1 px-3 rounded-lg border shadow-md w-fit cursor-pointer bg-black text-white fixed bottom-10 right-10"
-        onClick={handleCVDownload}
-      >
-        Download CV
-      </div>
-    </Layout>
-  </>
-  )
-}
+      <Layout sideHighlight="Tech Village">
+        <div className="overflow-y-auto">
+          
+          <Resume_component
+            name={`${member[0]?.first_name} ${member[0].last_name}`}
+            bio={member[0]?.bio}
+            country={member[0]?.country}
+            city={member[0]?.city}
+            title={member[0]?.skills}
+            job1={member[0]?.work_experience[0]?.company}
+            position1={member[0]?.work_experience[0]?.position}
+            work_experience={member[0]?.work_experience}
+            education={member[0]?.education}
+            languages={member[0]?.languages}
+            linkedin={member[0]?.link}
+            soft_skills={member[0]?.soft_skills}
+          />
+          <div
+            className="p-1 px-3 rounded-lg border shadow-md w-fit cursor-pointer bg-black text-white fixed bottom-10 right-10"
+            onClick={handleCVDownload}
+          >
+            Download CV
+          </div>
+        </div>
+      </Layout>
+    </>
+  );
+};
 
-export default CV
+export default CV;
 
 export async function getStaticPaths() {
-    const response = await fetch(`https://${API_URL}/village/talent_ids/`);
-    
-    if (!response.ok) {
-      console.error('Failed to fetch data');
-      return { paths: [], fallback: true };
-    }
-  
-    const data = await response.json();
-  
-    console.log(data);
-  
-    const paths = data.map((person) => {
-      return {
-        params: {
-          id: `${person.id}`,
-        }
-      };
-    });
-  
+  const response = await fetch(`https://${API_URL}/village/talent_ids/`);
+
+  if (!response.ok) {
+    console.error("Failed to fetch data");
+    return { paths: [], fallback: true };
+  }
+
+  const data = await response.json();
+
+  console.log(data);
+
+  const paths = data.map((person) => {
     return {
-      paths: paths,
-      fallback: true
+      params: {
+        id: `${person.id}`,
+      },
     };
-  }
-  
-  export async function getStaticProps(context) {
-    const { params } = context;
-  
-    const response = await fetch(`https://${API_URL}/village/profile_data/${params.id}`)
-    const data = await response.json()
-  
-    return {
-      props: {
-        member: data
-      }
-    }
-  }
-  
+  });
+
+  return {
+    paths: paths,
+    fallback: true,
+  };
+}
+
+export async function getStaticProps(context) {
+  const { params } = context;
+
+  const response = await fetch(
+    `https://${API_URL}/village/profile_data/${params.id}`
+  );
+  const data = await response.json();
+
+  return {
+    props: {
+      member: data,
+    },
+  };
+}

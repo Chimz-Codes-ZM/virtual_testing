@@ -48,16 +48,15 @@ const MemberProfile = ({
 
   return (
     <div className="text-center cursor-pointer " onClick={handleShowProfile}>
-      <div className="rounded border md:max-w-[19.8rem] max-h-80 md:h-80 overflow-hidden">
+      <div className="rounded border relative w-full md:max-w-[19.8rem] max-h-80 h-80 overflow-hidden">
         <Image
           src={image}
           alt="profile image"
-          layout="responsive"
+          layout="fill"
           objectFit="cover"
           className=" transition-opacity opacity-0 duration-[1.2s]"
           onLoadingComplete={(image) => image.classList.remove("opacity-0")}
-          width={500}
-          height={500}
+         
         />
       </div>
       <h1 className="font-semibold">{name}</h1>

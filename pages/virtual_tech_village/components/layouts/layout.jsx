@@ -318,12 +318,18 @@ const Layout = ({ children, sideHighlight }) => {
 
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <AiOutlineBell
-                className={`text-lg cursor-pointer ${
-                  unreadMessageCount > 0 ? "animate-bounce" : ""
-                }`}
-                onClick={handleShowNotification}
-              />
+              <div className="relative">
+                <AiOutlineBell
+                  className={`text-lg cursor-pointer ${
+                    unreadMessageCount > 0 ? "animate-bounce" : ""
+                  }`}
+                  onClick={handleShowNotification}
+                />
+
+                <div className="absolute -top-2 -right-4">
+                  {unreadMessageCount > 0 ? unreadMessageCount : ""}
+                </div>
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>Notifications</DropdownMenuLabel>
@@ -348,11 +354,11 @@ const Layout = ({ children, sideHighlight }) => {
                             className="block rounded-lg px-4 py-2 text-sm text-gray-500"
                             role="menuitem"
                           >
-                            <div className="flex flex-col">
+                            <div className="flex flex-col truncate">
                               <div className="font-semibold">
                                 {notification.sender}
                               </div>
-                              <div className="truncate">
+                              <div className="truncate max-w-[170px]">
                                 {notification.message}
                               </div>
                             </div>

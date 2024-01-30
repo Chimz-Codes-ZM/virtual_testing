@@ -176,6 +176,7 @@ const Index = () => {
 
   useEffect(() => {
     setMessageHistory([]);
+    setNewMessages([])
     fetchInfo();
   }, [id]);
 
@@ -185,7 +186,6 @@ const Index = () => {
 
   useEffect(() => {
     scrollToBottom();
-    console.log(newMessages);
   }, [messageHistory, newMessages]);
 
   const connectionStatus = {
@@ -207,15 +207,15 @@ const Index = () => {
   return (
     <>
       <Layout sideHighlight="inbox">
-        <div className="flex custom-height">
+        <div className="flex h-full w-full">
           <div className="hidden lg:block py-14">
             <MessageList />
           </div>
 
           {/* CONVERSATION LIST */}
 
-          <div className="relative grow shadow overflow-hidden h-full flex justify-center">
-            <div className="grow relative sm:p-4 py-1 overflow-hidden max-h-[500px] mt-14 pt-10 max-w-3xl">
+          <div className="relative flex-col grow shadow overflow-hidden h-full flex justify-center w-full p-2">
+            <div className="grow relative sm:p-4 py-1 overflow-hidden max-h-full mt-14 pt-10 self-center w-full max-w-4xl shadow">
               <Toolbar
                 names={usersName}
                 avatar={userPicture}
@@ -245,7 +245,7 @@ const Index = () => {
                                 className="flex flex-col gap-2 w-full"
                               >
                                 {message.from_user?.email === email && (
-                                  <div className="self-end w-fit p-1 px-3 rounded-lg bg-slate-800 text-white">
+                                  <div className="self-end w-fit p-1 px-3 max-w-[66%] rounded-lg bg-[#001e1d] text-white">
                                     {message.content}
                                   </div>
                                 )}
@@ -288,9 +288,9 @@ const Index = () => {
                     {newMessages.length > 0 && (
                       <div className="message-list flex flex-col gap-1 pt-2">
                         {newMessages.map((message, index) => (
-                          <div  className="flex flex-col gap-2 w-full">
+                          <div  className="flex flex-col gap-2 w-full ">
                             {message.from_user?.email === email && (
-                              <div className="self-end w-fit p-1 px-3 rounded-lg bg-slate-800 text-white">
+                              <div className="self-end w-fit p-1 px-3 max-w-[66%] rounded-lg bg-[#001e1d] text-white">
                                 {message.content}
                               </div>
                             )}
@@ -307,7 +307,7 @@ const Index = () => {
                                     />
                                   </div>
 
-                                  <div className="flex flex-col w-full max-w-[320px] leading-1.5">
+                                  <div className="flex flex-col w-full max-w-[66%] leading-1.5">
                                     <div className="flex items-center space-x-2 rtl:space-x-reverse">
                                       <span className="text-sm font-semibold text-gray-900">
                                         {message.from_user.name}
@@ -332,11 +332,9 @@ const Index = () => {
                 </div>
               </div>
             </div>
+            
             <MessageInput roomName={uniqueRoom} userId={userId} />
           </div>
-
-          {/* {connectionStatus} */}
-          {/* END OF CONVERSATION LIST */}
         </div>
       </Layout>
     </>
