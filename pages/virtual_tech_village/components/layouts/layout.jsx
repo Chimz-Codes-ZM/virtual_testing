@@ -5,8 +5,6 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useSelector, useDispatch } from "react-redux";
 import {
   resetUser,
-  fetchUserData,
-  setUserData,
 } from "@/features/user/UserSlice";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -62,14 +60,6 @@ const Layout = ({ children, sideHighlight }) => {
       setId(user.user_id);
     }
   };
-
-  // if (!session) {
-  //   return (
-  //     <div className="flex h-screen items-center justify-center ">
-  //       <JellyTriangle size={40} color="#231F20" />
-  //     </div>
-  //   );
-  // }
 
   const handleClickOutsideNotification = (event) => {
     if (
@@ -258,121 +248,82 @@ const Layout = ({ children, sideHighlight }) => {
           </div>
         </nav>
         <nav className="fixed bg-slate-200 top-0 left-0 w-full h-12 px-14 gap-4 flex justify-end items-center z-[99] bg-opacity-25 backdrop-blur border-none">
-          {/* <div className="relative flex flex-col justify-center items-center">
-            {connectionStatus}
-            <AiOutlineBell
-              className={`text-lg cursor-pointer ${
-                unreadMessageCount > 0 ? "animate-bounce" : ""
-              }`}
-              onClick={handleShowNotification}
-            />
-            <div className="absolute -top-2 -right-4">
-              {unreadMessageCount > 0 ? unreadMessageCount : ""}
-            </div>
-            <div ref={notificationRef}>
-              <div className="relative">
-                <div className="inline-flex items-center overflow-hidden rounded-md border bg-white"></div>
-                {showNotification && (
-                  <div
-                    className="absolute -left-8 md:-left-20 md:end-0 z-[999] w-56 rounded-md border border-gray-100 max-h-40 overflow-x-auto bg-white shadow-lg"
-                    role="menu"
-                  >
-                    {notificationContent && notificationContent.length > 0 ? (
-                      notificationContent.map((notification, index) => (
-                        <div className="p-2" key={index}>
-                          <Link
-                            href={`/virtual_tech_village/${notification.route}`}
-                          >
-                            <div className="flex items-center gap-2 hover:bg-gray-50 hover:text-gray-700">
-                              <div className="h-8 w-8 relative">
-                                <Image
-                                  src={notification.image}
-                                  fill
-                                  objectFit="cover"
-                                  className="rounded-full"
-                                />
-                              </div>
-                              <div
-                                className="block rounded-lg px-4 py-2 text-sm text-gray-500"
-                                role="menuitem"
-                              >
-                                <div className="flex flex-col">
-                                  <div className="font-semibold">
-                                    {notification.sender}
-                                  </div>
-                                  <div>{notification.message}</div>
+          <div className="hidden sm:block">
+            {" "}
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="relative">
+                  <AiOutlineBell
+                    className={`text-lg cursor-pointer ${
+                      unreadMessageCount > 0 ? "animate-bounce" : ""
+                    }`}
+                    onClick={handleShowNotification}
+                  />
+
+                  <div className="absolute -top-2 -right-4">
+                    {unreadMessageCount > 0 ? unreadMessageCount : ""}
+                  </div>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <ScrollArea className="max-h-[200px] w-[250px] rounded-md">
+                  {notificationContent && notificationContent.length > 0 ? (
+                    notificationContent.map((notification, index) => (
+                      <div className="" key={index}>
+                        <Link
+                          href={`/virtual_tech_village/${notification.route}`}
+                        >
+                          <DropdownMenuItem className="flex items-center gap-2 hover:bg-gray-50 hover:text-gray-700">
+                            <div className="h-8 w-8 relative">
+                              <Image
+                                src={notification.image}
+                                fill
+                                objectFit="cover"
+                                className="rounded-full"
+                              />
+                            </div>
+                            <div
+                              className="block rounded-lg px-4 py-2 text-sm text-gray-500"
+                              role="menuitem"
+                            >
+                              <div className="flex flex-col truncate">
+                                <div className="font-semibold">
+                                  {notification.sender}
+                                </div>
+                                <div className="truncate max-w-[170px]">
+                                  {notification.message}
                                 </div>
                               </div>
                             </div>
-                          </Link>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="p-2">No new notifications.</div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div> */}
+                          </DropdownMenuItem>
+                        </Link>
+                      </div>
+                    ))
+                  ) : (
+                    <DropdownMenuItem>No new notifications.</DropdownMenuItem>
+                  )}
+                </ScrollArea>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger>
+          <div className="block sm:hidden">
+            <Link href={"/virtual_tech_village/notifications"}>
               <div className="relative">
                 <AiOutlineBell
                   className={`text-lg cursor-pointer ${
                     unreadMessageCount > 0 ? "animate-bounce" : ""
                   }`}
-                  onClick={handleShowNotification}
                 />
 
                 <div className="absolute -top-2 -right-4">
                   {unreadMessageCount > 0 ? unreadMessageCount : ""}
                 </div>
               </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <ScrollArea className="max-h-[200px] w-[250px] rounded-md">
-                {notificationContent && notificationContent.length > 0 ? (
-                  notificationContent.map((notification, index) => (
-                    <div className="" key={index}>
-                      <Link
-                        href={`/virtual_tech_village/${notification.route}`}
-                      >
-                        <DropdownMenuItem className="flex items-center gap-2 hover:bg-gray-50 hover:text-gray-700">
-                          <div className="h-8 w-8 relative">
-                            <Image
-                              src={notification.image}
-                              fill
-                              objectFit="cover"
-                              className="rounded-full"
-                            />
-                          </div>
-                          <div
-                            className="block rounded-lg px-4 py-2 text-sm text-gray-500"
-                            role="menuitem"
-                          >
-                            <div className="flex flex-col truncate">
-                              <div className="font-semibold">
-                                {notification.sender}
-                              </div>
-                              <div className="truncate max-w-[170px]">
-                                {notification.message}
-                              </div>
-                            </div>
-                          </div>
-                        </DropdownMenuItem>
-                      </Link>
-                    </div>
-                  ))
-                ) : (
-                  <DropdownMenuItem>No new notifications.</DropdownMenuItem>
-                )}
-              </ScrollArea>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            </Link>
+          </div>
 
           <Link href="/virtual_tech_village/profile/">
             <div className="w-max truncate px-4 py-2 transition-all duration-500 hover:bg-gray-100 rounded cursor-pointer flex items-center gap-1 sm:gap-2">
@@ -419,7 +370,7 @@ const Layout = ({ children, sideHighlight }) => {
             </div>
           </Link>
         </nav>
-        <div className="w-full h-screen overflow-hidden flex flex-col gap-5 scrollbar">
+        <div className={`w-full h-screen overflow-hidden flex flex-col gap-5 ${sideHighlight === "Complete Profile" ? "overflow-y-scroll p-2" : ""}`}>
           {children}
         </div>
       </main>

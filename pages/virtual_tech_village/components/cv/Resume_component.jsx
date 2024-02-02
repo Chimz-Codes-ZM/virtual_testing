@@ -1,5 +1,4 @@
 import React from "react";
-import { MdOutlineEmail } from "react-icons/md";
 import { BsLinkedin } from "react-icons/bs";
 import { FaCity, FaMapMarkedAlt } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";

@@ -352,13 +352,16 @@ const Careers = () => {
                 </div>
               ))}
             </section>
-
-            <div
-              className="fixed bottom-5 right-10 rounded p-2 bg-white text-2xl border cursor-pointer transition transform hover:scale-105"
-              onClick={handleAddEvent}
-            >
-              <BsFillCalendar2EventFill />
-            </div>
+            {user && user.account_type === "village admin profile" ? (
+              <div
+                className="fixed bottom-5 right-10 rounded p-2 bg-white text-2xl border cursor-pointer transition transform hover:scale-105"
+                onClick={handleAddEvent}
+              >
+                <BsFillCalendar2EventFill />
+              </div>
+            ) : (
+              ""
+            )}
           </section>
             </SharepadLayout>
         </Layout>

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Layout from "../../components/layouts/layout";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-
+import toast, { Toaster } from "react-hot-toast";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 
@@ -96,7 +96,7 @@ const Index = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    toast.loading("Submitting...", { duration: 2000 });
     const sendData = async () => {
       setLoading(true);
       const response = await fetch(
@@ -110,20 +110,16 @@ const Index = () => {
         }
       );
       if (response.ok) {
-        console.log("Successful submission");
         setLoading(false);
+        toast.success("Successful submission!");
         fetchData();
-      }
-
-      if (response.status === 400) {
-        console.log("Error:", response.status);
+      } else {
+        toast.error("Something went wrong, please try again!");
         setLoading(false);
       }
     };
 
     sendData();
-
-    console.log(formattedData);
     dispatch(resetState());
   };
 
@@ -172,6 +168,7 @@ const Index = () => {
   return (
     <>
       <Layout sideHighlight="Insight">
+        <Toaster />
         <div className="w-full h-full relative flex flex-col p-2 gap-5 mt-16 overflow-x-hidden">
           <div
             className="fixed bottom-16 right-16 bg-gray-900 text-white rounded text-xl px-2 p-1 cursor-pointer transform transition hover:scale-105"

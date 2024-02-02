@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import axios from "axios";
+import toast, { Toaster } from 'react-hot-toast';
 import { useSelector } from "react-redux";
 import Layout from "../../components/layouts/layout";
 import {
@@ -31,6 +32,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { Project_teams } from "@/pages/data";
 import { API_URL } from "@/config";
+import Dropdown from "../components/dropdown";
 
 const index = () => {
   const [newProject, setNewProject] = useState({
@@ -39,8 +41,10 @@ const index = () => {
     project_description: "",
     start_date: "",
     number_of_team_members: "",
+    team_members: [],
   });
   const [projectOwners, setProjectOwners] = useState(null);
+  const [options, setOptions] = useState(null);
 
   const user = useSelector((state) => {
     if (state.user?.userData && state.user.userData.length > 0) {
@@ -56,8 +60,8 @@ const index = () => {
         const response = await axios.get(
           `https://${API_URL}/village/create_project/${user.user_id}/`
         );
-        // console.log("This is the events ===>", response.data.companies);
-        setProjectOwners(response.data.companies);
+        setProjectOwners(response.data);
+        setOptions(response.data.talents)
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -79,12 +83,11 @@ const index = () => {
       ...prevFilters,
       [name]: value,
     }));
-    
   };
 
   const createTeam = async () => {
     console.log(newProject);
-
+    toast.loading('Submitting...', {duration: 2000})
     try {
       const response = await fetch(
         `https://${API_URL}/village/create_project/${user.user_id}/`,
@@ -97,23 +100,25 @@ const index = () => {
         }
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
         const data = await response.json();
 
-       
-        alert("Successfully Submitted!")
+        toast.success('Team successfully created!')
       } else {
         console.error("Something went wrong, please try again!");
-        // alert("Something went wrong, please try again!")
+        toast.error('Something went wrong, please try again!')
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Something went wrong, please try again!")
+      toast.error('Something went wrong, please try again!')
+
     }
   };
+
   return (
     <Layout sideHighlight="Insight">
-      <div className="p-14 relative">
+      <Toaster />
+      <div className="p-14 relative overflow-y-auto">
         <Table>
           <TableCaption>A list of ongoing projects.</TableCaption>
           <TableHeader>
@@ -150,7 +155,7 @@ const index = () => {
           </TableBody>
         </Table>
         <div className="z-[999] fixed left-32 bottom-10">
-          <form >
+          <form>
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="outline">+ New Team</Button>
@@ -194,7 +199,7 @@ const index = () => {
                           <option value="" disabled className="bg-white">
                             Select a Project Owner
                           </option>
-                          {projectOwners?.map((owner) => (
+                          {projectOwners?.companies?.map((owner) => (
                             <option
                               value={owner.id}
                               key={owner.id}
@@ -204,6 +209,17 @@ const index = () => {
                             </option>
                           ))}
                         </select>
+                      </div>
+                    </div>
+
+                    <div className="w-full border">
+                      <Label htmlFor="project_owner" className="text-right">
+                        Team Members
+                      </Label>
+
+                      {/* className="border-gray-300 border rounded px-1 w-full p-2 bg-white" */}
+                      <div>
+                        <Dropdown options={options} newProject={newProject} setNewProject={setNewProject}/>
                       </div>
                     </div>
                     <div className="">
@@ -233,6 +249,13 @@ const index = () => {
                         onChange={(e) => handleInputChange(e)}
                       />
                     </div>
+
+                    <div className="">
+                      <Label htmlFor="team_members" className="text-right">
+                        Project Members
+                      </Label>
+                    </div>
+
                     <div className="">
                       <Label htmlFor="username" className="text-right">
                         Number of Team Members

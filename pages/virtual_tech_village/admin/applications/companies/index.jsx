@@ -2,6 +2,7 @@ import React, { useState, useReducer, useEffect } from "react";
 import Layout from "../../../components/layouts/layout";
 import Link from "next/link";
 import axios from "axios";
+import toast, { Toaster } from 'react-hot-toast';
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -73,6 +74,7 @@ const Index = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    toast.loading('Submitting...', {duration: 2000})
 
     const sendData = async () => {
       setLoading(true);
@@ -87,15 +89,13 @@ const Index = () => {
           body: JSON.stringify(sentData),
         }
       );
-      if (response.ok) {
-        setLoading(false);
-        fetchData();
-        console.log("Successful submission");
-      }
+      if (response.status === 200) {
+        const data = await response.json();
 
-      if (response.status === 400) {
-        console.log("Error:", response.status);
-        setLoading(false);
+        toast.success('Team successfully created!')
+      } else {
+        console.error("Something went wrong, please try again!");
+        toast.error('Something went wrong, please try again!')
       }
     };
 
@@ -149,6 +149,7 @@ const Index = () => {
   return (
     <>
       <Layout sideHighlight="Insight">
+        <Toaster />
         <div className="w-full custom-height flex flex-col gap-5 mt-16 overflow-x-hidden">
           <div
             className="fixed bottom-16 right-16 bg-black text-white rounded-sm text-xl px-2 p-1 cursor-pointer"

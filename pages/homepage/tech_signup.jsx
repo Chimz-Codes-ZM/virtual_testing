@@ -6,6 +6,8 @@ import Image from "next/image";
 import { initialValidationErrors } from "../data";
 import logo from "../../public/logo.png";
 import { API_URL } from "@/config";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const tech_signup = () => {
   const [values, setValues] = useState({
@@ -164,6 +166,8 @@ const tech_signup = () => {
     if (!isFormValid) {
       setButtonClicked(true);
       return;
+    } else {
+      toast.loading('Submitting...', {duration: 2000})
     }
 
     const { password, confirm_password } = values;
@@ -198,19 +202,22 @@ const tech_signup = () => {
           confirm_password: "",
           marketing_opt_in: "false",
         });
-        handleSuccess();
+        toast.success('Sign up successful! Redirecting...')
+
         rerouteTimer();
       } else if (response.status === 403) {
-        handleError();
+        toast.error('Make sure passwords match. Please try again!')
       } else if (response.status === 409) {
-        hanldeEmailExists();
+        toast.error('Email already exists. Please try again!')
+      } else {
+        toast.error("Something went wrong. Please try again!")
       }
     });
   };
 
   const handleCompanySubmit = async (e) => {
     e.preventDefault();
-
+    toast.loading('Submitting...', {duration: 2000});
     const response = await fetch(
       // "http://127.0.0.1:8000/village/village_signup/",
       "https://baobabpad-334a8864da0e.herokuapp.com/village/village_signup/",
@@ -231,12 +238,15 @@ const tech_signup = () => {
           marketing_opt_in: "false",
           accountType: "Company",
         });
-        handleSuccess();
+        toast.success('Sign up successful! Redirecting...')
+
         rerouteTimer();
       } else if (response.status === 403) {
-        handleError();
+        toast.error('Make sure passwords match. Please try again!')
       } else if (response.status === 409) {
-        hanldeEmailExists();
+        toast.error('Email already exists. Please try again!')
+      } else {
+        toast.error("Something went wrong. Please try again!")
       }
     });
   };
@@ -245,92 +255,6 @@ const tech_signup = () => {
     <div className="bg-gray-900">
       <Layout>
         <div className="lg:pt-32 relative">
-          <div
-            role="alert"
-            className={`rounded-xl border border-gray-100 bg-white p-4 fixed bottom-10 sm:left-10 transform transition-transform duration-300 ease-in-out ${
-              successfulSignup ? "translate-x-0" : "-translate-x-[500px]"
-            }`}
-          >
-            <div className="flex items-start gap-4">
-              <span className="text-green-600">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-6 w-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </span>
-
-              <div className="flex-1">
-                <strong className="block font-medium text-gray-900">
-                  {" "}
-                  Signup Successful{" "}
-                </strong>
-
-                <p className="mt-1 text-sm text-gray-700">
-                  Your signup was successful.
-                </p>
-              </div>
-
-              <button
-                className="text-gray-500 transition hover:text-gray-600"
-                onClick={handleReroute}
-              >
-                <span className="sr-only">Dismiss popup</span>
-
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-6 w-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div
-            role="alert"
-            className={`rounded border-s-4 border-red-500 bg-red-50 p-4 fixed bottom-10 sm:left-10 transition-transform transform duration-300 ${
-              errorSignup ? "translate-x-0" : "-translate-x-[500px]"
-            }`}
-          >
-            <strong className="block font-medium text-red-800">
-              Something went wrong
-            </strong>
-            <p className="mt-2 text-sm text-red-700">
-              Please make sure that the two passwords match!
-            </p>
-          </div>
-
-          <div
-            role="alert"
-            className={`rounded border-s-4 border-red-500 bg-red-50 p-4 fixed bottom-10 sm:left-10 transition-transform transform duration-300 ${
-              emailExists ? "translate-x-0" : "-translate-x-[500px]"
-            }`}
-          >
-            <strong className="block font-medium text-red-800">
-              Something went wrong
-            </strong>
-            <p className="mt-2 text-sm text-red-700">
-              An account with that email already exists!
-            </p>
-          </div>
-
           <section className="bg-white">
             <div className="lg:grid lg:grid-cols-8  ">
               <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-8 lg:px-16 lg:py-12 xl:col-span-8 ">
@@ -683,7 +607,7 @@ const tech_signup = () => {
 
                       <div className="col-span-4 sm:flex sm:items-center sm:gap-4">
                         <button
-                          className="inline-block shrink-0 rounded-md border border-teal-600 bg-teal-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-teal-600 focus:outline-none focus:ring active:text-teal-500"
+                          className={`inline-block shrink-0 rounded-md border border-teal-600 bg-teal-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-teal-600 focus:outline-none focus:ring active:text-teal-500`}
                           disabled={!validateForm() || buttonClicked}
                         >
                           Create an account
@@ -708,6 +632,7 @@ const tech_signup = () => {
           </section>
         </div>
       </Layout>
+      <Toaster />
     </div>
   );
 };
