@@ -38,9 +38,9 @@ const index = () => {
   const [newProject, setNewProject] = useState({
     project_name: "",
     project_owner: "",
+    project_manager: "",
     project_description: "",
     start_date: "",
-    number_of_team_members: "",
     team_members: [],
   });
   const [projectOwners, setProjectOwners] = useState(null);
@@ -212,12 +212,38 @@ const index = () => {
                       </div>
                     </div>
 
+                    <div className="">
+                      <Label htmlFor="team_members" className="text-right">
+                        Project Members
+                      </Label>
+
+                      <select
+                          name="project_manager"
+                          id="project_manager"
+                          className="border-gray-300 border rounded px-1 w-full p-2 bg-white"
+                          onChange={(e) => handleInputChange(e)}
+                          value={newProject.project_manager}
+                        >
+                          <option value="" disabled className="bg-white">
+                            Select a Project Manager
+                          </option>
+                          {projectOwners?.talents?.map((manager) => (
+                            <option
+                              value={manager.id}
+                              key={manager.id}
+                              className="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 bg-white"
+                            >
+                              {manager.name}
+                            </option>
+                          ))}
+                        </select>
+                    </div>
+
                     <div className="w-full border">
                       <Label htmlFor="project_owner" className="text-right">
                         Team Members
                       </Label>
 
-                      {/* className="border-gray-300 border rounded px-1 w-full p-2 bg-white" */}
                       <div>
                         <Dropdown options={options} newProject={newProject} setNewProject={setNewProject}/>
                       </div>
@@ -250,24 +276,6 @@ const index = () => {
                       />
                     </div>
 
-                    <div className="">
-                      <Label htmlFor="team_members" className="text-right">
-                        Project Members
-                      </Label>
-                    </div>
-
-                    <div className="">
-                      <Label htmlFor="username" className="text-right">
-                        Number of Team Members
-                      </Label>
-                      <Input
-                        id="username"
-                        type="number"
-                        className="col-span-3"
-                        name="number_of_team_members"
-                        onChange={(e) => handleInputChange(e)}
-                      />
-                    </div>
                   </div>
                   <SheetFooter className="align-bottom">
                     <SheetClose asChild>
