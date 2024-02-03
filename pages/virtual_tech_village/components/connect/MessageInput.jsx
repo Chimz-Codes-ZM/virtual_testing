@@ -72,7 +72,7 @@ import { API_URL } from "@/config";
     }[readyState];
     return (
       <div className="">
-        <div className="absolute bottom-4 md:px-10 p-1 left-2 right-2 rounded">
+        <div className="relative md:px-10 p-1 left-2 right-2 rounded">
           <div className="relative flex gap-2">
             <div className="relative grow">
               <textarea

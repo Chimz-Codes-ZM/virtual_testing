@@ -13,10 +13,9 @@ import Poly from "../../../public/assets/polygon.png";
 import { JellyTriangle } from "@uiball/loaders";
 import { API_URL } from "@/config";
 
-
 const Teams = () => {
   const [info, setInfo] = useState(null);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const user = useSelector((state) => {
     if (state.user?.userData && state.user.userData.length > 0) {
@@ -27,14 +26,13 @@ const Teams = () => {
   });
 
   useEffect(() => {
-
     async function fetchData() {
       try {
         const response = await axios.get(
           `https://${API_URL}/village/total_applications/${user.user_id}/`
         );
         setInfo(response.data);
-          console.log("Total applications: ", response.data)
+        console.log("Total applications: ", response.data);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -54,9 +52,8 @@ const Teams = () => {
   return (
     <>
       <Layout sideHighlight="Insight">
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-16 relative">
-
-		  <Link href="/virtual_tech_village/admin/applications/companies">
+        <div className="h-screen overflow-y-auto p-2"><div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-16 relative">
+          <Link href="/virtual_tech_village/admin/applications/companies">
             <div className="h-40 shadow-lg hover:bottom-1 cursor-pointer transition-all duration-300 relative rounded-xl flex flex-col justify-between p-4">
               <div className="w-full h-full absolute top-0 left-0">
                 <Image src={Poly} fill alt="polygon pattern" />
@@ -69,12 +66,14 @@ const Teams = () => {
                 <span className="text-xl text-gray-600">
                   <TbFileStack />
                 </span>
-                <span className="text-lg font-bold text-gray-600">{info[0]?.total_companies}</span>
+                <span className="text-lg font-bold text-gray-600">
+                  {info[0]?.total_companies}
+                </span>
               </div>
             </div>
           </Link>
 
-		  <Link href="/virtual_tech_village/admin/applications/interns">
+          <Link href="/virtual_tech_village/admin/applications/interns">
             <div className="h-40 shadow-lg hover:bottom-1 cursor-pointer transition-all duration-300 relative rounded-xl flex flex-col justify-between p-4">
               <div className="w-full h-full absolute top-0 left-0">
                 <Image src={Poly} fill alt="polygon pattern" />
@@ -87,7 +86,9 @@ const Teams = () => {
                 <span className="text-xl text-gray-600">
                   <TbFileStack />
                 </span>
-                <span className="text-lg font-bold text-gray-600">{info[0]?.total_interns}</span>
+                <span className="text-lg font-bold text-gray-600">
+                  {info[0]?.total_interns}
+                </span>
               </div>
             </div>
           </Link>
@@ -105,7 +106,9 @@ const Teams = () => {
                 <span className="text-xl text-gray-600">
                   <TbFileStack />
                 </span>
-                <span className="text-lg font-bold text-gray-600">{info[0]?.total_talents}</span>
+                <span className="text-lg font-bold text-gray-600">
+                  {info[0]?.total_talents}
+                </span>
               </div>
             </div>
           </Link>
@@ -117,17 +120,20 @@ const Teams = () => {
               </div>
 
               <h1 className="text-xl z-10 font-bold text-yellow-600">
-                Teams
+                Projects
               </h1>
               <div className="w-full z-10 flex justify-end items-center">
                 <span className="text-xl text-gray-600">
                   <TbFileStack />
                 </span>
-                <span className="text-lg font-bold text-gray-600">{info[0]?.total_talents}</span>
+                <span className="text-lg font-bold text-gray-600">
+                  {info[0]?.total_projects}
+                </span>
               </div>
             </div>
           </Link>
-        </div>
+        </div></div>
+        
       </Layout>
     </>
   );

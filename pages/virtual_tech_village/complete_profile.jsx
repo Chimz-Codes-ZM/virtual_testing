@@ -224,6 +224,7 @@ const Complete_profile = () => {
   };
 
   const handleSubmit = async (e) => {
+    toast.loading("Submitting profile...")
     console.log(formInputs);
     e.preventDefault();
 
@@ -240,10 +241,10 @@ const Complete_profile = () => {
       );
 
       if (response.ok) {
-        alert("Profile update complete!");
+        toast.success("Profile update complete!")
         router.push("/virtual_tech_village");
       } else {
-        alert("Something went wrong, please try again!");
+        toast.error("Something went wrong, please try again!")
       }
     } else {
       toast.error("Please upload your CV before submitting your application!", {duration: 4000})

@@ -370,7 +370,7 @@ const Layout = ({ children, sideHighlight }) => {
             </div>
           </Link>
         </nav>
-        <div className={`w-full h-screen overflow-hidden flex flex-col gap-5 ${sideHighlight === "Complete Profile" ? "overflow-y-scroll p-2" : ""}`}>
+        <div className={`w-full h-screen overflow-hidden flex flex-col gap-5 ${sideHighlight === "Complete Profile"  ? "overflow-y-scroll p-2" : ""}`}>
           {children}
         </div>
       </main>

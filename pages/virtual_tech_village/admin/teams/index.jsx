@@ -45,6 +45,7 @@ const index = () => {
   });
   const [projectOwners, setProjectOwners] = useState(null);
   const [options, setOptions] = useState(null);
+  const [projects, setProjects] = useState([])
 
   const user = useSelector((state) => {
     if (state.user?.userData && state.user.userData.length > 0) {
@@ -62,6 +63,7 @@ const index = () => {
         );
         setProjectOwners(response.data);
         setOptions(response.data.talents)
+        setProjects(response.data.projects)
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -134,21 +136,21 @@ const index = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {Project_teams.map((team) => (
-              <TableRow key={team.projectId}>
-                <TableCell>{team.number}</TableCell>
+            {projects?.map((team, index) => (
+              <TableRow key={team.project_id}>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell className="font-medium">
-                  <Link href={"/virtual_tech_village/admin/teams/project"}>
-                    {team.projectName}
+                  <Link href={`/virtual_tech_village/admin/teams/${team.project_id}`}>
+                    {team.title}
                   </Link>
                 </TableCell>
-                <TableCell>{team.teamOwner}</TableCell>
+                <TableCell>{team.owner}</TableCell>
                 <TableCell className="w-[150px] truncate">
-                  {team.projectDescription}
+                  {team.description}
                 </TableCell>
-                <TableCell>{team.dateStarted}</TableCell>
+                <TableCell>{team.start_date}</TableCell>
                 <TableCell className="text-right">
-                  {team.numberOfTeamMembers}
+                  {team.team_members.length}
                 </TableCell>
               </TableRow>
             ))}

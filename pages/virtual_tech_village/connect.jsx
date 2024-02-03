@@ -2,47 +2,124 @@ import React, { useState, useEffect, useRef } from "react";
 import Layout from "./components/layouts/layout";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-
+import Dropdown from "./components/connect/dropdown";
+import Dropdown_interns from "./components/connect/dropdown_interns";
+import Dropdown_companies from "./components/connect/dropdown_companies";
 import Image from "next/image";
-
-
 import Channels from "./components/connect/channels";
-
-import { motion} from "framer-motion";
+import { motion } from "framer-motion";
+import { API_URL } from "@/config";
+import axios from "axios";
 
 const connect = () => {
-  const [userData, setUserData] = useState(null)
+  const [userData, setUserData] = useState(null);
+  const [image, setImage] = useState(null);
   const [addChannel, setAddChannel] = useState(false);
+  const [options, setOptions] = useState(null);
+  const [interOptions, setInternOptions] = useState(null);
+  const [companyOptions, setCompanyOptions] = useState(null);
   const [newChannel, setNewChannel] = useState({
-    channel_name: ""
-  });
-  const channelRef = useRef()
+    channel_name: "",
+    image: null,
+    channel_members_talents: [],
+    channel_members_interns: [],
+    channel_members_companies: []
 
-  const router = useRouter()
+  });
+  const channelRef = useRef();
+  const imageRef = useRef();
+
+  const router = useRouter();
+
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
+    }
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          `https://${API_URL}/village/create_channel/${user.user_id}/`
+        );
+        setOptions(response.data[0].talents);
+        setInternOptions(response.data[1].interns);
+        setCompanyOptions(response.data[2].companies);
+        console.log(
+          "These are my potential channel members:",
+          response.data
+        );
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   const handleAddChannelSubmit = (e) => {
     e.preventDefault();
-     router.push(`/virtual_tech_village/connect_channel/${newChannel.channel_name}`)
-    setAddChannel(!addChannel);
-  };
+    const formData = new FormData();
 
+    for (const key of Object.keys(newChannel)) {
+      formData.append(key, newChannel[key]);
+    }
+
+    formData.append("image", imageRef.current);
+    const sendData = async () => {
+      const response = await fetch(
+        `https://${API_URL}/village/create_channel/${user.user_id}/`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (response.ok) {
+        setAddChannel(!addChannel);
+        setNewChannel({
+          channel_name: "",
+          image: null,
+          channel_members: [],
+        });
+      }
+
+      if (response.status === 400) {
+        console.log("Error:", response.status);
+      }
+    };
+
+    sendData();
+    console.log(formData);
+  };
   const handleClickOutsideAddChannel = (event) => {
-    if (
-      channelRef.current &&
-      !channelRef.current.contains(event.target)
-    ) {
-      setAddChannel(false)
+    if (channelRef.current && !channelRef.current.contains(event.target)) {
+      setAddChannel(false);
     }
   };
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideAddChannel);
 
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideAddChannel);
     };
   }, []);
+
+  const handleChannelChange = (e) => {
+    const { name, value } = e.target;
+
+    setNewChannel({
+      ...newChannel,
+      [name]: value,
+    });
+  };
+
+  const handleChange = (e) => {
+    imageRef.current = e.target.files[0];
+  };
 
   return (
     <>
@@ -59,7 +136,9 @@ const connect = () => {
                 alt="Baobabpad Logo"
               />
             </div>
-          <h1>Elevating African Technology Talent, Virtually and Globally... </h1>
+            <h1>
+              Elevating African Technology Talent, Virtually and Globally...{" "}
+            </h1>
           </div>
         </div>
 
@@ -68,7 +147,6 @@ const connect = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            
             className="fixed inset-0 flex items-center justify-center z-[999] bg-slate-900  bg-opacity-20 transition delay-150 backdrop-blur-sm"
           >
             <div>
@@ -103,12 +181,48 @@ const connect = () => {
                       </label>
                       <input
                         type="text"
-                        name="event_name"
+                        id="channel_name"
+                        name="channel_name"
                         value={newChannel.channel_name}
                         className="border rounded px-1"
-                        onChange={(e) =>
-                          setNewChannel({channel_name: e.target.value})
-                        }
+                        onChange={handleChannelChange}
+                      />
+                    </div>
+
+                    <Dropdown
+                      options={options}
+                      newChannel={newChannel}
+                      setNewChannel={setNewChannel}
+                      channel_members="Select Channel Members: Talents"
+                    />
+
+                    <Dropdown_interns
+                      options={interOptions}
+                      newChannel={newChannel}
+                      setNewChannel={setNewChannel}
+                      channel_members="Select Channel Members: Interns"
+                    />
+
+                    <Dropdown_companies
+                      options={companyOptions}
+                      newChannel={newChannel}
+                      setNewChannel={setNewChannel}
+                      channel_members="Select Channel Members: Companies"
+                    />
+
+                    <div className="flex flex-col gap-1">
+                      <label htmlFor="image" className="text-sm font-medium">
+                        Cover Image
+                      </label>
+                      <input
+                        accept="image/*"
+                        id="image"
+                        type="file"
+                        name="image"
+                        value={image}
+                        className="border rounded px-1"
+                        onChange={handleChange}
+                        placeholder="e.g., www.glassdoor.com/job-123"
                       />
                     </div>
 

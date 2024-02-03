@@ -83,7 +83,7 @@ const Events = () => {
     formData.append("image", imageRef.current);
     const sendData = async () => {
       const response = await fetch(
-        `https://${API_URL}/village/events/109/`,
+        `https://${API_URL}/village/events/${user.user_id}/`,
         {
           method: "POST",
           body: formData,

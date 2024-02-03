@@ -34,7 +34,7 @@ const Team_Layout = ({children, title}) => {
         </div>
       </div>
     </div>
-    <div className="flex py-3 px-5 overflow-x-hidden overflow-y-auto flex-grow shadow rounded lg:w-min flex-col flex-shrink-0">
+    <div className="flex overflow-x-hidden overflow-y-auto flex-grow shadow rounded flex-col flex-shrink-0">
       {children}
     </div>
   </div>

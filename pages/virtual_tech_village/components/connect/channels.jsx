@@ -30,7 +30,7 @@ const Channels = ({ addChannel, setAddChannel }) => {
         const response = await axios.get(
           `https://${API_URL}/village/channel_list/${user.user_id}/`
         );
-        setConversations(response.data)
+        setConversations(response.data);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -45,31 +45,34 @@ const Channels = ({ addChannel, setAddChannel }) => {
 
       <div className="flex flex-col w-full h-full justify-between">
         <div>
-{conversations.length > 0 ? (conversations.map((channel, index) => (
-            <Link
-              href={`/virtual_tech_village/connect_channel/${channel.channel_name}`}
-              key={index}
-              className="w-full h-14 flex justify-between items-center px-1 border-y cursor-pointer hover:bg-gray-100 transition-colors delay-75 ease-in-out"
-            >
-              <div className="font-semibold text-sm">
-                #{channel.channel_name}
-              </div>
-              <div className="flex gap-1">
-                <div className="relative h-8 w-8 rounded-full">
-                  <Image
-                    fill
-                    objectFit="cover"
-                    src={channel.image}
-                    className="rounded-full"
-                    alt="Profile image"
-                  />
+          {conversations.length > 0 ? (
+            conversations.map((channel, index) => (
+              <Link
+                href={`/virtual_tech_village/connect_channel/${channel.channel_name}`}
+                key={index}
+                className="w-full h-14 flex justify-between items-center px-1 border-y cursor-pointer hover:bg-gray-100 transition-colors delay-75 ease-in-out"
+              >
+                <div className="font-semibold text-sm">
+                  #{channel.channel_name}
                 </div>
+                <div className="flex gap-1">
+                  <div className="relative h-8 w-8 rounded-full">
+                    <Image
+                      fill
+                      objectFit="cover"
+                      src={channel.image}
+                      className="rounded-full"
+                      alt="Profile image"
+                    />
+                  </div>
 
-                <div className=" text-gray-500 font-light text-sm">+23</div>
-              </div>
-            </Link>
-          ))) : (<Skeleton />)}
-          
+                  <div className=" text-gray-500 font-light text-sm">+23</div>
+                </div>
+              </Link>
+            ))
+          ) : (
+            <Skeleton />
+          )}
         </div>
 
         {user && user.account_type === "village admin profile" ? (

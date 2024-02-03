@@ -4,6 +4,7 @@ import { FcPicture } from "react-icons/fc";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
 
 import Success from "./components/alerts/success";
 
@@ -109,6 +110,7 @@ console.log(completedProfile)
     <>
 
       <Layout>
+        <Toaster />
         <div className="w-full flex justify-center flex-col relative">
           {/* Gray background */}
 
