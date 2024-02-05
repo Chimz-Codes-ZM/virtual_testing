@@ -15,75 +15,94 @@ import {
 } from "@/components/ui/table";
 import { API_URL } from "@/config";
 
-
 const Team = () => {
+  const [projects, setProjects] = useState([]);
 
-  const [projects, setProjects] = useState([])
-
-const user = useSelector((state) => {
-  if (state.user?.userData && state.user.userData.length > 0) {
-    return state.user.userData[0];
-  } else {
-    return null;
-  }
-});
-
-useEffect(() => {
-  async function fetchData() {
-    try {
-      const response = await axios.get(
-        `https://${API_URL}/village/create_project/${user.user_id}/`
-      );
-      setProjects(response.data.projects)
-      console.log(response.data.projects)
-    } catch (error) {
-      console.error("Error fetching data: ", error);
+  const user = useSelector((state) => {
+    if (state.user?.userData && state.user.userData.length > 0) {
+      return state.user.userData[0];
+    } else {
+      return null;
     }
-  }
+  });
 
-  fetchData();
-}, []);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          `https://${API_URL}/village/create_project/${user.user_id}/`
+        );
+        setProjects(response.data.projects);
+        console.log(response.data.projects);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    }
 
+    fetchData();
+  }, []);
 
   return (
     <Layout sideHighlight="Team">
-      <Team_Layout title="team overview" >
-        <div className="p-14 relative overflow-y-auto">
-        <Table>
-          <TableCaption>A list of ongoing projects.</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>#</TableHead>
-              <TableHead className="">Project Name</TableHead>
-              <TableHead>Owner</TableHead>
-              <TableHead className="w-[150px] truncate">
-                Project Description
-              </TableHead>
-              <TableHead>Date Started</TableHead>
-              <TableHead className="text-right"># of Team Members</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {projects?.map((team, index) => (
-              <TableRow key={team.project_id}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell className="font-medium">
-                  <Link href={`/virtual_tech_village/admin/teams/${team.project_id}`}>
-                    {team.title}
-                  </Link>
-                </TableCell>
-                <TableCell>{team.owner}</TableCell>
-                <TableCell className="w-[150px] truncate">
-                  {team.description}
-                </TableCell>
-                <TableCell>{team.start_date}</TableCell>
-                <TableCell className="text-right">
-                  {team.team_members.length}
-                </TableCell>
+      <Team_Layout title="team overview">
+        <div className="p-2 relative overflow-y-auto">
+          <Table>
+            <TableCaption>A list of ongoing projects.</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>#</TableHead>
+                <TableHead className="">Project Name</TableHead>
+                <TableHead>Owner</TableHead>
+                <TableHead className="w-[150px] truncate">
+                  Project Description
+                </TableHead>
+                <TableHead>Date Started</TableHead>
+                <TableHead className="text-right"># of Team Members</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {projects?.map((team, index) => (
+                <TableRow key={team.project_id}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell className="font-medium">
+                    <Link
+                      href={`/virtual_tech_village/team/${team.project_id}`}
+                    >
+                      {team.title}
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Link
+                      href={`/virtual_tech_village/team/${team.project_id}`}
+                    >
+                      {team.owner}
+                    </Link>
+                  </TableCell>
+                  <TableCell className="w-[150px] truncate">
+                    <Link
+                      href={`/virtual_tech_village/team/${team.project_id}`}
+                    >
+                      {team.description}
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Link
+                      href={`/virtual_tech_village/team/${team.project_id}`}
+                    >
+                      {team.start_date}
+                    </Link>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Link
+                      href={`/virtual_tech_village/team/${team.project_id}`}
+                    >
+                      {team.team_members.length}
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </Team_Layout>
     </Layout>

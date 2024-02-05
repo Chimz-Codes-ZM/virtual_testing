@@ -20,7 +20,7 @@ const Team_Layout = ({children, title}) => {
               Team Overview
             </h1>
           </Link>
-          <Link href="/virtual_tech_village/edit_profile">
+          {/* <Link href="/virtual_tech_village/edit_profile">
             <h1
               className={
                 title === "edit profile"
@@ -30,7 +30,7 @@ const Team_Layout = ({children, title}) => {
             >
               Edit Profile
             </h1>
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>

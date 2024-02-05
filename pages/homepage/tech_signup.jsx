@@ -220,7 +220,7 @@ const tech_signup = () => {
     toast.loading('Submitting...', {duration: 2000});
     const response = await fetch(
       // "http://127.0.0.1:8000/village/village_signup/",
-      "https://baobabpad-334a8864da0e.herokuapp.com/village/village_signup/",
+      `https://${API_URL}/village/village_signup/`,
       {
         method: "POST",
         headers: {

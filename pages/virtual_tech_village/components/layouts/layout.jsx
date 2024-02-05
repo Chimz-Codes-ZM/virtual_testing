@@ -13,6 +13,7 @@ import { BiLogOut } from "react-icons/bi";
 import { AiOutlineBell } from "react-icons/ai";
 import { MdOutlineInsights } from "react-icons/md";
 import { GiTeamIdea } from "react-icons/gi";
+import { SiHomeassistantcommunitystore } from "react-icons/si";
 
 import { navbar } from "@/pages/data";
 
@@ -145,8 +146,57 @@ const Layout = ({ children, sideHighlight }) => {
 
             <div className="h-full pl-2 pb-10 rounded-tr-2xl flex flex-col bg-[#004643] w-full justify-between">
               <div className="w-full h-max flex flex-col gap-2 pr-5 pt-10">
-                {navbar.map((page, index) => (
+
+              <div className="w-full flex flex-col">
+                    <Link href="/virtual_tech_village/team">
+                      <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            {sideHighlight === "Tech Village" ? (
+                              <Button variant="outline">
+                                <SiHomeassistantcommunitystore className="text-xl" />
+                              </Button>
+                            ) : (
+                              <Button>
+                                <SiHomeassistantcommunitystore className="text-xl" />
+                              </Button>
+                            )}
+                          </TooltipTrigger>
+                          <TooltipContent side="right">
+                            <p>Tech Village</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Link>
+                  </div>
+
+              {user?.account_type === "village company profile" && (
                   <div className="w-full flex flex-col">
+                    <Link href="/virtual_tech_village/team">
+                      <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            {sideHighlight === "Team" ? (
+                              <Button variant="outline">
+                                <GiTeamIdea className="text-xl" />
+                              </Button>
+                            ) : (
+                              <Button>
+                                <GiTeamIdea className="text-xl" />
+                              </Button>
+                            )}
+                          </TooltipTrigger>
+                          <TooltipContent side="right">
+                            <p>Team</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Link>
+                  </div>
+                )}
+
+                {navbar.map((page) => (
+                  <div className="w-full flex flex-col" key={page.id}>
                     <Link href={page.href}>
                       <TooltipProvider delayDuration={100}>
                         <Tooltip>
@@ -199,33 +249,9 @@ const Layout = ({ children, sideHighlight }) => {
                   </div>
                 )}
 
-                {user?.account_type === "village company profile" && (
-                  <div className="w-full flex flex-col">
-                    <Link href="/virtual_tech_village/team">
-                      <TooltipProvider delayDuration={100}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            {sideHighlight === "Team" ? (
-                              <Button variant="outline">
-                                <GiTeamIdea className="text-xl" />
-                              </Button>
-                            ) : (
-                              <Button>
-                                <GiTeamIdea className="text-xl" />
-                              </Button>
-                            )}
-                          </TooltipTrigger>
-                          <TooltipContent side="right">
-                            <p>Team</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </Link>
-                  </div>
-                )}
               </div>
 
-              <div className="w-full h-max rounded-r-full">
+              <div className="w-full pr-5 h-max rounded-r-full">
                 <div
                   className="justify-center flex flex-col"
                   onClick={logoutHandler}

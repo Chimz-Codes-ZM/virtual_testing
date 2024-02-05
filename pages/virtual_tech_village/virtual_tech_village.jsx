@@ -458,7 +458,7 @@ const Virtual_Tech_Village = () => {
 
     try {
       const response = await fetch(
-        `https://baobabpad.online/village/village_profiles/${currentSessionId}/`,
+        `https://${API_URL}/village/village_profiles/${currentSessionId}/`,
         {
           method: "POST",
           headers: {
@@ -506,7 +506,7 @@ const Virtual_Tech_Village = () => {
 
     try {
       const response = await fetch(
-        `https://baobabpad.online/village/village_profiles/${currentSessionId}/`,
+        `https://${API_URL}/village/village_profiles/${currentSessionId}/`,
         {
           method: "POST",
           headers: {
@@ -875,9 +875,9 @@ const Virtual_Tech_Village = () => {
             </div>
           )}
         </div>
-        <div className="hidden lg:block mr-8 text-xl font-semibold border-b-2">
+        {/* <div className="hidden lg:block mr-8 text-xl font-semibold border-b-2">
           <h1>Search Profiles</h1>
-        </div>
+        </div> */}
       </div>
 
       <div className="flex relative">
@@ -1034,7 +1034,7 @@ const Virtual_Tech_Village = () => {
         <div className="lg:w-1/5 px-4 hidden sm:block">
           <div className="h-full rounded-md">
             <div className="border-b px-1 p-2">
-              <h2 className="font-semibold">Filters</h2>
+              <h2 className="font-semibold">Search Filters</h2>
             </div>
 
             <form className="py-2 flex flex-col gap-3">

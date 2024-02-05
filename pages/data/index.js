@@ -26,6 +26,7 @@ import jacob from "../../public/assets/jacob.jpeg";
 import albert from "../../public/assets/albert.jpeg";
 import Kenny from "../../public/assets/kenny.jpg";
 import Karen from "../../public/assets/karen.jpg";
+import brenda from "../../public/assets/brenda.jpg";
 
 import Learnio from "../../public/assets/learnio.svg";
 import Terran from "../../public/assets/Terran_icon.png";
@@ -93,6 +94,16 @@ export const StartUp = [
 ];
 
 export const management_info = [
+  {
+    id: 6,
+    img: brenda,
+    name: "Brenda Mkwesha",
+    position: "CEO",
+    Quote:
+      "Over 15 years experience in Grants Management, Results Based Management, Formulation of strategies & Strategic Management, policy formulation and implementation. 15 years experience in People coaching, mentoring and leadership as well as Networking & fundraising. ",
+    linkedin:
+      "https://www.linkedin.com/in/brenda-mkwesha-mba-52599a75/?originalSubdomain=tz",
+  },
   {
     id: 1,
     img: Kenny,
@@ -724,7 +735,7 @@ export const techCategories = [
   "Quality Assurance",
   "Software Development",
   "Technical Writing",
-]
+];
 
 export const techPositions = [
   "AI Engineer",
@@ -1374,14 +1385,16 @@ export const trends = [
 ];
 
 export const navbar = [
-  {
-    icon: SiHomeassistantcommunitystore,
-    sideHighlight: "Tech Village",
-    href: "/virtual_tech_village/",
-    tooltip: "Tech Village",
-  },
+  // {
+  //   id: "A98HJ3K",
+  //   icon: SiHomeassistantcommunitystore,
+  //   sideHighlight: "Tech Village",
+  //   href: "/virtual_tech_village/",
+  //   tooltip: "Tech Village",
+  // },
 
   {
+    id: "B27DM9P",
     icon: IoPeopleCircleOutline,
     sideHighlight: "virtual internship",
     href: "/virtual_tech_village/internship",
@@ -1389,6 +1402,7 @@ export const navbar = [
   },
 
   {
+    id: "F5G6H2A",
     icon: MdOutlineConnectWithoutContact,
     sideHighlight: "connect",
     href: "/virtual_tech_village/connect",
@@ -1396,6 +1410,7 @@ export const navbar = [
   },
 
   {
+    id: "L87JK4N",
     icon: FaSlideshare,
     sideHighlight: "sharepad",
     href: "/virtual_tech_village/trends",
@@ -1403,12 +1418,14 @@ export const navbar = [
   },
 
   {
+    id: "S3D9A1B",
     icon: GoInbox,
     sideHighlight: "inbox",
     href: "/virtual_tech_village/inbox",
     tooltip: "Inbox",
   },
   {
+    id: "ZLS3D9A1B",
     icon: CgProfile,
     sideHighlight: "profile",
     href: "/virtual_tech_village/profile",
