@@ -165,14 +165,14 @@ console.log(completedProfile)
                 <p>Set company details here</p>
               </div>
 
-              <div className="flex gap-4">
+              {/* <div className="flex gap-4">
                 <div className="cursor-pointer rounded p-2 py-1 hover:text-white hover:bg-black transition-colors border shadow duration-300">
                   Cancel
                 </div>
                 <div className="cursor-pointer rounded p-2 py-1 text-white bg-black hover:text-black hover:bg-white border hover:shadow duration-300">
                   Save Changes
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <div>

@@ -373,7 +373,7 @@ const Complete_profile = () => {
               <p>Set your details here</p>
             </div>
 
-            <div className="flex gap-4">
+            {/* <div className="flex gap-4">
               <div
                 onClick={handleCanel}
                 className="cursor-pointer rounded p-2 py-1 hover:text-white hover:bg-black transition-colors border shadow duration-300"
@@ -386,7 +386,7 @@ const Complete_profile = () => {
               >
                 Save Changes
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div>

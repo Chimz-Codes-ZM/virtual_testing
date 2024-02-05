@@ -148,7 +148,7 @@ const Layout = ({ children, sideHighlight }) => {
               <div className="w-full h-max flex flex-col gap-2 pr-5 pt-10">
 
               <div className="w-full flex flex-col">
-                    <Link href="/virtual_tech_village/team">
+                    <Link href="/virtual_tech_village">
                       <TooltipProvider delayDuration={100}>
                         <Tooltip>
                           <TooltipTrigger asChild>

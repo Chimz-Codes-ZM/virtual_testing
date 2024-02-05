@@ -6,11 +6,11 @@ import SharepadLayout from "./components/layouts/sharepadLayout";
 import SidePanel from "./components/events/SidePanel";
 
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { BsFillCalendar2EventFill } from "react-icons/bs";
-
 
 import { event_grid } from "../data";
 import { API_URL } from "@/config";
@@ -40,7 +40,7 @@ const Events = () => {
     } else {
       return null;
     }
-  })
+  });
 
   const handleAddEvent = () => {
     setAddEvent(true);
@@ -140,8 +140,6 @@ const Events = () => {
   // AXIOS REQUEST
 
   useEffect(() => {
-
-
     async function fetchData() {
       try {
         const response = await axios.get(
@@ -203,13 +201,6 @@ const Events = () => {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                     >
-                      {/* <New_Event
-                        onSubmit={handleEventSubmit}
-                        onChange={handleEventChange}
-                        imageChange={handleChange}
-                        value={newEvent}
-                        imageValue={image}
-                      /> */}
 
                       <div className="p-6 bg-white border z-[50] rounded flex flex-col gap-2">
                         <div className="flex flex-col gap-4">
@@ -316,11 +307,9 @@ const Events = () => {
                             />
                           </div>
 
-                          <div className="">
-                            <button className="bg-gray-900 text-white w-full rounded-md p-1 shadow hover:bg-gray-800 transition delay-100">
-                              Add New Event
-                            </button>
-                          </div>
+                          <button className="bg-gray-900 text-white w-full rounded-md p-1 shadow hover:bg-gray-800 transition delay-100">
+                            Add New Event
+                          </button>
                         </form>
                       </div>
                     </motion.div>
@@ -377,16 +366,12 @@ const Events = () => {
               ))}
             </section>
 
-            {user && user.account_type === "village admin profile" ? (
-              <div
-                className="fixed bottom-5 right-10 rounded p-2 bg-white text-2xl border cursor-pointer transition transform hover:scale-105"
-                onClick={handleAddEvent}
-              >
-                <BsFillCalendar2EventFill />
-              </div>
-            ) : (
-              ""
-            )}
+            <div
+              className="fixed bottom-5 right-10 rounded p-2 bg-white text-2xl border cursor-pointer transition transform hover:scale-105"
+              onClick={handleAddEvent}
+            >
+              <BsFillCalendar2EventFill />
+            </div>
           </section>
         </SharepadLayout>
       </Layout>
