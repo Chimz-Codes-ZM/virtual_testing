@@ -111,7 +111,7 @@ const Layout = ({ children, sideHighlight }) => {
             setUnreadMessageCount((count) => (count += 1));
             setUnreadMessageCount(data.count);
             setNotificationContent(data.content)
-            console.log(data.content)
+            console.log("New notification content:", data.content)
           default:
             console.error("Unknown message type!");
             break;
