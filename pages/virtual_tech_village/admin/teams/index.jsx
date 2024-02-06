@@ -120,9 +120,9 @@ const index = () => {
 
   return (
     <Layout sideHighlight="Insight">
-      <Team_layout>
+      <Team_layout title={"project overview"}>
           <Toaster />
-      <div className="p-14 relative overflow-y-auto">
+      <div className="p-4relative overflow-y-auto">
         <Table>
           <TableCaption>A list of ongoing projects.</TableCaption>
           <TableHeader>
@@ -139,6 +139,7 @@ const index = () => {
           </TableHeader>
           <TableBody>
             {projects?.map((team, index) => (
+              
               <TableRow key={team.project_id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell className="font-medium">

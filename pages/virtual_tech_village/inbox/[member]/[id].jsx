@@ -287,27 +287,26 @@ const Index = () => {
                         ))}
                       </div>
                     )}
-
                     {newMessages.length > 0 && (
                       <div className="message-list flex flex-col gap-1 pt-2">
-                        {newMessages?.map((message) => (
+                        {newMessages.message.map((message) => (
                           <div
                             className="flex flex-col gap-2 w-full "
-                            key={message?.message_id}
+                            key={message[0].id}
                           >
-                            {message.from_user?.email === email && (
+                            {message[0].from_user?.email === email && (
                               <div className="self-end w-fit p-1 px-3 max-w-[66%] rounded-lg bg-[#001e1d] text-white">
-                                {message.content}
+                                {message[0].content}
                               </div>
                             )}
-                            {message.from_user?.email !== email && (
+                            {message[0].from_user?.email !== email && (
                               <div>
                                 <div className="flex items-start gap-2.5">
                                   <div className="relative w-8 h-8">
                                     <Image
                                       className="w-8 h-8 rounded-full"
-                                      src={message?.from_user?.image}
-                                      alt={`${message?.from_user?.name}'s image`}
+                                      src={message[0].from_user?.image}
+                                      alt="Jese image"
                                       objectFit="cover"
                                       fill
                                     />
@@ -316,14 +315,14 @@ const Index = () => {
                                   <div className="flex flex-col w-full max-w-[66%] leading-1.5">
                                     <div className="flex items-center space-x-2 rtl:space-x-reverse">
                                       <span className="text-sm font-semibold text-gray-900">
-                                        {message?.from_user?.name}
+                                        {message[0]?.from_user?.name}
                                       </span>
                                       <span className="text-sm font-normal text-gray-500">
-                                        {message?.time}
+                                        {message[0]?.time}
                                       </span>
                                     </div>
                                     <p className="text-sm font-normal py-2 text-gray-900">
-                                      {message?.content}
+                                      {message[0]?.content}
                                     </p>
                                   </div>
                                 </div>
