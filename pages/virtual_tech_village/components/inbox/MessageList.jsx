@@ -55,9 +55,8 @@ const MessageList = ({ selectedConversation, onConversationClick }) => {
       <div className="w-full">
         {conversations?.length > 0 ? (
           conversations.map((convo) => (
-            <div>
               <div
-                key={convo.id}
+                key={convo.conversation_id}
                 className={`flex gap-4 px-6 p-2 hover:bg-gray-100 transition-colors delay-150 ease-in cursor-pointer relative ${
                   selectedConversation === convo.id ? "bg-gray-50" : "bg-white"
                 }`}
@@ -78,7 +77,6 @@ const MessageList = ({ selectedConversation, onConversationClick }) => {
                 </div>
                 <div>{convo.pinned === "True" ? <div className="h-5 w-5 absolute right-2"><BsPinAngle /></div> : <div></div>}</div>
               </div>
-            </div>
           ))
         ) : (
           <Skeleton />

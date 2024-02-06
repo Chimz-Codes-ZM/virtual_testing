@@ -4,6 +4,7 @@ import axios from "axios";
 import toast, { Toaster } from 'react-hot-toast';
 import { useSelector } from "react-redux";
 import Layout from "../../components/layouts/layout";
+import Team_layout from "../components/team_layout";
 import {
   Table,
   TableBody,
@@ -119,7 +120,8 @@ const index = () => {
 
   return (
     <Layout sideHighlight="Insight">
-      <Toaster />
+      <Team_layout>
+          <Toaster />
       <div className="p-14 relative overflow-y-auto">
         <Table>
           <TableCaption>A list of ongoing projects.</TableCaption>
@@ -140,7 +142,7 @@ const index = () => {
               <TableRow key={team.project_id}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell className="font-medium">
-                  <Link href={`/virtual_tech_village/admin/teams/${team.project_id}`}>
+                  <Link href={`/virtual_tech_village/admin/teams/project/${team.project_id}`}>
                     {team.title}
                   </Link>
                 </TableCell>
@@ -296,6 +298,8 @@ const index = () => {
           </form>
         </div>
       </div>
+      </Team_layout>
+    
     </Layout>
   );
 };

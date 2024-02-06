@@ -26,8 +26,6 @@ function Login() {
     password: "",
   });
 
-  const notify = () => toast('Here is your toast.');
-
   const formik = useFormik({
     initialValues: {
       email: formData.username,

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import Layout from "../../components/layouts/layout";
-import Members from "../../components/team/members";
-import Task_Allocation from "../../components/team/task_allocation";
-import Project_Roadmap from "../../components/team/project_roadmap";
+import Layout from "../../../components/layouts/layout";
+import Members from "../../../components/team/members";
+import Task_Allocation from "../../../components/team/task_allocation";
+import Project_Roadmap from "../../../components/team/project_roadmap";
 import { API_URL } from "@/config";
 
 const Project = () => {

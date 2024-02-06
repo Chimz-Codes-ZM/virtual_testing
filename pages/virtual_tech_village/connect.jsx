@@ -10,6 +10,7 @@ import Channels from "./components/connect/channels";
 import { motion } from "framer-motion";
 import { API_URL } from "@/config";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const connect = () => {
   const [userData, setUserData] = useState(null);
@@ -23,8 +24,7 @@ const connect = () => {
     image: null,
     channel_members_talents: [],
     channel_members_interns: [],
-    channel_members_companies: []
-
+    channel_members_companies: [],
   });
   const channelRef = useRef();
   const imageRef = useRef();
@@ -48,10 +48,10 @@ const connect = () => {
         setOptions(response.data[0].talents);
         setInternOptions(response.data[1].interns);
         setCompanyOptions(response.data[2].companies);
-        console.log(
-          "These are my potential channel members:",
-          response.data
-        );
+        // console.log(
+        //   "These are my potential channel members:",
+        //   response.data
+        // );
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -62,6 +62,8 @@ const connect = () => {
 
   const handleAddChannelSubmit = (e) => {
     e.preventDefault();
+    toast.loading('Creating channel...', {duration: 2000});
+
     const formData = new FormData();
 
     for (const key of Object.keys(newChannel)) {
@@ -84,6 +86,9 @@ const connect = () => {
           image: null,
           channel_members: [],
         });
+        toast.success("Channel creation successful!");
+      } else {
+        toast.error("Channel creation unsuccessful! Please try again");
       }
 
       if (response.status === 400) {
@@ -124,6 +129,7 @@ const connect = () => {
   return (
     <>
       <Layout sideHighlight="connect">
+        <Toaster />
         <div className="flex h-screen relative">
           <Channels addChannel={addChannel} setAddChannel={setAddChannel} />
           <div className="grow h-full text-lg font-semibold md:flex flex-col justify-center items-center text-gray-600 opacity-50 gap-4 hidden">

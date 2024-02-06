@@ -3,7 +3,7 @@ import Layout from "../components/layouts/layout";
 import { useRouter } from "next/router";
 import Channels from "../components/connect/channels";
 import Image from "next/image";
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "@/components/ui/badge";
 
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useSelector } from "react-redux";
@@ -133,7 +133,6 @@ const connect = () => {
 
   useEffect(() => {
     setMessageHistory([]);
-    
   }, [room]);
 
   const containerStyles = {
@@ -144,18 +143,16 @@ const connect = () => {
   return (
     <>
       <Layout sideHighlight="connect">
-      <div className="flex h-full w-full">
+        <div className="flex h-full w-full">
           <div className="hidden lg:block py-14">
-          <Channels />
+            <Channels />
           </div>
 
           {/* CONVERSATION LIST */}
 
           <div className="relative flex-col grow shadow overflow-hidden h-full flex justify-center w-full p-2">
             <div className="grow relative sm:p-4 py-1 overflow-hidden max-h-full mt-14 pt-10 self-center w-full max-w-4xl shadow">
-              <Toolbar
-                 names={room}
-              />
+              <Toolbar names={room} />
               <div className="scrollbar h-full ">
                 <div className="mx-auto max-w-6xl sm:px-14 px-4 py-4 pt-10 pb-4 max-h-full overflow-y-auto">
                   <div className="">
@@ -218,8 +215,11 @@ const connect = () => {
 
                     {newMessages.length > 0 && (
                       <div className="message-list flex flex-col gap-1 pt-2">
-                        {newMessages.map((message) => (
-                          <div  className="flex flex-col gap-2 w-full " key={message[0].id}>
+                        {newMessages.message.map((message) => (
+                          <div
+                            className="flex flex-col gap-2 w-full "
+                            key={message[0].id}
+                          >
                             {message[0].from_user?.email === email && (
                               <div className="self-end w-fit p-1 px-3 max-w-[66%] rounded-lg bg-[#001e1d] text-white">
                                 {message[0].content}
@@ -263,7 +263,7 @@ const connect = () => {
                 </div>
               </div>
             </div>
-            
+
             <MessageInput room={room} />
           </div>
         </div>

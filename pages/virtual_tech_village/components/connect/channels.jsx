@@ -31,6 +31,7 @@ const Channels = ({ addChannel, setAddChannel }) => {
           `https://${API_URL}/village/channel_list/${user.user_id}/`
         );
         setConversations(response.data);
+        console.log("Channel list for connect:", response.data)
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -50,7 +51,7 @@ const Channels = ({ addChannel, setAddChannel }) => {
               <Link
                 href={`/virtual_tech_village/connect_channel/${channel.channel_name}`}
                 key={index}
-                className="w-full h-14 flex justify-between items-center px-1 border-y cursor-pointer hover:bg-gray-100 transition-colors delay-75 ease-in-out"
+                className="w-full h-14 flex justify-between items-center px-3 border-y cursor-pointer hover:bg-gray-100 transition-colors delay-75 ease-in-out"
               >
                 <div className="font-semibold text-sm">
                   #{channel.channel_name}
@@ -62,11 +63,11 @@ const Channels = ({ addChannel, setAddChannel }) => {
                       objectFit="cover"
                       src={channel.image}
                       className="rounded-full"
-                      alt="Profile image"
+                      alt="Channel image"
                     />
                   </div>
 
-                  <div className=" text-gray-500 font-light text-sm">+23</div>
+                  <div className=" text-gray-500 font-light text-sm">+{channel.total_members}</div>
                 </div>
               </Link>
             ))

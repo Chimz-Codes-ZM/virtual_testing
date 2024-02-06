@@ -24,7 +24,7 @@ const Index = () => {
   const [chatName, setChatName] = useState(null);
   const [message, setMessage] = useState([]);
   const [messageHistory, setMessageHistory] = useState([]);
-  const [newMessages, setNewMessages] = useState([]);
+  const [newMessages, setNewMessages] = useState(null);
   const [hasMoreMessages, setHasMoreMessages] = useState(false);
   const [participants, setParticipants] = useState([]);
   const [conversation, setConversation] = useState(null);
@@ -104,7 +104,7 @@ const Index = () => {
         switch (data.type) {
           case "chat_message_echo":
             setNewMessages((prev) => [...prev, data.message]);
-            console.log("This is the recently sent message: ", data.message);
+            console.log("Chat message echo: ", data.message);
             break;
 
           case "last_50_messages":
@@ -145,7 +145,6 @@ const Index = () => {
             console.error("Unknown message type!");
             break;
         }
-        // console.log(data);
       },
     }
   );
@@ -176,7 +175,7 @@ const Index = () => {
 
   useEffect(() => {
     setMessageHistory([]);
-    setNewMessages([])
+    setNewMessages([]);
     fetchInfo();
   }, [id]);
 
@@ -187,6 +186,10 @@ const Index = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messageHistory, newMessages]);
+
+  useEffect(() => {
+    console.log("This is the recently sent message: ", newMessages);
+  }, [newMessages]);
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
@@ -287,8 +290,11 @@ const Index = () => {
 
                     {newMessages.length > 0 && (
                       <div className="message-list flex flex-col gap-1 pt-2">
-                        {newMessages.map((message, index) => (
-                          <div  className="flex flex-col gap-2 w-full ">
+                        {newMessages?.map((message) => (
+                          <div
+                            className="flex flex-col gap-2 w-full "
+                            key={message?.message_id}
+                          >
                             {message.from_user?.email === email && (
                               <div className="self-end w-fit p-1 px-3 max-w-[66%] rounded-lg bg-[#001e1d] text-white">
                                 {message.content}
@@ -300,8 +306,8 @@ const Index = () => {
                                   <div className="relative w-8 h-8">
                                     <Image
                                       className="w-8 h-8 rounded-full"
-                                      src={message.from_user.image}
-                                      alt="Jese image"
+                                      src={message?.from_user?.image}
+                                      alt={`${message?.from_user?.name}'s image`}
                                       objectFit="cover"
                                       fill
                                     />
@@ -310,14 +316,14 @@ const Index = () => {
                                   <div className="flex flex-col w-full max-w-[66%] leading-1.5">
                                     <div className="flex items-center space-x-2 rtl:space-x-reverse">
                                       <span className="text-sm font-semibold text-gray-900">
-                                        {message.from_user.name}
+                                        {message?.from_user?.name}
                                       </span>
                                       <span className="text-sm font-normal text-gray-500">
-                                        {message.time}
+                                        {message?.time}
                                       </span>
                                     </div>
                                     <p className="text-sm font-normal py-2 text-gray-900">
-                                      {message.content}
+                                      {message?.content}
                                     </p>
                                   </div>
                                 </div>
@@ -332,7 +338,7 @@ const Index = () => {
                 </div>
               </div>
             </div>
-            
+
             <MessageInput roomName={uniqueRoom} userId={userId} />
           </div>
         </div>
