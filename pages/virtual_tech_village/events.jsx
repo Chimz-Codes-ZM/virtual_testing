@@ -71,6 +71,11 @@ const Events = () => {
     setSuccess(false);
   };
 
+  const formatDateTime = (dateTime) => {
+    const [date, time] = dateTime.split('T');
+    return `${date} ${time}`;
+  };
+
   const handleEventSubmit = (e) => {
     e.preventDefault();
 
@@ -358,9 +363,9 @@ const Events = () => {
                   </div>
                   <div>
                     <p className="text-red-700">
-                      Date & Time: {item.data_time}
+                      Date & Time: {formatDateTime(item.data_time)}
                     </p>
-                    <p className="font-semibold">$75</p>
+                    <p className="w-full truncate">{item.description}</p>
                   </div>
                 </div>
               ))}

@@ -187,9 +187,14 @@ const Index = () => {
     scrollToBottom();
   }, [messageHistory, newMessages]);
 
-  useEffect(() => {
-    console.log("This is the recently sent message: ", newMessages);
-  }, [newMessages]);
+  const renderMessage = (message) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return message.replace(
+      urlRegex,
+      (url) =>
+        `<a href="${url}" target="_blank" style="text-decoration: underline;">${url}</a>`
+    );
+  };
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
@@ -275,7 +280,16 @@ const Index = () => {
                                           </span>
                                         </div>
                                         <p className="text-sm font-normal py-2 text-gray-900">
-                                          {message.content}
+                                          <div
+                                            dangerouslySetInnerHTML={{
+                                              __html: renderMessage(
+                                                message.content.replace(
+                                                  /\r\n|\r|\n/g,
+                                                  "<br>"
+                                                )
+                                              ),
+                                            }}
+                                          />
                                         </p>
                                       </div>
                                     </div>
@@ -322,7 +336,16 @@ const Index = () => {
                                       </span>
                                     </div>
                                     <p className="text-sm font-normal py-2 text-gray-900">
-                                      {message?.content}
+                                      <div
+                                        dangerouslySetInnerHTML={{
+                                          __html: renderMessage(
+                                            message.content.replace(
+                                              /\r\n|\r|\n/g,
+                                              "<br>"
+                                            )
+                                          ),
+                                        }}
+                                      />
                                     </p>
                                   </div>
                                 </div>

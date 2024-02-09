@@ -131,10 +131,18 @@ const connect = () => {
     scrollToBottom();
   }, [messageHistory, newMessages]);
 
+  const renderMessage = (message) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return message.replace(
+      urlRegex,
+      (url) =>
+        `<a href="${url}" target="_blank" style="text-decoration: underline;">${url}</a>`
+    );
+  };
+
   useEffect(() => {
     setMessageHistory([]);
   }, [room]);
-
 
   return (
     <>
@@ -170,7 +178,16 @@ const connect = () => {
                               >
                                 {message.from_user?.email === email && (
                                   <div className="self-end w-fit p-1 px-3 max-w-[66%] rounded-lg bg-[#001e1d] text-white">
-                                    {message.content}
+                                    <div
+                                      dangerouslySetInnerHTML={{
+                                        __html: renderMessage(
+                                          message.content.replace(
+                                            /\r\n|\r|\n/g,
+                                            "<br>"
+                                          )
+                                        ),
+                                      }}
+                                    />
                                   </div>
                                 )}
                                 {message.from_user?.email !== email && (
@@ -196,7 +213,16 @@ const connect = () => {
                                           </span>
                                         </div>
                                         <p className="text-sm font-normal py-2 text-gray-900">
-                                          {message?.content}
+                                          <div
+                                            dangerouslySetInnerHTML={{
+                                              __html: renderMessage(
+                                                message.content.replace(
+                                                  /\r\n|\r|\n/g,
+                                                  "<br>"
+                                                )
+                                              ),
+                                            }}
+                                          />
                                         </p>
                                       </div>
                                     </div>

@@ -773,6 +773,7 @@ const Complete_profile = () => {
                           name="summary"
                           id="summary"
                           rows="4"
+                          maxLength={1000}
                           className="my-2 w-full rounded-lg border p-1 max-w-3xl border-gray-200 align-top shadow-sm sm:text-sm"
                           value={work.summary}
                           onChange={(e) =>
@@ -885,6 +886,7 @@ const Complete_profile = () => {
                     className="mt-2 w-full rounded-lg border p-1 border-gray-200 align-top shadow-sm sm:text-sm"
                     rows="4"
                     name="bio"
+                    maxLength={500}
                     placeholder="Enter your bio here..."
                     onChange={handleInputChange}
                   ></textarea>

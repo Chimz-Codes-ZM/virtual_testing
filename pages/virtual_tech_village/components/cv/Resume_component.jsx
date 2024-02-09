@@ -14,20 +14,30 @@ const Resume_component = ({
   education,
   linkedin,
   soft_skills,
-  onClick
+  onClick,
 }) => {
+
+  const renderDescription = (description) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return description.replace(
+      urlRegex,
+      (url) =>
+        `<a href="${url}" target="_blank" style="text-decoration: underline;">${url}</a>`
+    );
+  };
   return (
     <main className="bg-white text-gray-800 min-h-screen relative">
-      <div className="fixed right-10 top-10 cursor-pointer p-1 border-2 rounded-md" onClick={onClick}>
-      <FaX />
+      <div
+        className="fixed right-10 top-10 cursor-pointer p-1 border-2 rounded-md"
+        onClick={onClick}
+      >
+        <FaX />
       </div>
       <div className="py-20 lg:py-24 px-6 mx-auto max-w-7xl">
         <div className="relative">
-         
           <div></div>
 
           <div className="relative grid grid-cols-1 md:grid-cols-4 gap-10 xl:gap-24 z-10">
-           
             <div className="col-span-1">
               <h1 className="font-bold text-4xl z-[999]">{name}</h1>
               <h2 className="text-lg">{title}</h2>
@@ -70,11 +80,10 @@ const Resume_component = ({
                 {/* <!-- Contact 3 --> */}
                 <div className="ml-3">
                   <p className="mb-0 font-semibold text-sm">Linkedin</p>
-                 
-                    <a href={linkedin} target="_blank" rel="noreferrer">
-                      {linkedin}
-                    </a>
-                  
+
+                  <a href={linkedin} target="_blank" rel="noreferrer">
+                    {linkedin}
+                  </a>
                 </div>
               </div>
             </div>
@@ -107,6 +116,13 @@ const Resume_component = ({
                     {/* <!-- Job Title 1 --> */}
                     <h4 class="mb-4 pt-2 font-semibold">{job.position}</h4>
                     <p>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: renderDescription(
+                            job.summary.replace(/\r\n|\r|\n/g, "<br>")
+                          ),
+                        }}
+                      />
                       {job.summary}
                     </p>
                   </div>
@@ -125,7 +141,6 @@ const Resume_component = ({
             <p className="p-2">{bio}</p>
 
             {/* <!-- Skills --> */}
-           
 
             {/* <!-- Education --> */}
             <h3 class="mt-12 lg:mt-16 font-semibold text-2xl pb-2 border-b-2 border-gray-300">
@@ -141,7 +156,7 @@ const Resume_component = ({
               </div>
             ))}
 
-<h3 class="mt-12 lg:mt-16 text-2xl font-semibold pb-2 border-b-2 border-gray-300">
+            <h3 class="mt-12 lg:mt-16 text-2xl font-semibold pb-2 border-b-2 border-gray-300">
               Soft Skills
             </h3>
 

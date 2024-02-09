@@ -59,7 +59,7 @@ const Project = () => {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <Members team={projectInfo} />
           <div className="col-span-2">
-            <Task_Allocation />
+            <Task_Allocation tasks={projectInfo}/>
           </div>
         </div>
         <div className="flex-1 grow">
