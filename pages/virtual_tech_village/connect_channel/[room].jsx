@@ -135,10 +135,6 @@ const connect = () => {
     setMessageHistory([]);
   }, [room]);
 
-  const containerStyles = {
-    scrollbarWidth: "none",
-    msOverflowStyle: "none",
-  };
 
   return (
     <>
@@ -232,7 +228,7 @@ const connect = () => {
                                     <Image
                                       className="w-8 h-8 rounded-full"
                                       src={message.from_user?.image}
-                                      alt="Jese image"
+                                      alt={`${message.from_user?.name}'s image`}
                                       objectFit="cover"
                                       fill
                                     />

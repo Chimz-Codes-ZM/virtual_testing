@@ -909,7 +909,7 @@ const Complete_profile = () => {
                           htmlFor="soft_skills"
                           className="block text-sm font-medium text-gray-600 mb-1"
                         >
-                          Soft skill
+                          Skill
                         </label>
                         <input
                           type="text"
@@ -927,7 +927,7 @@ const Complete_profile = () => {
                           className="text-red-500 hover:text-red-700 underline cursor-pointer"
                           onClick={() => handleRemoveSoftSkill(index)}
                         >
-                          Remove Soft Skill
+                          Remove Skill
                         </button>
                       )}
                     </div>
@@ -940,7 +940,7 @@ const Complete_profile = () => {
                     className="bg-gray-900 text-white px-2 py-1 sm:py-2 sm:px-4 rounded-md hover:bg-white hover:text-black hover:border transition-colors"
                     onClick={handleAddSoftSkill}
                   >
-                    Add Soft Skill
+                    Add Skill
                   </button>
                 </div>
               </div>

@@ -1546,4 +1546,31 @@ export const Project_teams = [
   },
 ];
 
+export const stages = [
+  {
+    id: "ADSGQEryhn",
+    stage: "Requirements gathering"
+  },
+
+  {
+    id: "8uunn;adjkh",
+    stage: "Design system & architecture"
+  },
+
+  {
+    id: "uiqhlnaadf",
+    stage: "Building core features"
+  },
+
+  {
+    id: "k;lnrfuiae",
+    stage: "Functional MVP Development"
+  },
+
+  {
+    id: "Regrjnk;jahrtqe",
+    stage: "Review for future development"
+  }
+]
+
 export default () => null;

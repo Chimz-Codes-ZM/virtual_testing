@@ -11,7 +11,7 @@ const Project = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const [projectInfo, setProjectInfo] = useState([])
+  const [projectInfo, setProjectInfo] = useState([]);
 
   const user = useSelector((state) => {
     if (state.user?.userData && state.user.userData.length > 0) {
@@ -24,28 +24,35 @@ const Project = () => {
   const fetchProject = () => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://${API_URL}/village/single_project/${user.user_id}/`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id }),
-        });
-  
+        const response = await fetch(
+          `https://${API_URL}/village/single_project/${user.user_id}/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id }),
+          }
+        );
+
         const data = await response.json();
-        setProjectInfo(data)
-        console.log(data)
+        setProjectInfo(data);
+        // console.log(data);
       } catch (error) {
         console.log(error);
       }
     };
-  
+
     fetchData();
   };
-  
+
   useEffect(() => {
     fetchProject();
   }, []);
+
+  useEffect(() => {
+    console.log("This is my fetched project data:",projectInfo);
+  }, [projectInfo]);
   return (
     <Layout sideHighlight="Insight">
       <div className="flex flex-col h-screen p-4 pt-16 overflow-y-auto">

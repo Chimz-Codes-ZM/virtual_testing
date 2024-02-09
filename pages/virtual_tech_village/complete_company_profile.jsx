@@ -18,9 +18,10 @@ const Complete_company_profile = () => {
     industry: "",
     company_description: "",
     social_media_profiles: "",
+    registration_number: "",
+    office_address: "",
   });
-  const [success, setSuccess] = useState(false)
-
+  const [success, setSuccess] = useState(false);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const router = useRouter();
@@ -33,7 +34,6 @@ const Complete_company_profile = () => {
     }
   });
 
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -41,6 +41,7 @@ const Complete_company_profile = () => {
       ...completedProfile,
       [name]: value,
     });
+    console.log(completedProfile)
   };
 
   const handleImageSubmit = async (e) => {
@@ -76,18 +77,18 @@ const Complete_company_profile = () => {
   };
 
   const handleFormSuccess = () => {
-    setSuccess(true)
-  }
+    setSuccess(true);
+  };
 
   const handleSuccessDismiss = () => {
-    router.push("/virtual_tech_village")
-    setSuccess(false)
-  }
+    router.push("/virtual_tech_village");
+    setSuccess(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-console.log(completedProfile)
+    console.log(completedProfile);
     const response = await fetch(
       `https://${API_URL}/village/complete_profile/${user.user_id}/`,
       // `http://127.0.0.1:8000/village/complete_profile/${user_id}/`,
@@ -100,7 +101,7 @@ console.log(completedProfile)
       }
     );
     if (response.ok) {
-  handleFormSuccess()
+      handleFormSuccess();
     } else {
       alert("Something went wrong, please try again!");
     }
@@ -108,20 +109,19 @@ console.log(completedProfile)
 
   return (
     <>
-
       <Layout>
         <Toaster />
-        <div className="w-full flex justify-center flex-col relative">
+        <div className="w-full flex justify-center flex-col relative overflow-y-scroll pb-4">
           {/* Gray background */}
 
           {success && (
-              <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
+            <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-[999] bg-slate-900 bg-opacity-20 transition delay-150 backdrop-blur-lg">
               <Success
                 message="Your profile update Complete! You may now enjoy the virtual tech village"
                 alertDismiss={handleSuccessDismiss}
               />
             </div>
-            )}
+          )}
 
           <div className="w-full bg-gray-50 h-40 overflow-auto"></div>
 
@@ -142,9 +142,7 @@ console.log(completedProfile)
                 )}
               </div>
               <div className="text-white bg-black rounded h-min">
-                <div
-                  class="group relative inline-block text-sm cursor-pointer font-medium text-gray-900 focus:outline-none focus:ring active:text-gray-900"
-                >
+                <div class="group relative inline-block text-sm cursor-pointer font-medium text-gray-900 focus:outline-none focus:ring active:text-gray-900">
                   <span class="absolute inset-0 translate-x-0.5 translate-y-0.5 bg-gray-900 transition-transform group-hover:translate-y-0 group-hover:translate-x-0"></span>
 
                   <Link
@@ -188,7 +186,6 @@ console.log(completedProfile)
                       htmlFor="profilePictureInput"
                       className="border-2 border-dashed px-4 border-gray-400 overflow-hidden rounded-lg cursor-pointer"
                     >
-
                       {selectedFile ? (
                         <img
                           src={URL.createObjectURL(selectedFile)}
@@ -271,6 +268,44 @@ console.log(completedProfile)
                       name="company_website"
                       onChange={handleInputChange}
                       placeholder="e.g., wwww.example.com"
+                    ></input>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full gap-2 sm:px-10  ">
+                  <label
+                    htmlFor="registration_number"
+                    className="font-semibold sm:text-xl col-span-1"
+                  >
+                    Registration number:
+                  </label>
+                  <div className="flex col-span-2 md:col-span-1">
+                    <input
+                      type="text"
+                      className="border rounded-r p-1 w-full"
+                      id="registration_number"
+                      name="registration_number"
+                      onChange={handleInputChange}
+                      placeholder="e.g., 123 456 789"
+                    ></input>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full gap-2 sm:px-10  ">
+                  <label
+                    htmlFor="office_address"
+                    className="font-semibold sm:text-xl col-span-1"
+                  >
+                    Office Address:
+                  </label>
+                  <div className="flex col-span-2 md:col-span-1">
+                    <input
+                      type="text"
+                      className="border rounded-r p-1 w-full"
+                      id="office_address"
+                      name="office_address"
+                      onChange={handleInputChange}
+                      placeholder="e.g., 123 Main Street, Suite 100, Anytown, Norway 12345"
                     ></input>
                   </div>
                 </div>

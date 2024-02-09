@@ -122,7 +122,7 @@ const index = () => {
     <Layout sideHighlight="Insight">
       <Team_layout title={"project overview"}>
           <Toaster />
-      <div className="p-4relative overflow-y-auto">
+      <div className="p-4 relative overflow-y-auto">
         <Table>
           <TableCaption>A list of ongoing projects.</TableCaption>
           <TableHeader>

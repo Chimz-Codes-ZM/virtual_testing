@@ -90,7 +90,7 @@ const Virtual_Tech_Village = () => {
   const dispatch = useDispatch();
 
   const login = (id) => {
-    console.log("Login function called");
+    // console.log("Login function called");
     const fetchData = async () => {
       const response = await fetch(
         `https://${API_URL}/village/village_profiles/${id}/`,
@@ -126,7 +126,7 @@ const Virtual_Tech_Village = () => {
           `https://${API_URL}/village/country_skills/${id}/`
         );
         setSelectedAttributes(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -154,7 +154,7 @@ const Virtual_Tech_Village = () => {
 
   const authenticatedUser = () => {
     try {
-      console.log("Session:", session);
+      // console.log("Session:", session);
 
       if (session && session.access) {
         const decodedToken = jwt_decode(session.access);
@@ -389,61 +389,12 @@ const Virtual_Tech_Village = () => {
       }
 
       if (response.status === 400) {
-        console.log("Error:", response.status);
+        // console.log("Error:", response.status);
       }
     };
 
     sendData();
-    console.log(formData);
-  };
-
-  const handleInputChange = async (value, name) => {
-    setFilters((prevFilters) => {
-      const updatedFilters = {
-        ...prevFilters,
-        [name]: value === "All" ? "" : value,
-      };
-
-      console.log(updatedFilters);
-
-      makeAPICall(updatedFilters);
-
-      return updatedFilters;
-    });
-  };
-
-  const makeAPICall = async (updatedFilters) => {
-    try {
-      const response = await fetch(
-        `https://${API_URL}/village/village_profiles/${currentSessionId}/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ filters: updatedFilters }),
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-
-        const pages = Array.from(
-          { length: data.talent_total_pages },
-          (_, index) => index + 1
-        );
-
-        console.log("========> Total number of pages: ", pages);
-
-        setMemberList(data);
-        setTalentPages(pages);
-        console.log();
-      } else {
-        console.error("Something went wrong, please try again!");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    // console.log(formData);
   };
 
   const handleInputNameChange = async (e) => {
@@ -477,11 +428,11 @@ const Virtual_Tech_Village = () => {
           (_, index) => index + 1
         );
 
-        console.log("========> Total number of pages: ", pages);
+        // console.log("========> Total number of pages: ", pages);
 
         setMemberList(data);
         setTalentPages(pages);
-        console.log();
+        // console.log();
       } else {
         console.error("Something went wrong, please try again!");
       }
@@ -503,40 +454,41 @@ const Virtual_Tech_Village = () => {
       company_industry: "",
       category: "",
     });
+  };
 
-    try {
-      const response = await fetch(
-        `https://${API_URL}/village/village_profiles/${currentSessionId}/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ filters }),
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-
-        // console.log("====> This is my filtered data: ", data);
-        const pages = Array.from(
-          { length: data.talent_total_pages },
-          (_, index) => index + 1
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://${API_URL}/village/village_profiles/${currentSessionId}/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ filters }),
+          }
         );
 
-        console.log("========> Total number of pages: ", pages);
+        if (response.ok) {
+          const data = await response.json();
+          const pages = Array.from(
+            { length: data.talent_total_pages },
+            (_, index) => index + 1
+          );
 
-        setMemberList(data);
-        setTalentPages(pages);
-        console.log();
-      } else {
-        console.error("Something went wrong, please try again!");
+          setMemberList(data);
+          setTalentPages(pages);
+        } else {
+          // Handle error response
+        }
+      } catch (error) {
+        console.error("Error:", error);
       }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+    };
+
+    fetchData();
+  }, [filters]);
 
   if (!memberList) {
     return (
@@ -708,7 +660,10 @@ const Virtual_Tech_Village = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5 relative pb-8 overflow-x-hidden overflow-y-auto" ref={parent}>
+    <div
+      className="flex flex-col gap-5 relative pb-8 overflow-x-hidden overflow-y-auto"
+      ref={parent}
+    >
       {success && (
         <div className="rounded fixed bottom-10 sm:right-10 z-[999] max-w-[450px]">
           <JobAdded
@@ -1051,115 +1006,95 @@ const Virtual_Tech_Village = () => {
               </div>
               <div>
                 <h1>Country</h1>
-                <Select
+
+                <select
                   name="country"
                   id="country"
-                  onValueChange={(value) => handleInputChange(value, "country")}
+                  value={filters.country}
+                  onChange={handleInputNameChange}
+                  className="w-full bg-white p-2 rounded-md border"
                 >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a country" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Countries</SelectLabel>
-                      {selectedAttributes?.countries?.map((country) => (
-                        <SelectItem
-                          key={country.country}
-                          value={country.country}
-                        >
-                          {country.country}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                                    <option value="" disabled selected>
+                      Select a country
+                    </option>
+                  {selectedAttributes?.countries?.map((country) => (
+                    <option key={country.country} value={country.country}>
+                      {country.country}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div>
                 <h1>Category</h1>
-                <Select
+
+                <select
                   name="category"
                   id="category"
-                  onValueChange={(value) => handleInputChange(value, "category")}
+                  value={filters.category}
+                  onChange={handleInputNameChange}
+                  className="w-full bg-white p-2 rounded-md border"
                 >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Categories</SelectLabel>
-
-                      {selectedAttributes?.categories?.map((category) => (
-                        <SelectItem
-                          key={category.category}
-                          value={category.category}
-                        >
-                          {category.category}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                                    <option value="" disabled selected>
+                      Select category
+                    </option>
+                  {selectedAttributes?.categories?.map((category) => (
+                    <option key={category.category} value={category.category}>
+                      {category.category}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div>
                 <h1>Experience</h1>
-                <Select
+
+                <select
                   name="experience"
                   id="experience"
-                  onValueChange={(value) =>
-                    handleInputChange(value, "experience")
-                  }
+                  value={filters.experience}
+                  onChange={handleInputNameChange}
+                  className="w-full bg-white p-2 rounded-md border"
+                  placeholder="Select Experience Level"
                 >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select Experience Level" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Categories</SelectLabel>
-                      <SelectItem value="All">All</SelectItem>
-                      <SelectItem value="Junior">
-                        Junior: {"0 - 2 years"}
-                      </SelectItem>
-                      <SelectItem value="Mid level">
-                        Mid Level: {"3 - 5 years"}
-                      </SelectItem>
-                      <SelectItem value="Senior">
-                        Senior: {"5+ years"}
-                      </SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                  <optgroup label="Experience Levels">
+                  <option value="" disabled selected>
+                      Select experience level
+                    </option>
+                    <option value="All">All</option>
+                    <option value="Junior">Junior: {"0 - 2 years"}</option>
+                    <option value="Mid level">
+                      Mid Level: {"3 - 5 years"}
+                    </option>
+                    <option value="Senior"> Senior: {"5+ years"}</option>
+                  </optgroup>
+                </select>
               </div>
               <div>
                 <h1>Role</h1>
-                <Select
+                <select
                   name="skill"
                   id="skills"
-                  onValueChange={(value) => handleInputChange(value, "skill")}
+                  value={filters.skill}
+                  onChange={handleInputNameChange}
+                  className="w-full bg-white p-2 rounded-md border"
                 >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a Role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Select a Role</SelectLabel>
-                      {selectedAttributes?.skills?.map((skill) => (
-                        <SelectItem value={skill.skill} key={skill.skill}>
-                          {skill.skill}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                                    <option value="" disabled selected>
+                      Select role
+                    </option>
+                  {selectedAttributes?.skills?.map((skill) => (
+                    <option key={skill.skill} value={skill.skill}>
+                      {skill.skill}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="pt-10">
-                <Button
-                  variant="outline"
-                  className="float-left"
+                <button
+                  className="float-left border rounded-sm px-2 p-1"
                   onClick={(e) => clearFilter(e)}
                 >
                   Clear
-                </Button>
+                </button>
                 {/* <div className="p-1 px-2 rounded-sm border bg-white hover:bg-gray-100 w-fit float-right cursor-pointer" onClick={(e) => clearFilter(e)}>Clear</div> */}
               </div>
             </form>

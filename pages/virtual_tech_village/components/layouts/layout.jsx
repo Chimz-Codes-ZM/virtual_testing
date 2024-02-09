@@ -3,9 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  resetUser,
-} from "@/features/user/UserSlice";
+import { resetUser } from "@/features/user/UserSlice";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import Logo from "/public/logo.png";
@@ -14,6 +12,7 @@ import { AiOutlineBell } from "react-icons/ai";
 import { MdOutlineInsights } from "react-icons/md";
 import { GiTeamIdea } from "react-icons/gi";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
+import { GrUserManager } from "react-icons/gr";
 
 import { navbar } from "@/pages/data";
 
@@ -91,10 +90,10 @@ const Layout = ({ children, sideHighlight }) => {
     `wss://${API_URL}/ws/chat_notifications/${id}/`,
     {
       onOpen: () => {
-        console.log("Connected to Notifications!");
+        // console.log("Connected to Notifications!");
       },
       onClose: () => {
-        console.log("Disconnected from Notifications!");
+        // console.log("Disconnected from Notifications!");
       },
       onMessage: (e) => {
         const data = JSON.parse(e.data);
@@ -104,16 +103,16 @@ const Layout = ({ children, sideHighlight }) => {
           case "new_message_notification":
             setUnreadMessageCount((count) => (count += 1));
             setUnreadMessageCount(data.count);
-            console.log(data.content);
+            // console.log(data.content);
             setNotificationContent(data.content);
             break;
           case "new_notification":
             setUnreadMessageCount((count) => (count += 1));
             setUnreadMessageCount(data.count);
-            setNotificationContent(data.content)
-            console.log("New notification content:", data.content)
+            setNotificationContent(data.content);
+          // console.log("New notification content:", data.content);
           default:
-            console.error("Unknown message type!");
+            // console.error("Unknown message type!");
             break;
         }
       },
@@ -130,6 +129,15 @@ const Layout = ({ children, sideHighlight }) => {
     sendJsonMessage({
       type: "read_messages",
     });
+  };
+
+  const handleNewNotification = (id) => {
+    sendJsonMessage({
+      type: "new_notification",
+      id: id,
+    });
+
+    // console.log(id);
   };
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
@@ -151,31 +159,30 @@ const Layout = ({ children, sideHighlight }) => {
 
             <div className="h-full pl-2 pb-10 rounded-tr-2xl flex flex-col bg-[#004643] w-full justify-between">
               <div className="w-full h-max flex flex-col gap-2 pr-5 pt-10">
+                <div className="w-full flex flex-col">
+                  <Link href="/virtual_tech_village">
+                    <TooltipProvider delayDuration={100}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          {sideHighlight === "Tech Village" ? (
+                            <Button variant="outline">
+                              <SiHomeassistantcommunitystore className="text-xl" />
+                            </Button>
+                          ) : (
+                            <Button>
+                              <SiHomeassistantcommunitystore className="text-xl" />
+                            </Button>
+                          )}
+                        </TooltipTrigger>
+                        <TooltipContent side="right">
+                          <p>Tech Village</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </Link>
+                </div>
 
-              <div className="w-full flex flex-col">
-                    <Link href="/virtual_tech_village">
-                      <TooltipProvider delayDuration={100}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            {sideHighlight === "Tech Village" ? (
-                              <Button variant="outline">
-                                <SiHomeassistantcommunitystore className="text-xl" />
-                              </Button>
-                            ) : (
-                              <Button>
-                                <SiHomeassistantcommunitystore className="text-xl" />
-                              </Button>
-                            )}
-                          </TooltipTrigger>
-                          <TooltipContent side="right">
-                            <p>Tech Village</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </Link>
-                  </div>
-
-              {user?.account_type === "village company profile" && (
+                {user?.account_type === "village company profile" && (
                   <div className="w-full flex flex-col">
                     <Link href="/virtual_tech_village/team">
                       <TooltipProvider delayDuration={100}>
@@ -193,6 +200,31 @@ const Layout = ({ children, sideHighlight }) => {
                           </TooltipTrigger>
                           <TooltipContent side="right">
                             <p>Team</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Link>
+                  </div>
+                )}
+
+                {user?.project_manager && (
+                  <div className="w-full flex flex-col">
+                    <Link href="/virtual_tech_village/project_manager">
+                      <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            {sideHighlight === "project_manager" ? (
+                              <Button variant="outline">
+                                <GrUserManager className="text-xl" />
+                              </Button>
+                            ) : (
+                              <Button>
+                                <GrUserManager className="text-xl" />
+                              </Button>
+                            )}
+                          </TooltipTrigger>
+                          <TooltipContent side="right">
+                            <p>Manage Projects</p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -253,7 +285,6 @@ const Layout = ({ children, sideHighlight }) => {
                     </Link>
                   </div>
                 )}
-
               </div>
 
               <div className="w-full pr-5 h-max rounded-r-full">
@@ -301,8 +332,12 @@ const Layout = ({ children, sideHighlight }) => {
                 <DropdownMenuSeparator />
                 <ScrollArea className="max-h-[200px] w-[250px] rounded-md">
                   {notificationContent && notificationContent.length > 0 ? (
-                    notificationContent.map((notification, index) => (
-                      <div className="" key={index}>
+                    notificationContent.map((notification) => (
+                      <div
+                        className=""
+                        key={notification.id}
+                        onClick={handleNewNotification(notification.id)}
+                      >
                         <Link
                           href={`/virtual_tech_village/${notification.route}`}
                         >
@@ -401,7 +436,11 @@ const Layout = ({ children, sideHighlight }) => {
             </div>
           </Link>
         </nav>
-        <div className={`w-full h-screen overflow-hidden flex flex-col gap-5 ${sideHighlight === "Complete Profile"  ? "overflow-y-scroll p-2" : ""}`}>
+        <div
+          className={`w-full h-screen overflow-hidden flex flex-col gap-5 ${
+            sideHighlight === "Complete Profile" ? "overflow-y-scroll p-2" : ""
+          }`}
+        >
           {children}
         </div>
       </main>
