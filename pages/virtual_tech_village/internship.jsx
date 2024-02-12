@@ -124,10 +124,10 @@ const Virtual_internship = () => {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://${API_URL}/village/country_skills/${id}/`
+          `https://${API_URL}/village/intern_country_skills/${id}/`
         );
         setSelectedAttributes(response.data);
-        console.log(response.data);
+        console.log("This is the filtering information:",response.data);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -155,7 +155,7 @@ const Virtual_internship = () => {
 
   const authenticatedUser = () => {
     try {
-      console.log("Session:", session);
+      // console.log("Session:", session);
 
       if (session && session.access) {
         const decodedToken = jwt_decode(session.access);
@@ -395,7 +395,7 @@ const Virtual_internship = () => {
     };
 
     sendData();
-    console.log(formData);
+    // console.log(formData);
   };
 
   const handleInputChange = async (value, name) => {
@@ -405,7 +405,7 @@ const Virtual_internship = () => {
         [name]: value === "All" ? "" : value,
       };
 
-      console.log(updatedFilters);
+      // console.log(updatedFilters);
 
       makeAPICall(updatedFilters);
 
@@ -434,13 +434,13 @@ const Virtual_internship = () => {
           (_, index) => index + 1
         );
 
-        console.log("========> Total number of pages: ", pages);
+        // console.log("========> Total number of pages: ", pages);
 
         setMemberList(data);
         setTalentPages(pages);
-        console.log();
+        // console.log();
       } else {
-        console.error("Something went wrong, please try again!");
+        // console.error("Something went wrong, please try again!");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -478,11 +478,11 @@ const Virtual_internship = () => {
           (_, index) => index + 1
         );
 
-        console.log("========> Total number of pages: ", pages);
+        // console.log("========> Total number of pages: ", pages);
 
         setMemberList(data);
         setTalentPages(pages);
-        console.log();
+        // console.log();
       } else {
         console.error("Something went wrong, please try again!");
       }
@@ -526,13 +526,13 @@ const Virtual_internship = () => {
           (_, index) => index + 1
         );
 
-        console.log("========> Total number of pages: ", pages);
+        // console.log("========> Total number of pages: ", pages);
 
         setMemberList(data);
         setTalentPages(pages);
-        console.log();
+        // console.log();
       } else {
-        console.error("Something went wrong, please try again!");
+        // console.error("Something went wrong, please try again!");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -1149,7 +1149,7 @@ const Virtual_internship = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                <div>
+                {/* <div>
                   <h1>Role</h1>
                   <Select
                     name="skill"
@@ -1170,7 +1170,7 @@ const Virtual_internship = () => {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                </div>
+                </div> */}
 
                 <div className="pt-10">
                   <Button

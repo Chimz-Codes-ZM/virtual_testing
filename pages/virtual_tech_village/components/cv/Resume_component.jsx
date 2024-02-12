@@ -157,7 +157,7 @@ const Resume_component = ({
             ))}
 
             <h3 class="mt-12 lg:mt-16 text-2xl font-semibold pb-2 border-b-2 border-gray-300">
-              Soft Skills
+              Skills
             </h3>
 
             {/* <!-- Skills 1 --> */}

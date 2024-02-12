@@ -272,7 +272,7 @@ const Complete_company_profile = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 w-full gap-2 sm:px-10  ">
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full gap-2 sm:px-10">
                   <label
                     htmlFor="registration_number"
                     className="font-semibold sm:text-xl col-span-1"
@@ -351,7 +351,7 @@ const Complete_company_profile = () => {
                     htmlFor="social_media_profiles"
                     className="font-semibold sm:text-xl col-span-1"
                   >
-                    Social Media profile
+                    Linkedin link
                   </label>
                   <div className="flex col-span-1">
                     <input

@@ -56,8 +56,8 @@ const StartConversation = () => {
   };
 
   return (
-    <div className="fixed bottom-4 z-50">
-      <div className="border-2 p-1 rounded-md ">
+    <div className="fixed bottom-4 bg-white z-50">
+      <div className="border-2 p-1 bg-white rounded-md ">
     
 
         <DropdownMenu>

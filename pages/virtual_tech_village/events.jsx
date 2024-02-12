@@ -72,7 +72,7 @@ const Events = () => {
   };
 
   const formatDateTime = (dateTime) => {
-    const [date, time] = dateTime.split('T');
+    const [date, time] = dateTime.split("T");
     return `${date} ${time}`;
   };
 
@@ -206,7 +206,6 @@ const Events = () => {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                     >
-
                       <div className="p-6 bg-white border z-[50] rounded flex flex-col gap-2">
                         <div className="flex flex-col gap-4">
                           <h1 className="text-2xl font-semibold">
@@ -370,13 +369,16 @@ const Events = () => {
                 </div>
               ))}
             </section>
-
-            <div
-              className="fixed bottom-5 right-10 rounded p-2 bg-white text-2xl border cursor-pointer transition transform hover:scale-105"
-              onClick={handleAddEvent}
-            >
-              <BsFillCalendar2EventFill />
-            </div>
+            {user && user.account_type === "village admin profile" ? (
+              <div
+                className="fixed bottom-5 right-10 rounded p-2 bg-white text-2xl border cursor-pointer transition transform hover:scale-105"
+                onClick={handleAddEvent}
+              >
+                <BsFillCalendar2EventFill />
+              </div>
+            ) : (
+              <div></div>
+            )}
           </section>
         </SharepadLayout>
       </Layout>

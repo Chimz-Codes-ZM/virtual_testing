@@ -18,6 +18,8 @@ const EditCompanyProfile = () => {
     industry: "",
     company_description: "",
     social_media_profiles: "",
+    registration_number: "",
+    office_address: ""
   });
   const [success, setSuccess] = useState(false);
   const [profileData, setProfileData] = useState([]);
@@ -104,6 +106,8 @@ const EditCompanyProfile = () => {
           industry: data.industry,
           company_description: data.company_description,
           social_media_profiles: data.social_link,
+          registration_number: data.registration_number,
+          office_address: data.office_address
         });
         console.log("This is my profile data ===>", data);
       });
@@ -186,14 +190,14 @@ const EditCompanyProfile = () => {
                   <p>Set company details here</p>
                 </div>
 
-                <div className="flex gap-4">
+                {/* <div className="flex gap-4">
                   <div className="cursor-pointer rounded p-2 py-1 hover:text-white hover:bg-black transition-colors border shadow duration-300">
                     Cancel
                   </div>
                   <div className="cursor-pointer rounded p-2 py-1 text-white bg-black hover:text-black hover:bg-white border hover:shadow duration-300">
                     Save Changes
                   </div>
-                </div>
+                </div> */}
               </div>
 
               <div>
@@ -295,6 +299,46 @@ const EditCompanyProfile = () => {
                       ></input>
                     </div>
                   </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 w-full gap-2 sm:px-10  ">
+                  <label
+                    htmlFor="registration_number"
+                    className="font-semibold sm:text-xl col-span-1"
+                  >
+                    Registration number:
+                  </label>
+                  <div className="flex col-span-2 md:col-span-1">
+                    <input
+                      type="text"
+                      className="border rounded-r p-1 w-full"
+                      id="registration_number"
+                      name="registration_number"
+                      onChange={handleInputChange}
+                      placeholder="e.g., 123 456 789"
+                      value={completedProfile.registration_number}
+                    ></input>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 w-full gap-2 sm:px-10  ">
+                  <label
+                    htmlFor="office_address"
+                    className="font-semibold sm:text-xl col-span-1"
+                  >
+                    Office Address:
+                  </label>
+                  <div className="flex col-span-2 md:col-span-1">
+                    <input
+                      type="text"
+                      className="border rounded-r p-1 w-full"
+                      id="office_address"
+                      name="office_address"
+                      onChange={handleInputChange}
+                      placeholder="e.g., 123 Main Street, Suite 100, Anytown, Norway 12345"
+                      value={completedProfile.office_address}
+                    ></input>
+                  </div>
+                </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 gap-2 ">
                     <label

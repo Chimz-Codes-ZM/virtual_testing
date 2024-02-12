@@ -56,6 +56,10 @@ const Index = () => {
     dispatch(toggleDenied({ applicantId }));
   };
 
+  const resetCompanyState = () => {
+    dispatch(resetState())
+  }
+
   async function fetchData() {
     try {
       const response = await axios.get(
@@ -89,17 +93,21 @@ const Index = () => {
           body: JSON.stringify(sentData),
         }
       );
-      if (response.status === 200) {
+      if (response.ok) {
         const data = await response.json();
+        console.log("This is the data I'm waiting for:",data)
+        setLoading(false)
 
         toast.success('Team successfully created!')
       } else {
         console.error("Something went wrong, please try again!");
         toast.error('Something went wrong, please try again!')
+        setLoading(false)
       }
     };
 
     sendData();
+    resetCompanyState()
 
     console.log(sentData);
   };
@@ -108,7 +116,7 @@ const Index = () => {
     return (
       <Layout>
         <div className="w-full h-full relative flex flex-col gap-5 mt-16 overflow-x-hidden">
-          <p className="text-gray-800">Talent applications to join Baobabpad</p>
+          <p className="text-gray-800">Company applications to join Baobabpad</p>
 
           <div className="flex items-center">
             <span
@@ -215,7 +223,7 @@ const Index = () => {
                 >
                   <Link
                     className="text-md text-gray-800 flex flex-grow gap-2"
-                    href={`/virtual_tech_village/admin/applications/${applicant.user_id}`}
+                    href={`/virtual_tech_village/admin/applications/companies/${applicant.user_id}`}
                   >
                     <div className="relative w-6 h-6 rounded">
                       <Image

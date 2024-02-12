@@ -9,7 +9,7 @@ const Team_Layout = ({children, title}) => {
       <div className="w-full flex flex-col gap-2">
         <h1 className="text-[#004643]">Virtual Tech Village</h1>
         <div className="w-full flex flex-col gap-2 pl-2">
-          <Link href="/virtual_tech_village/profile">
+          <Link href="/virtual_tech_village/team">
             <h1
               className={
                 title === "team overview"
@@ -17,7 +17,7 @@ const Team_Layout = ({children, title}) => {
                   : "hover:border-l-4 pl-2"
               }
             >
-              Team Overview
+              Project Overview
             </h1>
           </Link>
           {/* <Link href="/virtual_tech_village/edit_profile">

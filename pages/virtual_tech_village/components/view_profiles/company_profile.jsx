@@ -47,6 +47,8 @@ const Company_profile = () => {
             website={profileData.company_website}
             socials={profileData.social_link}
             description={profileData.company_description}
+            address={profileData.office_address}
+            registration={profileData.registration_number}
           />
         </Profile_layout>
       </Layout>

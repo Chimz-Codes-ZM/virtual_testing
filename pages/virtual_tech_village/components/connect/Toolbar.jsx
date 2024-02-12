@@ -351,24 +351,14 @@ const Toolbar = ({
   };
 
   return (
-    <div className="absolute z-[2] sm:px-10 p-1 left-10 right-10 top-3 shadow border rounded bg-white">
-      <div className="relative w-full h-8">
+    <div className="absolute z-[2] sm:px-10 p-1 left-1/2 top-3 shadow border rounded bg-white transform -translate-x-1/2">
+      <div className="relative  py-1">
         <div className="flex gap-3">
-          {/* <div className="h-8 w-8 rounded-full relative overflow-hidden">
-            <Image
-              src={avatar}
-              objectFit="cover"
-              fill
-              onLoadingComplete={(image) => image.classList.remove("opacity-0")}
-              className=" transition-opacity opacity-0 duration-[1.2s]"
-              alt="user"
-            />
-          </div> */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-center text-center">
             <h1 className=" text-sm ">#{names}</h1>
           </div>
         </div>
-        <div className=" absolute right-3 inset-y-0  rounded cursor-pointer">
+        {/* <div className=" absolute right-3 inset-y-0  rounded cursor-pointer">
           <div
             className="p-2  bg-gray-200 text-gray-600 hover:bg-gray-300 hover:text-gray-800 focus:outline-none focus:ring"
             onClick={toggleToolbar}
@@ -376,7 +366,7 @@ const Toolbar = ({
             <span className="sr-only">Open Toolbar</span>
             <RiMenuAddFill />
           </div>
-        </div>
+        </div> */}
         {toolbarToggle && (
           <div className="relative" ref={divRef}>
             <div

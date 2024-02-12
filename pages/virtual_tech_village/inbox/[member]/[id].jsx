@@ -108,7 +108,6 @@ const Index = () => {
             break;
 
           case "last_50_messages":
-            console.log("Updated messageHistory:", messageHistory);
             setMessageHistory((prev) => [...data.messages, ...prev]);
 
             setHasMoreMessages(data.has_more);
@@ -182,6 +181,11 @@ const Index = () => {
   useEffect(() => {
     router.events.on("routeChangeComplete", () => {});
   }, [router]);
+
+  useEffect(() => {
+    console.log("Updated messageHistory==============>", messageHistory);
+    console.log("Updated newMessages==============>", newMessages);
+  }, [messageHistory, newMessages]);
 
   useEffect(() => {
     scrollToBottom();

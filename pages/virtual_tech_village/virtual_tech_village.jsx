@@ -104,7 +104,7 @@ const Virtual_Tech_Village = () => {
       );
 
       const data = await response.json();
-      console.log("MEMBERLIST DATA:", data);
+      // console.log("MEMBERLIST DATA:", data);
       const pages = Array.from(
         { length: data.talent_total_pages },
         (_, index) => index + 1
@@ -1068,7 +1068,7 @@ const Virtual_Tech_Village = () => {
                   </optgroup>
                 </select>
               </div>
-              <div>
+              {/* <div>
                 <h1>Role</h1>
                 <select
                   name="skill"
@@ -1086,7 +1086,7 @@ const Virtual_Tech_Village = () => {
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
 
               <div className="pt-10">
                 <button

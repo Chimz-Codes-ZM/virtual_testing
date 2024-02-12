@@ -90,6 +90,8 @@ const Index = () => {
         }
       );
       if (response.ok) {
+        const data = await response.json();
+        console.log("This is the data I'm waiting for:",data)
         setLoading(false);
         toast.success("Successful submission!");
         fetchData();
