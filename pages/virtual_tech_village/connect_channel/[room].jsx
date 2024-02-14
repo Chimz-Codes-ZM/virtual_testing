@@ -73,9 +73,8 @@ const connect = () => {
             break;
 
           case "last_50_messages":
-            console.log("Updated messageHistory:", messageHistory);
             setMessageHistory((prev) => [...data.messages, ...prev]);
-
+            console.log("Last 50 messages", data);
             setHasMoreMessages(data.has_more);
             break;
           case "user_join":
@@ -132,16 +131,35 @@ const connect = () => {
   }, [messageHistory, newMessages]);
 
   const renderMessage = (message) => {
+    // URL regex to detect URLs in the message
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-    return message.replace(
+
+    // Replace URLs with anchor tags
+    const replacedMessage = message.replace(
       urlRegex,
       (url) =>
         `<a href="${url}" target="_blank" style="text-decoration: underline;">${url}</a>`
     );
+
+    // Replace line breaks with <br> tags
+    const withLineBreaks = replacedMessage.replace(/\r\n|\r|\n/g, "<br>");
+
+    // Return the processed message
+    return withLineBreaks;
+  };
+
+  // Function to render QuillJS content
+  const renderQuillContent = (content) => {
+    // Replace QuillJS line breaks with <br> tags
+    const withLineBreaks = content.replace(/\n/g, "<br>");
+
+    // Return the processed content
+    return withLineBreaks;
   };
 
   useEffect(() => {
     setMessageHistory([]);
+    setNewMessages([]);
   }, [room]);
 
   return (
@@ -181,10 +199,7 @@ const connect = () => {
                                     <div
                                       dangerouslySetInnerHTML={{
                                         __html: renderMessage(
-                                          message.content.replace(
-                                            /\r\n|\r|\n/g,
-                                            "<br>"
-                                          )
+                                          renderQuillContent(message.content)
                                         ),
                                       }}
                                     />
@@ -212,18 +227,17 @@ const connect = () => {
                                             {message?.time}
                                           </span>
                                         </div>
-                                        <p className="text-sm font-normal py-2 text-gray-900">
+                                        <div className="text-sm font-normal py-2 text-gray-900">
                                           <div
                                             dangerouslySetInnerHTML={{
                                               __html: renderMessage(
-                                                message.content.replace(
-                                                  /\r\n|\r|\n/g,
-                                                  "<br>"
+                                                renderQuillContent(
+                                                  message.content
                                                 )
                                               ),
                                             }}
                                           />
-                                        </p>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -244,7 +258,13 @@ const connect = () => {
                           >
                             {message.from_user?.email === email && (
                               <div className="self-end w-fit p-1 px-3 max-w-[66%] rounded-lg bg-[#001e1d] text-white">
-                                {message.content}
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: renderMessage(
+                                      renderQuillContent(message.content)
+                                    ),
+                                  }}
+                                />
                               </div>
                             )}
                             {message.from_user?.email !== email && (
@@ -269,9 +289,15 @@ const connect = () => {
                                         {message?.time}
                                       </span>
                                     </div>
-                                    <p className="text-sm font-normal py-2 text-gray-900">
-                                      {message?.content}
-                                    </p>
+                                    <div className="text-sm font-normal py-2 text-gray-900">
+                                      <div
+                                        dangerouslySetInnerHTML={{
+                                          __html: renderMessage(
+                                            renderQuillContent(message.content)
+                                          ),
+                                        }}
+                                      />
+                                    </div>
                                   </div>
                                 </div>
                               </div>

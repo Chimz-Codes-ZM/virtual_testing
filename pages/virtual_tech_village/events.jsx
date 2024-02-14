@@ -8,6 +8,7 @@ import SidePanel from "./components/events/SidePanel";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
+import JobAdded from "./components/alerts/jobAdded";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { BsFillCalendar2EventFill } from "react-icons/bs";

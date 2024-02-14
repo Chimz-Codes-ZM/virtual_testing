@@ -78,7 +78,7 @@ const Index = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    toast.loading('Submitting...', {duration: 2000})
+    // toast.loading('Submitting...', {duration: 2000})
 
     const sendData = async () => {
       setLoading(true);
@@ -94,8 +94,7 @@ const Index = () => {
         }
       );
       if (response.ok) {
-        const data = await response.json();
-        console.log("This is the data I'm waiting for:",data)
+
         setLoading(false)
 
         toast.success('Team successfully created!')

@@ -62,7 +62,8 @@ function Management() {
                 <Image
                   src={teammate.img}
                   alt="img"
-                  layout="fill"
+                  fill
+                  objectFit="cover"
                   className="grayscale group-hover:opacity-30 group-hover:filter group-hover:bg-slate-900 transition"
                 />
               </div>

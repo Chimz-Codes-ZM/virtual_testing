@@ -18,6 +18,16 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -42,6 +52,8 @@ const Task_allocation = () => {
     assigned_to: [],
     due_date: "",
   });
+
+  const [tasks, setTasks] = useState();
 
   const [options, setOptions] = useState([]);
 
@@ -94,7 +106,7 @@ const Task_allocation = () => {
       task_name: "",
       assigned_to: [],
       due_date: "",
-    })
+    });
     toast.loading("Submitting...", { duration: 2000 });
     try {
       const response = await fetch(
@@ -108,9 +120,9 @@ const Task_allocation = () => {
         }
       );
 
-      if (response.status === 200) {
-        const data = await response.json();
-
+      if (response.ok) {
+        // const data = await response.json();
+        console.log(response);
         toast.success("Task successfully created!");
       } else {
         console.error("Something went wrong, please try again!");
@@ -212,6 +224,42 @@ const Task_allocation = () => {
             </Sheet>
           </form>
         </div>
+
+        <Table>
+          <TableCaption>A list of ongoing tasks.</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>#</TableHead>
+              <TableHead className="">Project Name</TableHead>
+              <TableHead>Owner</TableHead>
+              <TableHead className="w-[150px] truncate">
+                Project Description
+              </TableHead>
+              <TableHead>Date Started</TableHead>
+              <TableHead className="text-right"># of Team Members</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {tasks?.map((team, index) => (
+              <TableRow key={team.id}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell className="font-medium">
+                  <Link
+                    href={`/virtual_tech_village/project_manager/task_allocation/${team.id}`}
+                  >
+                    {team.title}
+                  </Link>
+                </TableCell>
+                <TableCell>{team.owner}</TableCell>
+                <TableCell className="w-[150px] truncate">
+                  {team.description}
+                </TableCell>
+                <TableCell>{team.start_date}</TableCell>
+                <TableCell className="text-right">{team.team.length}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </Layout>
   );

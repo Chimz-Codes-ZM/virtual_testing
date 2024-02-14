@@ -2,8 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import Layout from "../layouts/layout";
 import Head from "next/head";
 import Image from "next/image";
-import MessageInput from "./MessageInput";
-import ConversationList from "./conversationList";
 import MessageList from "./MessageList";
 
 import { JellyTriangle } from "@uiball/loaders";

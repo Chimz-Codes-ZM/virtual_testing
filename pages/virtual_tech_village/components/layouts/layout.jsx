@@ -342,29 +342,28 @@ const Layout = ({ children, sideHighlight }) => {
                           href={`/virtual_tech_village/${notification.route}`}
                         >
                           <DropdownMenuItem className="flex items-center gap-2 hover:bg-gray-50 hover:text-gray-700 group">
-  <div className="h-8 w-8 relative">
-    <Image
-      src={notification.image}
-      fill
-      objectFit="cover"
-      className="rounded-full"
-    />
-  </div>
-  <div
-    className="block rounded-lg px-4 py-2 text-sm text-gray-500 group-hover:!truncate"
-    role="menuitem"
-  >
-    <div className="flex flex-col">
-      <div className="font-semibold">
-        {notification.sender}
-      </div>
-      <div className=" max-w-[170px]">
-        {notification.message}
-      </div>
-    </div>
-  </div>
-</DropdownMenuItem>
-
+                            <div className="h-8 w-8 relative">
+                              <Image
+                                src={notification.image}
+                                fill
+                                objectFit="cover"
+                                className="rounded-full"
+                              />
+                            </div>
+                            <div
+                              className="block rounded-lg px-4 py-2 text-sm text-gray-500 group-hover:!truncate"
+                              role="menuitem"
+                            >
+                              <div className="flex flex-col">
+                                <div className="font-semibold">
+                                  {notification.sender}
+                                </div>
+                                <div className=" max-w-[170px]">
+                                  {notification.message}
+                                </div>
+                              </div>
+                            </div>
+                          </DropdownMenuItem>
                         </Link>
                       </div>
                     ))

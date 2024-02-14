@@ -227,7 +227,7 @@ const Index = () => {
           {/* CONVERSATION LIST */}
 
           <div className="relative flex-col grow shadow overflow-hidden h-full flex justify-center w-full p-2">
-            <div className="grow relative sm:p-4 py-1 overflow-hidden max-h-full mt-14 pt-10 self-center w-full max-w-4xl shadow">
+            <div className="grow relative sm:p-4 py-1 overflow-hidden h-[90%] mt-14 pt-10 self-center w-full max-w-4xl shadow">
               <Toolbar
                 names={usersName}
                 avatar={userPicture}
@@ -238,7 +238,7 @@ const Index = () => {
                 archived={archived}
               />
               <div className="scrollbar h-full ">
-                <div className="mx-auto max-w-6xl sm:px-14 px-4 py-4 pt-10 pb-4 max-h-full overflow-y-auto">
+                <div className="overflow-x-hidden mx-auto max-w-6xl sm:px-14 px-4 py-4 pt-10 pb-4 max-h-full overflow-y-auto">
                   <div className="">
                     {messageHistory.length > 0 && (
                       <div className="message-list flex flex-col gap-1 pt-2">
@@ -258,7 +258,16 @@ const Index = () => {
                               >
                                 {message.from_user?.email === email && (
                                   <div className="self-end w-fit p-1 px-3 max-w-[66%] rounded-lg bg-[#001e1d] text-white">
-                                    {message.content}
+                                     <div
+                                            dangerouslySetInnerHTML={{
+                                              __html: renderMessage(
+                                                message.content.replace(
+                                                  /\r\n|\r|\n/g,
+                                                  "<br>"
+                                                )
+                                              ),
+                                            }}
+                                          />
                                   </div>
                                 )}
                                 {message.from_user?.email !== email && (
@@ -314,7 +323,16 @@ const Index = () => {
                           >
                             {message.from_user?.email === email && (
                               <div className="self-end w-fit p-1 px-3 max-w-[66%] rounded-lg bg-[#001e1d] text-white">
-                                {message.content}
+                                 <div
+                                        dangerouslySetInnerHTML={{
+                                          __html: renderMessage(
+                                            message.content.replace(
+                                              /\r\n|\r|\n/g,
+                                              "<br>"
+                                            )
+                                          ),
+                                        }}
+                                      />
                               </div>
                             )}
                             {message.from_user?.email !== email && (

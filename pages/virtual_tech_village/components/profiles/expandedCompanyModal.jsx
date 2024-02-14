@@ -1,6 +1,7 @@
 import React from 'react'
 import { FaExternalLinkSquareAlt } from "react-icons/fa";
 import { BsFillInfoCircleFill } from "react-icons/bs";
+import Link from 'next/link';
 
 const ExpandedCompanyModal = ({
     industry,
@@ -46,7 +47,7 @@ const ExpandedCompanyModal = ({
                   {/* THIS NEEDS TO BE FIXED ASAP */}
                 </a>
     
-                <Link href={`/virtual_tech_village/company_info/${user_id}`}>
+                <Link href={``}>
                   <BsFillInfoCircleFill />
                 </Link>
               </div>

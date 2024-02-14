@@ -26,7 +26,7 @@ import jacob from "../../public/assets/jacob.jpeg";
 import albert from "../../public/assets/albert.jpeg";
 import Kenny from "../../public/assets/kenny.jpg";
 import Karen from "../../public/assets/karen.jpg";
-import brenda from "../../public/assets/brenda.jpg";
+import brenda from "../../public/assets/Brenda_image.jpg";
 
 import Learnio from "../../public/assets/learnio.svg";
 import Terran from "../../public/assets/Terran_icon.png";
