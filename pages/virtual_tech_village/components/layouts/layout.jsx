@@ -38,10 +38,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Layout = ({ children, sideHighlight }) => {
   const [userData, setUserData] = useState(null);
-  const [unreadMessageCount, setUnreadMessageCount] = useState(null);
-  const [notificationContent, setNotificationContent] = useState(null);
+  // const [unreadMessageCount, setUnreadMessageCount] = useState(null);
+  const [notificationContent, setNotificationContent] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
-  const [decodedToken, setDecodedToken] = useState(null);
+  
+  const [count, setCount] = useState(0);
   const [id, setId] = useState("");
   const router = useRouter();
   const notificationRef = useRef();
@@ -54,6 +55,8 @@ const Layout = ({ children, sideHighlight }) => {
       return null;
     }
   });
+
+  const unreadMessageCount = notificationContent === null ? 0 : notificationContent?.length;
 
   const user_id = () => {
     if (user) {
@@ -100,25 +103,29 @@ const Layout = ({ children, sideHighlight }) => {
         switch (data.type) {
           case "unread_count":
             break;
-          case "new_message_notification":
-            setUnreadMessageCount((count) => (count += 1));
-            setUnreadMessageCount(data.count);
-            // console.log(data.content);
-            setNotificationContent(data.content);
-            break;
-          case "new_notification":
-            setUnreadMessageCount((count) => (count += 1));
-            setUnreadMessageCount(data.count);
-            setNotificationContent(data.content);
-          // console.log("New notification content:", data.content);
+
+            case "new_message_notification":
+              setNotificationContent((prev) => [...prev, data.content[0]]);
+              console.log("New message notification:", data.content[0]);
+              break;
+
+            case "new_notification":
+              setNotificationContent((prev) => [...prev, data.content[0]]);
+              console.log("New notification content:", data.content[0]);
+              break;
+
+         
           default:
-            // console.error("Unknown message type!");
             break;
         }
       },
       retryOnError: true,
     }
   );
+
+  useEffect(() => {
+console.log("Notification content has changed:", notificationContent)
+  }, [notificationContent])
   const handleSendNotification = () => {
     sendJsonMessage({
       type: "read_notifications",
@@ -315,6 +322,7 @@ const Layout = ({ children, sideHighlight }) => {
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <div className="relative">
+                  {/* {connectionStatus} */}
                   <AiOutlineBell
                     className={`text-lg cursor-pointer ${
                       unreadMessageCount > 0 ? "animate-bounce" : ""
@@ -330,36 +338,36 @@ const Layout = ({ children, sideHighlight }) => {
               <DropdownMenuContent>
                 <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <ScrollArea className="max-h-[200px] w-[250px] rounded-md">
+                <ScrollArea className="max-h-[200px] w-[250px] rounded-md overflow-y-auto">
                   {notificationContent && notificationContent.length > 0 ? (
                     notificationContent.map((notification) => (
                       <div
                         className=""
-                        key={notification.id}
-                        onClick={handleNewNotification(notification.id)}
+                        key={notification?.notification_id}
+                        onClick={handleNewNotification(23)}
                       >
                         <Link
-                          href={`/virtual_tech_village/${notification.route}`}
+                          href={`/virtual_tech_village/${notification?.route}`}
                         >
                           <DropdownMenuItem className="flex items-center gap-2 hover:bg-gray-50 hover:text-gray-700 group">
                             <div className="h-8 w-8 relative">
                               <Image
-                                src={notification.image}
+                                src={notification?.image}
                                 fill
                                 objectFit="cover"
                                 className="rounded-full"
                               />
                             </div>
                             <div
-                              className="block rounded-lg px-4 py-2 text-sm text-gray-500 group-hover:!truncate"
+                              className="block rounded-lg px-4 py-2 text-sm text-gray-500 "
                               role="menuitem"
                             >
                               <div className="flex flex-col">
                                 <div className="font-semibold">
-                                  {notification.sender}
+                                  {notification?.sender}
                                 </div>
                                 <div className=" max-w-[170px]">
-                                  {notification.message}
+                                  {notification?.message}
                                 </div>
                               </div>
                             </div>

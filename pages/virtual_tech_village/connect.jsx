@@ -48,10 +48,6 @@ const connect = () => {
         setOptions(response.data[0].talents);
         setInternOptions(response.data[1].interns);
         setCompanyOptions(response.data[2].companies);
-        // console.log(
-        //   "These are my potential channel members:",
-        //   response.data
-        // );
       } catch (error) {
         console.error("Error fetching data: ", error);
       }

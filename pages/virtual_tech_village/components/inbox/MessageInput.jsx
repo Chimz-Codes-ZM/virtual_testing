@@ -1,19 +1,12 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AiOutlineSend, AiOutlinePaperClip } from "react-icons/ai";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import dynamic from "next/dynamic";
-import 'react-quill/dist/quill.snow.css';
+
 import { API_URL } from "@/config";
-
-
-const QuillNoSSRWrapper = dynamic(import('./RichTextEditor'), {
-  ssr: false,
-  loading: () => <p>Loading editor...</p>,
-});
+import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Mention from '@tiptap/extension-mention'
+import Placeholder from "@tiptap/extension-placeholder";
 
 const MessageInput = ({ roomName, userId }) => {
   const [messageText, setMessageText] = useState("");
@@ -23,27 +16,14 @@ const MessageInput = ({ roomName, userId }) => {
   const [socketUrl, setSocketUrl] = useState(
     `wss://${API_URL}/ws/chat/${userId}/${userId}${roomName}/`
   );
-  const { readyState, sendJsonMessage } =
-    useWebSocket(socketUrl);
-
-  const handleSendInput = () => {
-    sendJsonMessage({
-      type: "chat_message",
-      message: messageText,
-    });
-    console.log("Message sent:", messageText);
-    setMessageText("");
-  };
+  const { readyState, sendJsonMessage } = useWebSocket(socketUrl);
 
   const handleOpenMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  }
+  };
 
   const handleClickOutsideProfile = (event) => {
-    if (
-      inputRef.current &&
-      !inputRef.current.contains(event.target)
-    ) {
+    if (inputRef.current && !inputRef.current.contains(event.target)) {
       setIsMenuOpen(false);
     }
   };
@@ -53,93 +33,109 @@ const MessageInput = ({ roomName, userId }) => {
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideProfile);
-
     };
   }, []);
 
   useEffect(() => {
     setSocketUrl(`wss://${API_URL}/ws/chat/${userId}/${userId}${roomName}/`);
-  }, [roomName])
+  }, [roomName]);
 
-  const connectionStatus = {
-    [ReadyState.CONNECTING]: "Connecting",
-    [ReadyState.OPEN]: "Open",
-    [ReadyState.CLOSING]: "Closing",
-    [ReadyState.CLOSED]: "Closed",
-    [ReadyState.UNINSTANTIATED]: "Uninstantiated",
-  }[readyState];
+  const [isEditable, setIsEditable] = useState(true);
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Placeholder.configure({
+        placeholder: "Type your message here...",
+      }),
+    ],
+    content: messageText,
+
+    onUpdate: ({ editor }) => {
+      const html = editor.getHTML();
+      setMessageText(html);
+    },
+
+    editorProps: {
+      attributes: {
+        class:
+          "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none border mt-2 rounded p-1 h-36 overflow-y-auto custom-scroll",
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (editor) {
+      editor.setEditable(isEditable);
+    }
+  }, [isEditable, editor]);
+
+  if (!editor) {
+    return null;
+  }
+
+  const handleSendInput = () => {
+    sendJsonMessage({
+      type: "chat_message",
+      message: messageText,
+    });
+    editor.commands.clearContent();
+    console.log(messageText)
+  };
+
   return (
-    <div className="">
-      <div className="relative md:px-10 p-1 left-2 right-2 rounded">
-        <div className="relative flex gap-2">
-          <div className="relative grow">
-            <textarea
-              id="OrderNotes"
-              className="mt-2 w-full rounded-lg border-gray-200 align-top shadow border sm:text-sm relative p-1 px-2"
-              rows="4"
-              placeholder="Enter message..."
-              value={messageText}
-              onChange={(e) => setMessageText(e.target.value)}
-            ></textarea>
-            {/* {connectionStatus} */}
-            <button
-              className="absolute top-8 right-2 bg-gray-400 text-white p-1 rounded-full"
-              style={{ cursor: "pointer" }}
-              onClick={() => handleOpenMenu()}
-            >
-              {/* {connectionStatus} */}
-              < AiOutlinePaperClip />
-            </button>
-          </div>
-
+    <div className="flex custom-scroll">
+      {editor && (
+        <BubbleMenu
+          editor={editor}
+          tippyOptions={{ duration: 100 }}
+          className="flex gap-1"
+        >
           <button
-            onClick={() => {
-              handleSendInput();
-            }}
-            className="bg-gray-900 text-white rounded p-1 px-2 h-8  self-center"
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            className={
+              editor.isActive("bold")
+                ? "is-active "
+                : "border-2 rounded p-1 py-0 bg-white"
+            }
           >
-            <AiOutlineSend />
+            bold
           </button>
-        </div>
-        {isMenuOpen && (
-          <div
-            className="mt-2 p-2 bottom-10 right-3  rounded  absolute"
-            ref={inputRef}
+          <button
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            className={
+              editor.isActive("italic")
+                ? "is-active"
+                : "border-2 rounded p-1 py-0 bg-white"
+            }
           >
-            {/* Menu content (file types) */}
-            <div
-              className=" end-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg"
-              role="menu"
-            >
-              <div className="p-2">
-                <a
-                  href="#"
-                  className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                  role="menuitem"
-                >
-                  Image
-                </a>
-
-                <a
-                  href="#"
-                  className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                  role="menuitem"
-                >
-                  Document
-                </a>
-
-                <a
-                  href="#"
-                  className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                  role="menuitem"
-                >
-                  Video
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+            italic
+          </button>
+          <button
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            className={
+              editor.isActive("strike")
+                ? "is-active"
+                : "border-2 rounded p-1 py-0 bg-white"
+            }
+          >
+            strike
+          </button>
+        </BubbleMenu>
+      )}
+      <EditorContent
+        editor={editor}
+        onChange={(e) => setMessageText(e.getHTML())}
+        className="grow w-full custom-scroll"
+      />
+      <button
+        onClick={() => {
+          handleSendInput();
+        }}
+        className="bg-gray-900 text-white rounded p-1 px-2 h-8  self-center"
+      >
+        <AiOutlineSend />
+      </button>
     </div>
   );
 };

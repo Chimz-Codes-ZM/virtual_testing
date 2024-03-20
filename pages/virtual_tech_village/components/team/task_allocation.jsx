@@ -18,7 +18,12 @@ const Task_Allocation = ({ tasks }) => {
               <div>
                 <div className="w-full flex justify-between">
                   <h3>{task.name}</h3>
-                  <p>Due in {task.days_remaining} days</p>
+                  {task.days_remaining === "Completed" ? (
+                    <p>Task completed</p>
+                  ) : (
+                    <p>Due in {task.days_remaining} days</p>
+                  )}
+                  
                 </div>
                 <div className="w-full flex">
                   <Progress value={task.completion} />

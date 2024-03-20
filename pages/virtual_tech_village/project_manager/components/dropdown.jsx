@@ -23,7 +23,7 @@ const Dropdown = ({ options, newTask, setNewTask }) => {
   };
 
   return (
-    <div className="relative inline-block text-left w-full">
+    <div className="relative inline-block text-left w-full z-50">
       <div>
         <span className="rounded-md shadow-sm">
           <button

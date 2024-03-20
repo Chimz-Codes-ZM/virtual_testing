@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import Connect_toolbar from "./connect_toolbar";
 import Connect_Input from "./connect_input";
-import Unique_message from "./unique_message";
 
 const Conversations = () => {
   const [toggleUniqueMessage, setToggleUniqueMessage] = useState(false)

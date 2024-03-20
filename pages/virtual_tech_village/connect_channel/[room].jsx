@@ -26,6 +26,9 @@ const connect = () => {
   const [archived, setArchived] = useState("");
   const [unread, setUnread] = useState("");
 
+  // Fetched channels
+    const [channelId, setChannelId] = useState("");
+
   // MESSAGE INPUT STATE
   const messagesEndRef = useRef(null);
   const { room } = router.query;
@@ -49,6 +52,54 @@ const connect = () => {
     }
   });
 
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          `https://${API_URL}/village/channel_list/${user.user_id}/`
+        );
+        setChannels(response.data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+
+
+  const disconnectedChannel = async () => {
+    console.log("Disconnected from channels!");
+    try {
+      const response = await fetch(
+        `https://${API_URL}/village/channel_disconnect/${id}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            channel: channelId
+          }),
+        }
+      );
+
+      if (response.ok) {
+        // const data = await response.json();
+        console.log(response);
+        // toast.success("Task successfully created!");
+      } else {
+        console.error("Something went wrong, please try again!");
+        // toast.error("Something went wrong, please try again!");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      // toast.error("Something went wrong, please try again!");
+    }
+  };
+
   const { readyState, sendMessage, sendJsonMessage } = useWebSocket(
     `wss://${API_URL}/ws/channels/${id}/${room}/`,
     {
@@ -59,7 +110,7 @@ const connect = () => {
         });
       },
       onClose: () => {
-        console.log("Disconnected from channels!");
+        disconnectedChannel()
       },
 
       retryOnError: true,
@@ -105,6 +156,13 @@ const connect = () => {
             setArchived(data.archive);
             setUnread(data.unread);
             console.log("This is the conversation data: ", data);
+            break;
+          case "channel_data":
+              setChannelId(data.id)
+              console.log(data)
+              break;
+          case "channel_members":
+            console.log("These are the channel members:", data)
           default:
             console.error("Unknown message type!");
             break;

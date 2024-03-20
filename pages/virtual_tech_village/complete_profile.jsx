@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Layout from "./components/layouts/layout";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -31,6 +31,12 @@ const Complete_profile = () => {
     experience: "",
     category: "",
   });
+
+  const imageRef = useRef();
+
+  const handleChange = (e) => {
+    imageRef.current = e.target.files[0];
+  };
 
   const [education, setEducation] = useState([
     { degree_name: "", institution: "", year_started: "", year_finished: "" },
@@ -148,7 +154,9 @@ const Complete_profile = () => {
     const file = e.target.files[0];
 
     if (!file) {
-      toast.error("Please select an image before submitting.", {duration: 2000})
+      toast.error("Please select an image before submitting.", {
+        duration: 2000,
+      });
       return;
     }
 
@@ -175,7 +183,7 @@ const Complete_profile = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
+    
     setCompletedProfile((prevProfile) => ({
       ...prevProfile,
       [name]: value,
@@ -224,31 +232,37 @@ const Complete_profile = () => {
   };
 
   const handleSubmit = async (e) => {
-    toast.loading("Submitting profile...")
-    console.log(formInputs);
+    // toast.loading("Submitting profile...");
     e.preventDefault();
 
-    if (cvSubmitted === true) {
+    const formData = new FormData();
+
+    for (const key of Object.keys(formInputs)) {
+      formData.append(key, formInputs[key]);
+    }
+
+    formData.append("image", imageRef.current)
+    formData.append("pdfFile", file);
+
+
+
       const response = await fetch(
         `https://${API_URL}/village/complete_profile/${user.user_id}/`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ formInputs }),
+          body: formData,
         }
       );
 
       if (response.ok) {
-        toast.success("Profile update complete!")
+        toast.success("Profile update complete!");
         router.push("/virtual_tech_village");
       } else {
-        toast.error("Something went wrong, please try again!")
+        toast.error("Something went wrong, please try again!");
       }
-    } else {
-      toast.error("Please upload your CV before submitting your application!", {duration: 4000})
-    }
+
+
+    console.log(formData)
   };
 
   const handleSave = async (e) => {
@@ -285,7 +299,7 @@ const Complete_profile = () => {
   };
 
   const handlePdfSubmit = async (e) => {
-    toast.loading('Submitting...', {duration: 2000})
+    toast.loading("Submitting...", { duration: 2000 });
 
     e.preventDefault();
     setCvSubmitted(true);
@@ -372,25 +386,10 @@ const Complete_profile = () => {
               </h2>
               <p>Set your details here</p>
             </div>
-
-            {/* <div className="flex gap-4">
-              <div
-                onClick={handleCanel}
-                className="cursor-pointer rounded p-2 py-1 hover:text-white hover:bg-black transition-colors border shadow duration-300"
-              >
-                Cancel
-              </div>
-              <div
-                onClick={handleSave}
-                className="cursor-pointer rounded p-2 py-1 text-white bg-black hover:text-black hover:bg-white hover:border hover:shadow duration-300"
-              >
-                Save Changes
-              </div>
-            </div> */}
           </div>
 
-          <div>
-            <form onSubmit={handleImageSubmit}>
+          <form onSubmit={handleSubmit}>
+            <div>
               <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 pb-4 border-b-2">
                 <div className="flex flex-col gap-3 col-span-1 pb-4">
                   <h2 className="font-semibold text-xl">Profile picture</h2>
@@ -436,13 +435,14 @@ const Complete_profile = () => {
                       className="hidden"
                       accept="image/*"
                       name="file"
-                      onChange={handleImageSubmit}
+                      onChange={handleChange}
+                      // value={completedProfile.image}
                     />
                   </label>
                 </div>
               </div>
-            </form>
-            <form onSubmit={handlePdfSubmit}>
+            </div>
+            <div>
               <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 pb-4 border-b-2">
                 <div className="flex flex-col gap-3 col-span-1 pb-4">
                   <h2 className="font-semibold text-xl">CV</h2>
@@ -458,8 +458,8 @@ const Complete_profile = () => {
                   Upload CV
                 </button>
               </div>{" "}
-            </form>
-            <form onSubmit={handleSubmit}>
+            </div>
+            <div>
               <div className="grid grid-cols-1 sm:grid-cols-3 w-full sm:px-10 pt-4 ">
                 <label
                   htmlFor="country"
@@ -993,8 +993,8 @@ const Complete_profile = () => {
                   </div>
                 </div>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </Layout>

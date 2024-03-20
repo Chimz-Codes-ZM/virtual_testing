@@ -123,7 +123,6 @@ const Resume_component = ({
                           ),
                         }}
                       />
-                      {job.summary}
                     </p>
                   </div>
                 </div>

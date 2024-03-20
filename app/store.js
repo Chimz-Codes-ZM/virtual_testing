@@ -3,6 +3,7 @@ import userReducer from "../features/user/UserSlice"
 import internsReducer from "../features/applications/InternSlice"
 import talentReducer from "../features/applications/TalentSlice"
 import companyReducer from "../features/applications/CompanySlice"
+import suggestionReducer from "../features/applications/SuggestionSlice"
 import thunk from "redux-thunk";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
@@ -18,7 +19,8 @@ const reducer = combineReducers({
   user: userReducer,
   internApplications: internsReducer,
   talentApplications: talentReducer,
-  companyApplications: companyReducer
+  companyApplications: companyReducer,
+  inputSuggestion: suggestionReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

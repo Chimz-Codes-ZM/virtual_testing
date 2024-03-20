@@ -1278,6 +1278,46 @@ export const denied = [
 
 export const trends = [
   {
+    id: "gubinjlkmds",
+    img: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    date: "March 15th, 2024",
+    title: "AI-MLops Workshp with Robert Talling",
+    link: "https://drive.google.com/file/d/10rRd3RVAnjE_1hn0Qg8mLzOAp2_pW4Xe/view?ts=65f4814b",
+    source: "Baobabpad"
+  },
+  { 
+    id: "atguyhjnmk",
+    img: "https://images.unsplash.com/photo-1600618528240-fb9fc964b853?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    date: "March 8th, 2024",
+    title: "Wellness for Tech Minds",
+    link: "https://drive.google.com/file/d/1C39MJ2DA-pWwLwDd0c-Gq2z_y29eqqsm/view?ts=65eae6d7",
+    source: "Baobabpad"
+  },
+  {
+    id: "yhfmeodkhtn",
+    img: "https://www.workitdaily.com/media-library/gender-equality-concept.jpg?id=35080554&width=980",
+    date: "March 1, 2024",
+    title: "Gender Justice Workshop",
+    link: "https://drive.google.com/file/d/1PgJv6FbMRsO3pqvBtLq5361mJPUwD3jZ/view",
+    source: "Baobabpad"
+  },
+  {
+    id: "xfchjbnhjbn",
+    img: "https://images.unsplash.com/photo-1633265486064-086b219458ec?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    date: "February 23, 2024",
+    title: "Introduction to General Data Protection Regulation (GDPR)",
+    link: "https://drive.google.com/file/d/1es0scDiOLl8TeOtK3klxkCeTuBEKkFXb/view?ts=65d8c3e9",
+    source: "Baobabpad"
+  },
+  {
+    id: "adfalkjwerlkn",
+    img: "https://images.unsplash.com/photo-1626695436755-3e288720849c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWZyaWNhJTIwbWFwfGVufDB8fDB8fHww",
+    date: "February 16, 2024",
+    title: "Baobabpad Onboarding Meeting",
+    link: "https://drive.google.com/file/d/1n90wMVWWpdbWBlZNfkxTQP6e-Dp6lZmb/view?usp=sharing",
+    source: "Baobabpad"
+  },
+  {
     id: 1,
     img: "https://techcrunch.com/wp-content/uploads/2023/11/972EDAAB-FAF9-4DD0-B0D2-A5DBAD213213.jpeg?w=730&crop=1",
     date: "November 15, 2023",
